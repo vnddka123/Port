@@ -1,0 +1,25 @@
+E:\Git dev\L# to Elo\Thresh\Thresh\bin\Release\Thresh.exe.config
+E:\Git dev\L# to Elo\Thresh\Thresh\bin\Release\Thresh.exe
+E:\Git dev\L# to Elo\Thresh\Thresh\bin\Release\Thresh.pdb
+E:\Git dev\L# to Elo\Thresh\Thresh\bin\Release\EloBuddy.dll
+E:\Git dev\L# to Elo\Thresh\Thresh\bin\Release\EloBuddy.SDK.dll
+E:\Git dev\L# to Elo\Thresh\Thresh\bin\Release\SharpDX.Direct3D9.dll
+E:\Git dev\L# to Elo\Thresh\Thresh\bin\Release\SharpDX.dll
+E:\Git dev\L# to Elo\Thresh\Thresh\bin\Release\Newtonsoft.Json.dll
+E:\Git dev\L# to Elo\Thresh\Thresh\obj\Debug\Thresh.exe
+E:\Git dev\L# to Elo\Thresh\Thresh\obj\Debug\Thresh.pdb
+E:\assembly\L# to EloBuddy\Thresh\Thresh\bin\Release\Thresh.exe.config
+E:\assembly\L# to EloBuddy\Thresh\Thresh\bin\Release\Thresh.exe
+E:\assembly\L# to EloBuddy\Thresh\Thresh\bin\Release\Thresh.pdb
+E:\assembly\L# to EloBuddy\Thresh\Thresh\bin\Release\Berb.Common.dll
+E:\assembly\L# to EloBuddy\Thresh\Thresh\bin\Release\EloBuddy.dll
+E:\assembly\L# to EloBuddy\Thresh\Thresh\bin\Release\EloBuddy.SDK.dll
+E:\assembly\L# to EloBuddy\Thresh\Thresh\bin\Release\SharpDX.Direct3D9.dll
+E:\assembly\L# to EloBuddy\Thresh\Thresh\bin\Release\SharpDX.dll
+E:\assembly\L# to EloBuddy\Thresh\Thresh\bin\Release\Newtonsoft.Json.dll
+E:\assembly\L# to EloBuddy\Thresh\Thresh\bin\Release\EloBuddy.Sandbox.dll
+E:\assembly\L# to EloBuddy\Thresh\Thresh\bin\Release\Berb.Common.pdb
+E:\assembly\L# to EloBuddy\Thresh\Thresh\obj\Debug\Thresh.exe
+E:\assembly\L# to EloBuddy\Thresh\Thresh\obj\Debug\Thresh.pdb
+E:\Git dev\L# to Elo\Thresh\Thresh\bin\Release\Berb.Common.dll
+E:\Git dev\L# to Elo\Thresh\Thresh\bin\Release\Berb.Common.pdb
