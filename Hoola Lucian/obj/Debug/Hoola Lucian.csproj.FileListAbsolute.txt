@@ -1,0 +1,12 @@
+E:\Git dev\TEST\LS\Hoola Lucian\bin\Release\Hoola Lucian.exe.config
+E:\Git dev\TEST\LS\Hoola Lucian\bin\Release\Hoola Lucian.exe
+E:\Git dev\TEST\LS\Hoola Lucian\bin\Release\Hoola Lucian.pdb
+E:\Git dev\TEST\LS\Hoola Lucian\bin\Release\EloBuddy.dll
+E:\Git dev\TEST\LS\Hoola Lucian\bin\Release\EloBuddy.SDK.dll
+E:\Git dev\TEST\LS\Hoola Lucian\bin\Release\SharpDX.Direct3D9.dll
+E:\Git dev\TEST\LS\Hoola Lucian\bin\Release\SharpDX.dll
+E:\Git dev\TEST\LS\Hoola Lucian\bin\Release\Newtonsoft.Json.dll
+E:\Git dev\TEST\LS\Hoola Lucian\bin\Release\EloBuddy.Sandbox.dll
+E:\Git dev\TEST\LS\Hoola Lucian\obj\Debug\Hoola Lucian.csprojResolveAssemblyReference.cache
+E:\Git dev\TEST\LS\Hoola Lucian\obj\Debug\Hoola Lucian.exe
+E:\Git dev\TEST\LS\Hoola Lucian\obj\Debug\Hoola Lucian.pdb
