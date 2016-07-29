@@ -106,14 +106,134 @@ namespace OneKeyToWin_AIO_Sebby
 
                 #region LOAD CHAMPIONS
 
-            
+
                 switch (Player.ChampionName)
-                {                  
+                {
+                    case "Jinx":
+                        new Jinx().LoadOKTW();
+                        break;
+                    case "Sivir":
+                        new Sivir().LoadOKTW();
+                        break;
+                    case "Ezreal":
+                        new Ezreal().LoadOKTW();
+                        break;
+                    case "KogMaw":
+                        new KogMaw().LoadOKTW();
+                        break;
+                    case "Annie":
+                        new Annie().LoadOKTW();
+                        break;
+                    case "Ashe":
+                        new Ashe().LoadOKTW();
+                        break;
+                    case "MissFortune":
+                        new MissFortune().LoadOKTW();
+                        break;
+                    case "Quinn":
+                        new Quinn().LoadOKTW();
+                        break;
+                    case "Kalista":
+                        new Kalista().LoadOKTW();
+                        break;
+                    case "Caitlyn":
+                        new Caitlyn().LoadOKTW();
+                        break;
                     case "Graves":
                         new Graves().LoadOKTW();
                         break;
+                    case "Urgot":
+                        new Urgot().LoadOKTW();
+                        break;
+                    case "Anivia":
+                        new Anivia().LoadOKTW();
+                        break;
+                    case "Orianna":
+                        new Orianna().LoadOKTW();
+                        break;
+                    case "Ekko":
+                        new Ekko().LoadOKTW();
+                        break;
+                    case "Vayne":
+                        new Vayne().LoadOKTW();
+                        break;
                     case "Lucian":
                         new Lucian().LoadOKTW();
+                        break;
+                    case "Darius":
+                        new Champions.Darius().LoadOKTW();
+                        break;
+                    case "Blitzcrank":
+                        new Champions.Blitzcrank().LoadOKTW();
+                        break;
+                    case "Corki":
+                        new Champions.Corki().LoadOKTW();
+                        break;
+                    case "Varus":
+                        new Champions.Varus().LoadOKTW();
+                        break;
+                    case "Twitch":
+                        new Champions.Twitch().LoadOKTW();
+                        break;
+                    case "Tristana":
+                        new Champions.Tristana().LoadMenuOKTW();
+                        break;
+                    case "Xerath":
+                        new Champions.Xerath().LoadOKTW();
+                        break;
+                    case "Jayce":
+                        new Champions.Jayce().LoadOKTW();
+                        break;
+                    case "Kayle":
+                        new Champions.Kayle().LoadOKTW();
+                        break;
+                    case "Thresh":
+                        new Champions.Thresh().LoadOKTW();
+                        break;
+                    case "Draven":
+                        new Champions.Draven().LoadOKTW();
+                        break;
+                    case "Evelynn":
+                        new Champions.Evelynn().LoadOKTW();
+                        break;
+                    case "Ahri":
+                        new Champions.Ahri().LoadOKTW();
+                        break;
+                    case "Brand":
+                        new Champions.Brand().LoadOKTW();
+                        break;
+                    case "Morgana":
+                        new Morgana().LoadOKTW();
+                        break;
+                    case "Lux":
+                        new Champions.Lux().LoadOKTW();
+                        break;
+                    case "Malzahar":
+                        new Champions.Malzahar().LoadOKTW();
+                        break;
+                    case "Karthus":
+                        new Champions.Karthus().LoadOKTW();
+                        break;
+                    case "Swain":
+                        new Champions.Swain().LoadOKTW();
+                        break;
+                    case "TwistedFate":
+                        new Champions.TwistedFate().LoadOKTW();
+                        break;
+                    case "Syndra":
+                        new Champions.Syndra().LoadOKTW();
+                        break;
+                    case "Velkoz":
+                        new Champions.Velkoz().LoadOKTW();
+                        break;
+                    case "Jhin":
+                        new Champions.Jhin().LoadOKTW();
+                        break;
+                    case "Kindred":
+                        new Champions.Kindred().LoadOKTW();
+                        break;
+                    case "Braum":
+                        new Champions.Braum().LoadOKTW();
                         break;
                 }
             }

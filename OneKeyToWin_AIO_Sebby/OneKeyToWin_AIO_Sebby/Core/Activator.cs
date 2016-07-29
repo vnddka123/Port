@@ -488,7 +488,7 @@ namespace OneKeyToWin_AIO_Sebby
 
                     if (pred <= 2 * IgnDmg && OktwCommon.ValidUlt(enemy))
                     {
-                        if (pred <= IgnDmg && enemy.CountAlliesInRange(450) < 2)
+                        if (pred <= IgnDmg && enemy.LSCountAlliesInRange(450) < 2)
                         {
                             var enemyPred = LeagueSharp.Common.Prediction.GetPrediction(enemy, 0.1f).CastPosition;
                             if (Player.ServerPosition.LSDistance(enemyPred) > 500 || NavMesh.IsWallOfGrass(enemyPred, 0))

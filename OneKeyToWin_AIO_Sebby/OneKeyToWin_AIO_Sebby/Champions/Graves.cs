@@ -4,7 +4,6 @@ using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
-using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
 using TargetSelector = LeagueSharp.Common.TargetSelector;
 
@@ -13,7 +12,6 @@ namespace OneKeyToWin_AIO_Sebby
     class Graves
     {
         private Menu Config = Program.Config;
-        public static LeagueSharp.Common.Orbwalking.Orbwalker Orbwalker;
         private Spell E, Q, R, W , R1;
         private float QMANA = 0, WMANA = 0, EMANA = 0, RMANA = 0;
 
@@ -277,7 +275,7 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     if(LeagueSharp.Common.Orbwalking.InAutoAttackRange(target))
                         continue;
-                    if (target.CountAlliesInRange(400) > 0)
+                    if (target.LSCountAlliesInRange(400) > 0)
                         continue;
                 }
 

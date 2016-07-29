@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LeagueSharp;
+using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
 using SharpDX.Direct3D9;
-using EloBuddy;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Enumerations;
 
