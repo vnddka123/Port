@@ -748,10 +748,8 @@ namespace LeagueSharp.Common
         {
             try
             {
-       //         Chat.Print("OnProcessSpell" + Spell.SData.Name);
                 if (unit.IsMe && IsAutoAttackReset(Spell.SData.Name) && Math.Abs(Spell.SData.CastTime) < 1.401298E-45f)
                 {
-       //             Chat.Print("OnProcessSpell222");
                     ResetAutoAttackTimer();
                 }               
             }
@@ -764,14 +762,6 @@ namespace LeagueSharp.Common
         {
             try
             {
-                /*
-      //          Chat.Print("OnProcessSpell" + Spell.SData.Name);
-                if (unit.IsMe && IsAutoAttackReset(Spell.SData.Name) && Math.Abs(Spell.SData.CastTime) < 1.401298E-45f)
-                {
-                    Chat.Print("Cast Time");
-                    ResetAutoAttackTimer();
-                }
-                //*/
                 if (unit.IsMe && (Spell.Target is Obj_AI_Base || Spell.Target is Obj_BarracksDampener || Spell.Target is Obj_HQ))
                 {
                     LastAATick = Utils.GameTimeTickCount - Game.Ping / 2;
