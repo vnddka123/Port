@@ -68,6 +68,14 @@ namespace LeagueSharp.Common
             /// </summary>
             private static bool _endGameCalled;
 
+            // Token: 0x14000003 RID: 3
+            // Token: 0x060001B8 RID: 440 RVA: 0x00015E70 File Offset: 0x00014070
+            // Token: 0x060001B9 RID: 441 RVA: 0x00015EA4 File Offset: 0x000140A4
+            public static event LoadingCompleteHandler OnLoadingComplete;
+            // Token: 0x02000050 RID: 80
+            // Token: 0x060001C4 RID: 452
+            public delegate void LoadingCompleteHandler(EventArgs args);
+
             /// <summary>
             /// Initializes static members of the <see cref="Game"/> class. 
             /// </summary>

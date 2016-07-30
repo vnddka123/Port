@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
+using EloBuddy.SDK;
 #endregion
 
 namespace LeagueSharp.Common
@@ -45,7 +46,7 @@ namespace LeagueSharp.Common
         /// </summary>
         static HealthPrediction()
         {
-            Obj_AI_Base.OnProcessSpellCast += ObjAiBaseOnOnProcessSpellCast;
+            Obj_AI_Base.OnSpellCast += ObjAiBaseOnSpellCast;
             Game.OnUpdate += Game_OnGameUpdate;
             Spellbook.OnStopCast += SpellbookOnStopCast;
             MissileClient.OnDelete += MissileClient_OnDelete;
@@ -64,7 +65,26 @@ namespace LeagueSharp.Common
                 ActiveAttacks[sender.NetworkId].Processed = true;
             }
         }
+        /// <summary>
+        /// Fired when the game processes a spell cast.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs"/> instance containing the event data.</param>
+        private static void ObjAiBaseOnSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (!sender.LSIsValidTarget(3000, false) || sender.Team != ObjectManager.Player.Team || sender is AIHeroClient || !Orbwalking.IsAutoAttack(args.SData.Name) || !(args.Target is Obj_AI_Base))
+            {
+                return;
+            }
+            var target = (Obj_AI_Base)args.Target;
+            ActiveAttacks.Remove(sender.NetworkId);
 
+            var attackData = new PredictedDamage(sender, target, Utils.GameTimeTickCount - Game.Ping / 2, sender.AttackCastDelay * 1000,
+                sender.AttackDelay * 1000 - (sender is Obj_AI_Turret ? 70 : 0),
+                sender.IsMelee() ? int.MaxValue : (int)args.SData.MissileSpeed,
+                (float)sender.GetAutoAttackDamage(target, true));
+            ActiveAttacks.Add(sender.NetworkId, attackData);//*/
+        }
         /// <summary>
         /// Fired when a <see cref="MissileClient"/> is deleted from the game.
         /// </summary>
@@ -113,33 +133,7 @@ namespace LeagueSharp.Common
                 }
             }
         }
-
-        /// <summary>
-        /// Fired when the game processes a spell cast.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs"/> instance containing the event data.</param>
-        private static void ObjAiBaseOnOnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-        {
-            if (!sender.LSIsValidTarget(3000, false) || sender.Team != ObjectManager.Player.Team || sender is AIHeroClient
-                || !Orbwalking.IsAutoAttack(args.SData.Name) || !(args.Target is Obj_AI_Base))
-            {
-                return;
-            }
-
-            var target = (AIHeroClient)args.Target;
-            ActiveAttacks.Remove(sender.NetworkId);
-
-            var attackData = new PredictedDamage(
-                sender,
-                target,
-                Utils.GameTimeTickCount - Game.Ping / 2,
-                sender.AttackCastDelay * 1000,
-                sender.AttackDelay * 1000 - (sender is Obj_AI_Turret ? 70 : 0),
-                sender.IsMelee() ? int.MaxValue : (int)args.SData.MissileSpeed,
-                (float)sender.LSGetAutoAttackDamage(target, true));
-            ActiveAttacks.Add(sender.NetworkId, attackData);
-        }
+        
 
         /// <summary>
         /// Returns the unit health after a set time milliseconds.

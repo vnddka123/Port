@@ -154,7 +154,7 @@ namespace OneKeyToWin_AIO_Sebby
                 if (mobs.Count > 0)
                 {
                     var mob = mobs[0];
-                    if (Q.LSIsReady() && Config.Item("jungleQ", true).GetValue<bool>() && !LeagueSharp.Common.Orbwalking.CanAttack && !Player.Spellbook.IsAutoAttacking)
+                    if (Q.LSIsReady() && Config.Item("jungleQ", true).GetValue<bool>() && !LeagueSharp.Common.Orbwalking.CanAttack() && !Player.Spellbook.IsAutoAttacking)
                     {
                         Q.Cast(mob);
                         return;

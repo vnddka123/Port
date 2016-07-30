@@ -22,6 +22,6 @@ E:\Git dev\TEST\LS\KurisuRiven\bin\Release\Newtonsoft.Json.dll
 E:\Git dev\TEST\LS\KurisuRiven\bin\Release\LeagueSharp.Data.dll
 E:\Git dev\TEST\LS\KurisuRiven\bin\Release\LeagueSharp.Common.pdb
 E:\Git dev\TEST\LS\KurisuRiven\bin\Release\LeagueSharp.Data.pdb
-E:\Git dev\TEST\LS\KurisuRiven\obj\Debug\KurisuRiven.csprojResolveAssemblyReference.cache
 E:\Git dev\TEST\LS\KurisuRiven\obj\Debug\KurisuRiven.exe
 E:\Git dev\TEST\LS\KurisuRiven\obj\Debug\KurisuRiven.pdb
+E:\Git dev\TEST\LS\KurisuRiven\obj\Debug\KurisuRiven.csprojResolveAssemblyReference.cache

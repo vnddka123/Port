@@ -361,7 +361,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 }
 
             }
-            else if(!LeagueSharp.Common.Orbwalking.CanAttack && !Player.Spellbook.IsAutoAttacking)
+            else if(!LeagueSharp.Common.Orbwalking.CanAttack() && !Player.Spellbook.IsAutoAttacking)
             {
                 var t = torb as AIHeroClient;
                 if (t.Health < GetQdmg(t) + GetWdmg(t))

@@ -432,7 +432,7 @@ namespace OneKeyToWin_AIO_Sebby
                 }
             }
 
-            if (!LeagueSharp.Common.Orbwalking.CanMove(50) || (Orbwalker.ShouldWait() && LeagueSharp.Common.Orbwalking.CanAttack))
+            if (!LeagueSharp.Common.Orbwalking.CanMove(50) || (Orbwalker.ShouldWait() && LeagueSharp.Common.Orbwalking.CanAttack()))
             {
                 return;
             }
@@ -452,7 +452,7 @@ namespace OneKeyToWin_AIO_Sebby
                 }
             }
 
-            if (Config.Item("farmQ", true).GetValue<bool>() && Program.LaneClear && !LeagueSharp.Common.Orbwalking.CanAttack && Player.ManaPercent > Config.Item("Mana", true).GetValue<Slider>().Value)
+            if (Config.Item("farmQ", true).GetValue<bool>() && Program.LaneClear && !LeagueSharp.Common.Orbwalking.CanAttack() && Player.ManaPercent > Config.Item("Mana", true).GetValue<Slider>().Value)
             {
                 var LCP = Config.Item("LCP", true).GetValue<bool>();
                 var PT = Game.Time - GetPassiveTime() > -1.5 || !E.LSIsReady();

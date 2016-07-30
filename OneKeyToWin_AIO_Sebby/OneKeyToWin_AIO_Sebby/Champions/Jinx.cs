@@ -180,7 +180,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void LogicQ()
         {
-            if (Program.Farm && !FishBoneActive && !Player.Spellbook.IsAutoAttacking && Orbwalker.GetTarget() == null && LeagueSharp.Common.Orbwalking.CanAttack && Config.Item("farmQout", true).GetValue<bool>() && Player.Mana > RMANA + WMANA + EMANA + 10)
+            if (Program.Farm && !FishBoneActive && !Player.Spellbook.IsAutoAttacking && Orbwalker.GetTarget() == null && LeagueSharp.Common.Orbwalking.CanAttack() && Config.Item("farmQout", true).GetValue<bool>() && Player.Mana > RMANA + WMANA + EMANA + 10)
             {
                 foreach (var minion in Cache.GetMinions(Player.Position, bonusRange() + 30).Where(
                 minion => !LeagueSharp.Common.Orbwalking.InAutoAttackRange(minion) && GetRealPowPowRange(minion) < GetRealDistance(minion) && bonusRange() < GetRealDistance(minion)))
@@ -203,7 +203,7 @@ namespace OneKeyToWin_AIO_Sebby
                     var distance = GetRealDistance(t);
                     if (Program.Combo && (Player.Mana > RMANA + WMANA + 10 || Player.LSGetAutoAttackDamage(t) * 3 > t.Health))
                         Q.Cast();
-                    else if (Program.Farm && !Player.Spellbook.IsAutoAttacking && LeagueSharp.Common.Orbwalking.CanAttack && Config.Item("Qharras", true).GetValue<bool>() && !ObjectManager.Player.LSUnderTurret(true) && Player.Mana > RMANA + WMANA + EMANA + 20 && distance < bonusRange() + t.BoundingRadius + Player.BoundingRadius)
+                    else if (Program.Farm && !Player.Spellbook.IsAutoAttacking && LeagueSharp.Common.Orbwalking.CanAttack() && Config.Item("Qharras", true).GetValue<bool>() && !ObjectManager.Player.LSUnderTurret(true) && Player.Mana > RMANA + WMANA + EMANA + 20 && distance < bonusRange() + t.BoundingRadius + Player.BoundingRadius)
                         Q.Cast();
                 }
             }

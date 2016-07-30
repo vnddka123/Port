@@ -151,8 +151,6 @@ namespace KurisuRiven
                 return;
             }
 
-            Chat.Print("6.15");
-
             w = new Spell(SpellSlot.W, 250f);
             e = new Spell(SpellSlot.E, 270f);
 
@@ -1689,7 +1687,7 @@ namespace KurisuRiven
                 if (orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Burst)
                 {
                     if (target.LSIsValidTarget(truerange + 100))
-                        Orbwalking.Orbwalk(target, Game.CursorPos, false, false);
+                        Orbwalking.Orbwalk(target, Game.CursorPos, 80,0,false, false);
 
                     else
                         Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);

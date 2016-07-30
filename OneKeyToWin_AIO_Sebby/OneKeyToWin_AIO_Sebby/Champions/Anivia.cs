@@ -257,7 +257,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void farmE()
         {
-            if (Program.LaneClear && Config.Item("farmE", true).GetValue<bool>() && Player.Mana > QMANA + EMANA + WMANA && !LeagueSharp.Common.Orbwalking.CanAttack && Player.ManaPercent > Config.Item("Mana", true).GetValue<Slider>().Value)
+            if (Program.LaneClear && Config.Item("farmE", true).GetValue<bool>() && Player.Mana > QMANA + EMANA + WMANA && !LeagueSharp.Common.Orbwalking.CanAttack() && Player.ManaPercent > Config.Item("Mana", true).GetValue<Slider>().Value)
             {
                 var minions = Cache.GetMinions(Player.ServerPosition, E.Range);
                 foreach (var minion in minions.Where(minion => minion.Health > Player.LSGetAutoAttackDamage(minion)))
