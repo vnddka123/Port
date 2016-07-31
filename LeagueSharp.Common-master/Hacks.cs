@@ -26,13 +26,13 @@ namespace LeagueSharp.Common
                         EloBuddy.Hacks.DisableDrawings = args.GetNewValue<bool>();
                     };
 
-                var say = menu.AddItem(new MenuItem("SayHack", "Disable L# Send Chat").SetValue(false)
-                    .SetTooltip("Block Game.Say from Assemblies"));
-                say.SetValue(EloBuddy.Hacks.IngameChat);
+                var say = menu.AddItem(new MenuItem("OrbElo", "Disable Orbwalk of Elo").SetValue(false)
+                    .SetTooltip("Disable Orbwalker of EloBuddy"));
                 say.ValueChanged +=
                     delegate(object sender, OnValueChangeEventArgs args)
                     {
-                        EloBuddy.Hacks.IngameChat = args.GetNewValue<bool>();
+                        EloBuddy.SDK.Orbwalker.DisableAttacking = args.GetNewValue<bool>();
+                        EloBuddy.SDK.Orbwalker.DisableMovement = args.GetNewValue<bool>();
                     };
 
                 /*  var zoom = menu.AddItem(new MenuItem("ZoomHack", "Extended Zoom").SetValue(false));

@@ -32,9 +32,6 @@
             FakeClicks.Initialize();
 
             Instance.AddToMainMenu();
-
-            EloBuddy.SDK.Orbwalker.DisableAttacking = true;
-            EloBuddy.SDK.Orbwalker.DisableMovement = true;
         }
 
         public static void Shutdown()
