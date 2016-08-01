@@ -258,7 +258,7 @@ namespace OneKeyToWin_AIO_Sebby
                 new Activator().LoadOKTW();
                 new Core.OKTWward().LoadOKTW();
          //       new Core.AutoLvlUp().LoadOKTW();
-                new Core.OKTWtracker().LoadOKTW();
+         //       new Core.OKTWtracker().LoadOKTW();
          //       new Core.OKTWdraws().LoadOKTW();
             }
 
@@ -642,9 +642,9 @@ namespace OneKeyToWin_AIO_Sebby
         {
             if (!SPredictionLoad && (int)Game.Time % 2 == 0 && Config.Item("PredictionMODE", true).GetValue<StringList>().SelectedIndex == 2)
                 drawText("PRESS F5 TO LOAD SPREDICTION", Player.Position, System.Drawing.Color.Yellow, -300);
-
+/*
             if (AIOmode == 1 || Config.Item("disableDraws").GetValue<bool>())
-                return;
+                return;//*/
 
             if (Game.Time - dodgeTime < 0.01 && (int)(Game.Time * 10) % 2 == 0 && !Player.IsMelee && Config.Item("positioningAssistant").GetValue<bool>() && Config.Item("positioningAssistantDraw").GetValue<bool>())
             {
@@ -682,7 +682,7 @@ namespace OneKeyToWin_AIO_Sebby
                         JungleTime = Game.Time;
                     }
                 }
-            }
+            }//*/
         }
     }
 }

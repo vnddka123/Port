@@ -662,8 +662,8 @@ namespace LeagueSharp.Common
                         return;
                     }
                 }
-                //  if (EloBuddy.SDK.Orbwalker.CanMove && Move)
-                if (CanMove(extraWindup) && Move)
+                  if (EloBuddy.SDK.Orbwalker.CanMove && Move)
+                //if (CanMove(extraWindup) && Move)
                 {
                     if (Orbwalker.LimitAttackSpeed && (Player.AttackDelay < 1 / 2.6f) && _autoattackCounter % 3 != 0 &&
                         !CanMove(500, true))

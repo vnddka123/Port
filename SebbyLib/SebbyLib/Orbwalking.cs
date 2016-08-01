@@ -674,7 +674,7 @@ namespace SebbyLib
 
                 Player = ObjectManager.Player;
                 Game.OnUpdate += GameOnOnGameUpdate;
-                Drawing.OnDraw += DrawingOnOnDraw;
+           //     Drawing.OnDraw += DrawingOnOnDraw;
                 Instances.Add(this);
             }
 

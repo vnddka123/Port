@@ -1,13 +1,26 @@
-﻿using System;
-using EloBuddy;
-namespace LeagueSharp.Common
+﻿namespace LeagueSharp.Common
 {
+    using EloBuddy;
     /// <summary>
     /// Adds hacks to the menu.
     /// </summary>
     internal class Hacks
     {
         private static Menu menu;
+
+        private static MenuItem MenuAntiAfk;
+
+        private static MenuItem MenuDisableDrawings;
+
+        private static MenuItem MenuDisableSay;
+
+        private static MenuItem MenuTowerRange;
+
+        private static MenuItem OrbEloDisable;
+
+        private const int WM_KEYDOWN = 0x100;
+
+        private const int WM_KEYUP = 0x101;
 
         /// <summary>
         /// Initializes this instance.
@@ -18,44 +31,54 @@ namespace LeagueSharp.Common
             {
                 menu = new Menu("Hacks", "Hacks");
 
-                var draw = menu.AddItem(new MenuItem("DrawingHack", "Disable Drawing").SetValue(false));
-                draw.SetValue(EloBuddy.Hacks.DisableDrawings);
-                draw.ValueChanged +=
-                    delegate(object sender, OnValueChangeEventArgs args)
-                    {
-                        EloBuddy.Hacks.DisableDrawings = args.GetNewValue<bool>();
-                    };
+                OrbEloDisable = menu.AddItem(new MenuItem("OrbElo", "Disable Orbwalk of Elo").SetValue(true).SetTooltip("Disable Orbwalker of EloBuddy"));
+                OrbEloDisable.ValueChanged += (sender, args) => EloBuddy.SDK.Orbwalker.DisableAttacking = args.GetNewValue<bool>();
+                OrbEloDisable.ValueChanged += (sender, args) => EloBuddy.SDK.Orbwalker.DisableMovement = args.GetNewValue<bool>();
 
-                var say = menu.AddItem(new MenuItem("OrbElo", "Disable Orbwalk of Elo").SetValue(false)
-                    .SetTooltip("Disable Orbwalker of EloBuddy"));
-                say.ValueChanged +=
-                    delegate(object sender, OnValueChangeEventArgs args)
-                    {
-                        EloBuddy.SDK.Orbwalker.DisableAttacking = args.GetNewValue<bool>();
-                        EloBuddy.SDK.Orbwalker.DisableMovement = args.GetNewValue<bool>();
-                    };
+                MenuAntiAfk = menu.AddItem(new MenuItem("AfkHack", "Anti-AFK").SetValue(false));
+                MenuAntiAfk.ValueChanged += (sender, args) => EloBuddy.Hacks.AntiAFK = args.GetNewValue<bool>();
 
-                /*  var zoom = menu.AddItem(new MenuItem("ZoomHack", "Extended Zoom").SetValue(false));
-                zoom.SetValue(LeagueSharp.Hacks.ZoomHack);
-                zoom.ValueChanged +=
-                    delegate (object sender, OnValueChangeEventArgs args)
-                    {
-                        LeagueSharp.Hacks.ZoomHack = args.GetNewValue<bool>();
-                    };
+                MenuDisableDrawings = menu.AddItem(new MenuItem("DrawingHack", "Disable Drawing").SetValue(false));
+                MenuDisableDrawings.ValueChanged += (sender, args) => EloBuddy.Hacks.DisableDrawings = args.GetNewValue<bool>();
+                MenuDisableDrawings.SetValue(EloBuddy.Hacks.DisableDrawings);
 
-                menu.AddItem(
-                    new MenuItem("ZoomHackInfo", "Note: ZoomHack may be unsafe!", false, FontStyle.Regular, Color.Red));
-                */
+                MenuDisableSay = menu.AddItem(new MenuItem("SayHack", "Disable L# Send Chat").SetValue(false).SetTooltip("Block Game.Say from Assemblies"));
+                MenuDisableSay.ValueChanged += (sender, args) => EloBuddy.Hacks.IngameChat = args.GetNewValue<bool>();
 
-                var tower = menu.AddItem(new MenuItem("TowerHack", "Show Tower Ranges").SetValue(false));
-                tower.SetValue(EloBuddy.Hacks.TowerRanges);
-                tower.ValueChanged +=
-                    delegate(object sender, OnValueChangeEventArgs args)
-                    {
-                        EloBuddy.Hacks.TowerRanges = args.GetNewValue<bool>();
-                    };
+                MenuTowerRange = menu.AddItem(new MenuItem("TowerHack", "Show Tower Ranges").SetValue(false));
+                MenuTowerRange.ValueChanged += (sender, args) => EloBuddy.Hacks.TowerRanges = args.GetNewValue<bool>();
+
+                EloBuddy.Hacks.AntiAFK = MenuAntiAfk.GetValue<bool>();
+                EloBuddy.Hacks.DisableDrawings = MenuDisableDrawings.GetValue<bool>();
+
+                EloBuddy.Hacks.IngameChat = MenuDisableSay.GetValue<bool>();
+
+                EloBuddy.Hacks.TowerRanges = MenuTowerRange.GetValue<bool>();
 
                 CommonMenu.Instance.AddSubMenu(menu);
+
+                Game.OnWndProc += args =>
+                {
+                    if (!MenuDisableDrawings.GetValue<bool>())
+                    {
+                        return;
+                    }
+
+                    if ((int)args.WParam != Config.ShowMenuPressKey)
+                    {
+                        return;
+                    }
+
+                    if (args.Msg == WM_KEYDOWN)
+                    {
+                        EloBuddy.Hacks.DisableDrawings = false;
+                    }
+
+                    if (args.Msg == WM_KEYUP)
+                    {
+                        EloBuddy.Hacks.DisableDrawings = true;
+                    }
+                };
             };
         }
 

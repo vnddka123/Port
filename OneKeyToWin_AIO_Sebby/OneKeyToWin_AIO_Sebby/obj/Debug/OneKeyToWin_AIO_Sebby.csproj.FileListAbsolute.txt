@@ -5,7 +5,6 @@ E:\Git dev\TEST\OKTW\OneKeyToWin_AIO_Sebby\OneKeyToWin_AIO_Sebby\bin\Release\Elo
 E:\Git dev\TEST\OKTW\OneKeyToWin_AIO_Sebby\OneKeyToWin_AIO_Sebby\bin\Release\EloBuddy.SDK.dll
 E:\Git dev\TEST\OKTW\OneKeyToWin_AIO_Sebby\OneKeyToWin_AIO_Sebby\bin\Release\LeagueSharp.Common.dll
 E:\Git dev\TEST\OKTW\OneKeyToWin_AIO_Sebby\OneKeyToWin_AIO_Sebby\bin\Release\LeagueSharp.Data.dll
-E:\Git dev\TEST\OKTW\OneKeyToWin_AIO_Sebby\OneKeyToWin_AIO_Sebby\bin\Release\SebbyLib.dll
 E:\Git dev\TEST\OKTW\OneKeyToWin_AIO_Sebby\OneKeyToWin_AIO_Sebby\bin\Release\SharpDX.Direct3D9.dll
 E:\Git dev\TEST\OKTW\OneKeyToWin_AIO_Sebby\OneKeyToWin_AIO_Sebby\bin\Release\SharpDX.dll
 E:\Git dev\TEST\OKTW\OneKeyToWin_AIO_Sebby\OneKeyToWin_AIO_Sebby\bin\Release\Spacebar Prediction.dll
