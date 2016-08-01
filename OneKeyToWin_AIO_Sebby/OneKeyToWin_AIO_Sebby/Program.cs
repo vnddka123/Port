@@ -30,8 +30,8 @@ namespace OneKeyToWin_AIO_Sebby
         private static float dodgeTime = Game.Time;
         public static List<AIHeroClient> Enemies = new List<AIHeroClient>(), Allies = new List<AIHeroClient>();
 
-  //      static void Main(string[] args) { Loading.OnLoadingComplete += GameOnOnGameLoad;}
-        static void Main(string[] args) { CustomEvents.Game.OnGameLoad += GameOnOnGameLoad; }
+        static void Main(string[] args) { Loading.OnLoadingComplete += GameOnOnGameLoad;}
+  //      static void Main(string[] args) { CustomEvents.Game.OnGameLoad += GameOnOnGameLoad; }
 
         private static void GameOnOnGameLoad(EventArgs args)
         {
