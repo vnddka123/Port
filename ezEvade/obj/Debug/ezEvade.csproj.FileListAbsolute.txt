@@ -1,0 +1,15 @@
+E:\Git dev\TEST\BETA\ezEvade\bin\Debug\ezEvade.exe.config
+E:\Git dev\TEST\BETA\ezEvade\bin\Debug\ezEvade.exe
+E:\Git dev\TEST\BETA\ezEvade\bin\Debug\ezEvade.pdb
+E:\Git dev\TEST\BETA\ezEvade\bin\Debug\EloBuddy.dll
+E:\Git dev\TEST\BETA\ezEvade\bin\Debug\EloBuddy.SDK.dll
+E:\Git dev\TEST\BETA\ezEvade\bin\Debug\LeagueSharp.Common.dll
+E:\Git dev\TEST\BETA\ezEvade\bin\Debug\SharpDX.dll
+E:\Git dev\TEST\BETA\ezEvade\bin\Debug\SharpDX.Direct3D9.dll
+E:\Git dev\TEST\BETA\ezEvade\bin\Debug\Newtonsoft.Json.dll
+E:\Git dev\TEST\BETA\ezEvade\bin\Debug\LeagueSharp.Data.dll
+E:\Git dev\TEST\BETA\ezEvade\bin\Debug\LeagueSharp.Common.pdb
+E:\Git dev\TEST\BETA\ezEvade\bin\Debug\LeagueSharp.Data.pdb
+E:\Git dev\TEST\BETA\ezEvade\obj\Debug\ezEvade.exe
+E:\Git dev\TEST\BETA\ezEvade\obj\Debug\ezEvade.pdb
+E:\Git dev\TEST\BETA\ezEvade\obj\Debug\ezEvade.csprojResolveAssemblyReference.cache

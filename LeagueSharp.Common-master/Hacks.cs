@@ -16,8 +16,6 @@
 
         private static MenuItem MenuTowerRange;
 
-        private static MenuItem OrbEloDisable;
-
         private const int WM_KEYDOWN = 0x100;
 
         private const int WM_KEYUP = 0x101;
@@ -30,10 +28,6 @@
             CustomEvents.Game.OnGameLoad += eventArgs =>
             {
                 menu = new Menu("Hacks", "Hacks");
-
-                OrbEloDisable = menu.AddItem(new MenuItem("OrbElo", "Disable Orbwalk of Elo").SetValue(true).SetTooltip("Disable Orbwalker of EloBuddy"));
-                OrbEloDisable.ValueChanged += (sender, args) => EloBuddy.SDK.Orbwalker.DisableAttacking = args.GetNewValue<bool>();
-                OrbEloDisable.ValueChanged += (sender, args) => EloBuddy.SDK.Orbwalker.DisableMovement = args.GetNewValue<bool>();
 
                 MenuAntiAfk = menu.AddItem(new MenuItem("AfkHack", "Anti-AFK").SetValue(false));
                 MenuAntiAfk.ValueChanged += (sender, args) => EloBuddy.Hacks.AntiAFK = args.GetNewValue<bool>();
