@@ -26,7 +26,7 @@ namespace Sivir
             Auto.Initialize();
             Misc.Initialize();
             Hitchance.Initialize();
-            SkinManager.Initialize(Menu);
+     //       SkinManager.Initialize(Menu);
             Drawings.Initialize();
         }
 
