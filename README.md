@@ -1,7 +1,7 @@
 # Port
 PortAIO
 
-Port thư viện Common của L#. Đang trong quá trình Beta nên mọi người sử dụng ai bị bug thì comment lại để mình fix và hoàn thiện nhé.
-
-Mục tiêu sắp tới là thư viện SDKex.
-Mục tiêu xa là sẽ có cộng đồng Việt dùng L# free trên Core Elo.
+Mình sẽ hạn chế việc gộp tấc cả thành 1 vì nó sẽ dễ gây bugsplat. 
+Nguồn Lib mình vẫn chưa open được. Nên các bạn sẽ phải copy file Lib vào thư mục Lib của Elo tại : C:\Users\Administrator\AppData\Roaming\EloBuddy\Addons\Libraries
+Hiện tại mình vẫn phải làm việc 1 mình nên mất rất nhìu time để check từng chút từng chút.
+Thư viện SDKex hiện tại vẫn chưa hoàn chỉnh, còn khá nhìu lỗi mà mình thì chưa có thời gian để chỉnh sửa nó.
