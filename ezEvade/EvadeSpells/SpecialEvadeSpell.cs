@@ -88,7 +88,7 @@ namespace ezEvade
             {
                 if (obj != null && obj.IsValid && !obj.IsDead && obj.Name == "Ekko" && obj.IsAlly)
                 {
-                    Vector2 blinkPos = obj.ServerPosition.LSTo2D();
+                    Vector2 blinkPos = obj.ServerPosition.To2D();
                     if (!blinkPos.CheckDangerousPos(10))
                     {
                         EvadeSpell.CastEvadeSpell(() => EvadeCommand.CastSpell(evadeSpell), process);

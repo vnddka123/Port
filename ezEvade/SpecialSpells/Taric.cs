@@ -38,8 +38,8 @@ namespace ezEvade.SpecialSpells
                 var partner = HeroManager.Enemies.FirstOrDefault(x => x.HasBuff("taricwleashactive"));
                 if (partner != null && partner.ChampionName != "Taric")
                 {
-                    var start = partner.ServerPosition.LSTo2D();
-                    var direction = (args.End.LSTo2D() - start).LSNormalized();
+                    var start = partner.ServerPosition.To2D();
+                    var direction = (args.End.To2D() - start).Normalized();
                     var end = start + direction * spellData.range;
 
                     SpellDetector.CreateSpellData(partner, start.To3D(), end.To3D(), sdata);

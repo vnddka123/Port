@@ -68,7 +68,7 @@ namespace ezEvade
                     continue;
                 }
 
-                var distToTurret = pos.LSDistance(turret.Position.LSTo2D());
+                var distToTurret = pos.Distance(turret.Position.To2D());
                 if (distToTurret <= turretRange)
                 {
                     return true;
@@ -140,7 +140,7 @@ namespace ezEvade
                 || myHero.IsTargetable == false
                 || HasSpellShield(myHero)
                 || ChampionSpecificChecks()
-                || myHero.LSIsDashing()
+                || myHero.IsDashing()
                 || Evade.hasGameEnded == true;
         }
 

@@ -69,7 +69,7 @@ namespace Syndra
             R = new Spell(SpellSlot.R, 675);
             Eq = new Spell(SpellSlot.Q, Q.Range + 500);
 
-            IgniteSlot = Player.LSGetSpellSlot("SummonerDot");
+            IgniteSlot = Player.GetSpellSlot("SummonerDot");
 
             Q.SetSkillshot(0.6f, 125f, float.MaxValue, false, SkillshotType.SkillshotCircle);
             W.SetSkillshot(0.25f, 140f, 1600f, false, SkillshotType.SkillshotCircle);
@@ -238,7 +238,7 @@ namespace Syndra
         {
             if (args.Msg != 0x20a) return;
 
-            if (EloBuddy.Player.Instance.LSInShop() || ObjectManager.Player.LSInFountain()) return;
+            if (EloBuddy.Player.Instance.InShop() || ObjectManager.Player.InFountain()) return;
 
             Config.SubMenu("Farm")
                 .Item("EnabledFarm")
@@ -251,12 +251,12 @@ namespace Syndra
         {
             if (!Config.Item("InterruptSpells").GetValue<bool>()) return;
 
-            if (Player.LSDistance(sender) < E.Range && E.LSIsReady())
+            if (Player.Distance(sender) < E.Range && E.IsReady())
             {
                 Q.Cast(sender.ServerPosition);
                 E.Cast(sender.ServerPosition);
             }
-            else if (Player.LSDistance(sender) < Eq.Range && E.LSIsReady() && Q.LSIsReady())
+            else if (Player.Distance(sender) < Eq.Range && E.IsReady() && Q.IsReady())
             {
                 UseQe(sender);
             }
@@ -267,7 +267,7 @@ namespace Syndra
         {
             if (Config.Item("Key.Combo").GetValue<KeyBind>().Active)
             {
-                args.Process = !(Q.LSIsReady() || W.LSIsReady());
+                args.Process = !(Q.IsReady() || W.IsReady());
             }
         }
 
@@ -275,7 +275,7 @@ namespace Syndra
         {
             EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
             var t = TargetSelector.GetTarget(Eq.Range, TargetSelector.DamageType.Magical);
-            if (t.LSIsValidTarget() && E.LSIsReady() && Q.LSIsReady())
+            if (t.IsValidTarget() && E.IsReady() && Q.IsReady())
             {
                 UseQe(t);
             }
@@ -313,16 +313,16 @@ namespace Syndra
         private static void UseE(Obj_AI_Base enemy)
         {
             foreach (var orb in OrbManager.GetOrbs(true))
-                if (Player.LSDistance(orb) < E.Range + 100)
+                if (Player.Distance(orb) < E.Range + 100)
                 {
-                    var startPoint = orb.LSTo2D().LSExtend(Player.ServerPosition.LSTo2D(), 100);
-                    var endPoint = Player.ServerPosition.LSTo2D()
-                        .LSExtend(orb.LSTo2D(), Player.LSDistance(orb) > 200 ? 1300 : 1000);
-                    Eq.Delay = E.Delay + Player.LSDistance(orb) / E.Speed;
+                    var startPoint = orb.To2D().Extend(Player.ServerPosition.To2D(), 100);
+                    var endPoint = Player.ServerPosition.To2D()
+                        .Extend(orb.To2D(), Player.Distance(orb) > 200 ? 1300 : 1000);
+                    Eq.Delay = E.Delay + Player.Distance(orb) / E.Speed;
                     Eq.From = orb;
                     var enemyPred = Eq.GetPrediction(enemy);
                     if (enemyPred.Hitchance >= HitChance.High
-                        && enemyPred.UnitPosition.LSTo2D().LSDistance(startPoint, endPoint, false)
+                        && enemyPred.UnitPosition.To2D().Distance(startPoint, endPoint, false)
                         < Eq.Width + enemy.BoundingRadius)
                     {
                         E.Cast(orb, true);
@@ -335,12 +335,12 @@ namespace Syndra
         private static void UseQe(Obj_AI_Base enemy)
         {
             Eq.Delay = E.Delay + Q.Range / E.Speed;
-            Eq.From = Player.ServerPosition.LSTo2D().LSExtend(enemy.ServerPosition.LSTo2D(), Q.Range).To3D();
+            Eq.From = Player.ServerPosition.To2D().Extend(enemy.ServerPosition.To2D(), Q.Range).To3D();
 
             var prediction = Eq.GetPrediction(enemy);
             if (prediction.Hitchance >= HitChance.High)
             {
-                Q.Cast(Player.ServerPosition.LSTo2D().LSExtend(prediction.CastPosition.LSTo2D(), Q.Range - 100));
+                Q.Cast(Player.ServerPosition.To2D().Extend(prediction.CastPosition.To2D(), Q.Range - 100));
                 qeComboT = Utils.TickCount;
                 W.LastCastAttemptT = Utils.TickCount;
             }
@@ -350,7 +350,7 @@ namespace Syndra
         {
             if (!onlyOrbs)
             {
-                foreach (var minion in ObjectManager.Get<Obj_AI_Minion>().Where(minion => minion.LSIsValidTarget(W.Range)))
+                foreach (var minion in ObjectManager.Get<Obj_AI_Minion>().Where(minion => minion.IsValidTarget(W.Range)))
                 {
                     return minion.ServerPosition;
                 }
@@ -361,18 +361,18 @@ namespace Syndra
         private static float GetComboDamage(Obj_AI_Base enemy)
         {
             var damage = 0d;
-            damage += Q.LSIsReady(420) ? Q.GetDamage(enemy) : 0;
-            damage += W.LSIsReady() ? W.GetDamage(enemy) : 0;
-            damage += E.LSIsReady() ? E.GetDamage(enemy) : 0;
+            damage += Q.IsReady(420) ? Q.GetDamage(enemy) : 0;
+            damage += W.IsReady() ? W.GetDamage(enemy) : 0;
+            damage += E.IsReady() ? E.GetDamage(enemy) : 0;
             
             if (IgniteSlot != SpellSlot.Unknown && Player.Spellbook.CanUseSpell(IgniteSlot) == SpellState.Ready)
             {
                 damage += ObjectManager.Player.GetSummonerSpellDamage(enemy, Damage.SummonerSpell.Ignite);
             }
 
-            if (R.LSIsReady())
+            if (R.IsReady())
             {
-                damage += Math.Min(7, Player.Spellbook.GetSpell(SpellSlot.R).Ammo) * Player.LSGetSpellDamage(enemy, SpellSlot.R, 1);
+                damage += Math.Min(7, Player.Spellbook.GetSpell(SpellSlot.R).Ammo) * Player.GetSpellDamage(enemy, SpellSlot.R, 1);
             }
             return (float)damage;
         }
@@ -393,11 +393,11 @@ namespace Syndra
             }
 
             //E
-            if (Utils.TickCount - W.LastCastAttemptT > Game.Ping + 150 && E.LSIsReady() && useE)
+            if (Utils.TickCount - W.LastCastAttemptT > Game.Ping + 150 && E.IsReady() && useE)
             {
                 foreach (var enemy in HeroManager.Enemies)
                 {
-                    if (enemy.LSIsValidTarget(Eq.Range))
+                    if (enemy.IsValidTarget(Eq.Range))
                     {
                         UseE(enemy);
                     }
@@ -408,18 +408,18 @@ namespace Syndra
             //W
             if (useW)
             {
-                if (Player.Spellbook.GetSpell(SpellSlot.W).ToggleState == 1 && W.LSIsReady() && qeTarget != null)
+                if (Player.Spellbook.GetSpell(SpellSlot.W).ToggleState == 1 && W.IsReady() && qeTarget != null)
                 {
                     var gObjectPos = GetGrabableObjectPos(wTarget == null);
 
-                    if (gObjectPos.LSTo2D().LSIsValid() && Utils.TickCount - W.LastCastAttemptT > Game.Ping + 300
+                    if (gObjectPos.To2D().IsValid() && Utils.TickCount - W.LastCastAttemptT > Game.Ping + 300
                         && Utils.TickCount - E.LastCastAttemptT > Game.Ping + 600)
                     {
                         W.Cast(gObjectPos);
                         W.LastCastAttemptT = Utils.TickCount;
                     }
                 }
-                else if (wTarget != null && Player.Spellbook.GetSpell(SpellSlot.W).ToggleState != 1 && W.LSIsReady()
+                else if (wTarget != null && Player.Spellbook.GetSpell(SpellSlot.W).ToggleState != 1 && W.IsReady()
                          && Utils.TickCount - W.LastCastAttemptT > Game.Ping + 100)
                 {
                     if (OrbManager.WObject(false) != null)
@@ -438,7 +438,7 @@ namespace Syndra
             }
                 
 
-            if (rTarget != null && useR && R.LSIsReady() && comboDamage > rTarget.Health && !rTarget.IsZombie && !Q.LSIsReady())
+            if (rTarget != null && useR && R.IsReady() && comboDamage > rTarget.Health && !rTarget.IsZombie && !Q.IsReady())
             {
                 R.Cast(rTarget);
             }
@@ -454,20 +454,20 @@ namespace Syndra
             }
 
             //QE
-            if (wTarget == null && qeTarget != null && Q.LSIsReady() && E.LSIsReady() && useQe)
+            if (wTarget == null && qeTarget != null && Q.IsReady() && E.IsReady() && useQe)
             {
                 UseQe(qeTarget);
             }
 
             //WE
-            if (wTarget == null && qeTarget != null && E.LSIsReady() && useE && OrbManager.WObject(true) != null)
+            if (wTarget == null && qeTarget != null && E.IsReady() && useE && OrbManager.WObject(true) != null)
             {
                 Eq.Delay = E.Delay + Q.Range / W.Speed;
-                Eq.From = Player.ServerPosition.LSTo2D().LSExtend(qeTarget.ServerPosition.LSTo2D(), Q.Range).To3D();
+                Eq.From = Player.ServerPosition.To2D().Extend(qeTarget.ServerPosition.To2D(), Q.Range).To3D();
                 var prediction = Eq.GetPrediction(qeTarget);
                 if (prediction.Hitchance >= HitChance.High)
                 {
-                    W.Cast(Player.ServerPosition.LSTo2D().LSExtend(prediction.CastPosition.LSTo2D(), Q.Range - 100));
+                    W.Cast(Player.ServerPosition.To2D().Extend(prediction.CastPosition.To2D(), Q.Range - 100));
                     weComboT = Utils.TickCount;
                 }
             }
@@ -520,7 +520,7 @@ namespace Syndra
             var useQ = (laneClear && (useQi == 1 || useQi == 2)) || (!laneClear && (useQi == 0 || useQi == 2));
             var useW = (laneClear && (useWi == 1 || useWi == 2)) || (!laneClear && (useWi == 0 || useWi == 2));
 
-            if (useQ && Q.LSIsReady())
+            if (useQ && Q.IsReady())
                 if (laneClear)
                 {
                     var fl1 = Q.GetCircularFarmLocation(rangedMinionsQ, Q.Width);
@@ -548,7 +548,7 @@ namespace Syndra
                     }
                 }
 
-            if (useW && W.LSIsReady() && allMinionsW.Count > 3)
+            if (useW && W.IsReady() && allMinionsW.Count > 3)
             {
                 if (laneClear)
                 {
@@ -557,7 +557,7 @@ namespace Syndra
                         //WObject
                         var gObjectPos = GetGrabableObjectPos(false);
 
-                        if (gObjectPos.LSTo2D().LSIsValid() && Utils.TickCount - W.LastCastAttemptT > Game.Ping + 150)
+                        if (gObjectPos.To2D().IsValid() && Utils.TickCount - W.LastCastAttemptT > Game.Ping + 150)
                         {
                             W.Cast(gObjectPos);
                         }
@@ -594,17 +594,17 @@ namespace Syndra
             {
                 var mob = mobs[0];
 
-                if (Q.LSIsReady() && useQ)
+                if (Q.IsReady() && useQ)
                 {
                     Q.Cast(mob);
                 }
 
-                if (W.LSIsReady() && useW && Utils.TickCount - Q.LastCastAttemptT > 800)
+                if (W.IsReady() && useW && Utils.TickCount - Q.LastCastAttemptT > 800)
                 {
                     W.Cast(mob);
                 }
 
-                if (useE && E.LSIsReady())
+                if (useE && E.IsReady())
                 {
                     E.Cast(mob);
                 }
@@ -621,14 +621,14 @@ namespace Syndra
             //Update the R range
             R.Range = R.Level == 3 ? 750 : 675;
 
-            if (Config.Item("CastQE").GetValue<KeyBind>().Active && E.LSIsReady() && Q.LSIsReady())
+            if (Config.Item("CastQE").GetValue<KeyBind>().Active && E.IsReady() && Q.IsReady())
             {
                 foreach (
                     var enemy in
                         HeroManager.Enemies
                             .Where(
                                 enemy =>
-                                enemy.LSIsValidTarget(Eq.Range) && Game.CursorPos.LSDistance(enemy.ServerPosition) < 300))
+                                enemy.IsValidTarget(Eq.Range) && Game.CursorPos.Distance(enemy.ServerPosition) < 300))
                 {
                     UseQe(enemy);
                 }

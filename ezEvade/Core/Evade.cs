@@ -91,7 +91,7 @@ namespace ezEvade
                 Spellbook.OnCastSpell += Game_OnCastSpell;
                 Game.OnUpdate += Game_OnGameUpdate;
 
-                Obj_AI_Base.OnSpellCast += Game_OnProcessSpell;
+                AIHeroClient.OnSpellCast += Game_OnProcessSpell;
 
                 Game.OnEnd += Game_OnGameEnd;
                 SpellDetector.OnProcessDetectedSpells += SpellDetector_OnProcessDetectedSpells;
@@ -360,7 +360,6 @@ namespace ezEvade
         private void OnLoadSpellTesterChange(object sender, OnValueChangeEventArgs e)
         {
             e.Process = false;
-
             if (spellTester == null)
             {
                 spellTester = new SpellTester();
@@ -372,7 +371,7 @@ namespace ezEvade
             hasGameEnded = true;
         }
 
-        private void Game_OnCastSpell(Spellbook spellbook, SpellbookCastSpellEventArgs args)
+        private void Game_OnCastSpell(Spellbook spellbook, SpellbookCastSpellEventArgs args) /////LOI DOAN NAY
         {
             if (!spellbook.Owner.IsMe)
                 return;
@@ -401,7 +400,7 @@ namespace ezEvade
 
             /*if (args.Slot == SpellSlot.Recall)
             {
-                lastStopPosition = myHero.ServerPosition.LSTo2D();
+                lastStopPosition = myHero.ServerPosition.To2D();
             }*/
 
             if (Situation.ShouldDodge())
@@ -427,12 +426,12 @@ namespace ezEvade
                 {
                     if (evadeSpell.evadeType == EvadeType.Blink)
                     {
-                        var dir = (args.StartPosition.LSTo2D() - myHero.ServerPosition.LSTo2D()).LSNormalized();
+                        var dir = (args.StartPosition.To2D() - myHero.ServerPosition.To2D()).Normalized();
 
-                        var end = myHero.ServerPosition.LSTo2D() + dir * myHero.ServerPosition.LSTo2D().LSDistance(Game.CursorPos.LSTo2D());
-                        if (evadeSpell.fixedRange || end.LSDistance(myHero.ServerPosition.LSTo2D()) > evadeSpell.range)
+                        var end = myHero.ServerPosition.To2D() + dir * myHero.ServerPosition.To2D().Distance(Game.CursorPos.To2D());
+                        if (evadeSpell.fixedRange || end.Distance(myHero.ServerPosition.To2D()) > evadeSpell.range)
                         {
-                            end = myHero.ServerPosition.LSTo2D() + dir * evadeSpell.range;
+                            end = myHero.ServerPosition.To2D() + dir * evadeSpell.range;
                         }
 
                         var posInfo = EvadeHelper.CanHeroWalkToPos(end, evadeSpell.speed, ObjectCache.gamePing, 0);
@@ -446,7 +445,7 @@ namespace ezEvade
 
                             if (isDodging || EvadeUtils.TickCount < lastDodgingEndTime + 250)
                             {
-                                EvadeCommand.MoveTo(Game.CursorPos.LSTo2D());
+                                EvadeCommand.MoveTo(Game.CursorPos.To2D());
                                 lastStopEvadeTime = EvadeUtils.TickCount + ObjectCache.gamePing + 100;
                             }
                             return;
@@ -455,17 +454,17 @@ namespace ezEvade
 
                     if (evadeSpell.evadeType == EvadeType.Dash)
                     {
-                        var dashPos = args.StartPosition.LSTo2D(); 
+                        var dashPos = args.StartPosition.To2D(); 
 
                         if (args.Target != null)
                         {
-                            dashPos = args.Target.Position.LSTo2D();
+                            dashPos = args.Target.Position.To2D();
                         }
 
-                        if (evadeSpell.fixedRange || dashPos.LSDistance(myHero.ServerPosition.LSTo2D()) > evadeSpell.range)
+                        if (evadeSpell.fixedRange || dashPos.Distance(myHero.ServerPosition.To2D()) > evadeSpell.range)
                         {
-                            var dir = (dashPos - myHero.ServerPosition.LSTo2D()).LSNormalized();
-                            dashPos = myHero.ServerPosition.LSTo2D() + dir * evadeSpell.range;
+                            var dir = (dashPos - myHero.ServerPosition.To2D()).Normalized();
+                            dashPos = myHero.ServerPosition.To2D() + dir * evadeSpell.range;
                         }
 
                         var posInfo = EvadeHelper.CanHeroWalkToPos(dashPos, evadeSpell.speed, ObjectCache.gamePing, 0);
@@ -477,7 +476,7 @@ namespace ezEvade
                         {
                             if (isDodging || EvadeUtils.TickCount < lastDodgingEndTime + 500)
                             {
-                                EvadeCommand.MoveTo(Game.CursorPos.LSTo2D());
+                                EvadeCommand.MoveTo(Game.CursorPos.To2D());
                                 lastStopEvadeTime = EvadeUtils.TickCount + ObjectCache.gamePing + 100;
                             }
 
@@ -489,8 +488,6 @@ namespace ezEvade
                     return;
                 }
             }
-
-
         }
 
         private void Game_OnIssueOrder(Obj_AI_Base hero, PlayerIssueOrderEventArgs args)
@@ -510,7 +507,7 @@ namespace ezEvade
                     lastBlockedUserMoveTo = new EvadeCommand
                     {
                         order = EvadeOrderCommand.MoveTo,
-                        targetPosition = args.TargetPosition.LSTo2D(),
+                        targetPosition = args.TargetPosition.To2D(),
                         timestamp = EvadeUtils.TickCount,
                         isProcessed = false,
                     };
@@ -519,7 +516,7 @@ namespace ezEvade
                 }
                 else
                 {
-                    var movePos = args.TargetPosition.LSTo2D();
+                    var movePos = args.TargetPosition.To2D();
                     var extraDelay = ObjectCache.menuCache.cache["ExtraPingBuffer"].GetValue<Slider>().Value;
                 
                     if (EvadeHelper.CheckMovePath(movePos, ObjectCache.gamePing + extraDelay))
@@ -543,14 +540,14 @@ namespace ezEvade
                         lastBlockedUserMoveTo = new EvadeCommand
                         {
                             order = EvadeOrderCommand.MoveTo,
-                            targetPosition = args.TargetPosition.LSTo2D(),
+                            targetPosition = args.TargetPosition.To2D(),
                             timestamp = EvadeUtils.TickCount,
                             isProcessed = false,
                         };
 
                         args.Process = false; //Block the command
 
-                        if (EvadeUtils.TickCount - lastMovementBlockTime < 500 && lastMovementBlockPos.LSDistance(args.TargetPosition) < 100)
+                        if (EvadeUtils.TickCount - lastMovementBlockTime < 500 && lastMovementBlockPos.Distance(args.TargetPosition) < 100)
                         {
                             return;
                         }
@@ -585,10 +582,10 @@ namespace ezEvade
                         if (target != null && target.IsValid<Obj_AI_Base>())
                         {
                             var baseTarget = target as Obj_AI_Base;
-                            if (ObjectCache.myHeroCache.serverPos2D.LSDistance(baseTarget.ServerPosition.LSTo2D()) >
+                            if (ObjectCache.myHeroCache.serverPos2D.Distance(baseTarget.ServerPosition.To2D()) >
                                 myHero.AttackRange + ObjectCache.myHeroCache.boundingRadius + baseTarget.BoundingRadius)
                             {
-                                var movePos = args.TargetPosition.LSTo2D();
+                                var movePos = args.TargetPosition.To2D();
                                 var extraDelay = ObjectCache.menuCache.cache["ExtraPingBuffer"].GetValue<Slider>().Value;
                                 if (EvadeHelper.CheckMovePath(movePos, ObjectCache.gamePing + extraDelay))
                                 {
@@ -609,13 +606,13 @@ namespace ezEvade
 
                 if (args.Order == GameObjectOrder.MoveTo)
                 {
-                    lastMoveToPosition = args.TargetPosition.LSTo2D();
-                    lastMoveToServerPos = myHero.ServerPosition.LSTo2D();
+                    lastMoveToPosition = args.TargetPosition.To2D();
+                    lastMoveToServerPos = myHero.ServerPosition.To2D();
                 }
 
                 if (args.Order == GameObjectOrder.Stop)
                 {
-                    lastStopPosition = myHero.ServerPosition.LSTo2D();
+                    lastStopPosition = myHero.ServerPosition.To2D();
                 }
             }
         }
@@ -642,7 +639,7 @@ namespace ezEvade
 
             /*if (args.SData.Name.Contains("Recall"))
             {
-                var distance = lastStopPosition.LSDistance(args.Start.LSTo2D());
+                var distance = lastStopPosition.Distance(args.Start.To2D());
                 float moveTime = 1000 * distance / myHero.MoveSpeed;
 
                 Console.WriteLine("Extra dist: " + distance + " Extra Delay: " + moveTime);
@@ -652,7 +649,7 @@ namespace ezEvade
             if (SpellDetector.channeledSpells.TryGetValue(args.SData.Name, out name))
             {
                 Evade.isChanneling = true;
-                Evade.channelPosition = myHero.ServerPosition.LSTo2D();
+                Evade.channelPosition = myHero.ServerPosition.To2D();
             }
 
             if (ObjectCache.menuCache.cache["CalculateWindupDelay"].GetValue<bool>())
@@ -681,7 +678,7 @@ namespace ezEvade
                 ObjectCache.myHeroCache.UpdateInfo();
                 CheckHeroInDanger();
 
-                if (isChanneling && channelPosition.LSDistance(ObjectCache.myHeroCache.serverPos2D) > 50
+                if (isChanneling && channelPosition.Distance(ObjectCache.myHeroCache.serverPos2D) > 50
                     && !myHero.IsChannelingImportantSpell())
                 {
                     isChanneling = false;
@@ -726,9 +723,9 @@ namespace ezEvade
                     var path = myHero.Path;
                     if (path.Length > 0)
                     {
-                        var movePos = path.Last().LSTo2D();
+                        var movePos = path.Last().To2D();
 
-                        if (movePos.LSDistance(lastPosInfo.position) < 5) //more strict checking
+                        if (movePos.Distance(lastPosInfo.position) < 5) //more strict checking
                         {
                             var posInfo = EvadeHelper.CanHeroWalkToPos(movePos, ObjectCache.myHeroCache.moveSpeed, 0, 0, false);
                             if (posInfo.posDangerCount > lastPosInfo.posDangerCount)
@@ -768,7 +765,7 @@ namespace ezEvade
                     && EvadeUtils.TickCount - lastEvadeCommand.timestamp > ObjectCache.gamePing + extraDelay
                     && EvadeUtils.TickCount - lastBlockedUserMoveTo.timestamp < 1500)
                 {
-                    movePos = movePos + (movePos - ObjectCache.myHeroCache.serverPos2D).LSNormalized()
+                    movePos = movePos + (movePos - ObjectCache.myHeroCache.serverPos2D).Normalized()
                         * EvadeUtils.random.NextFloat(1, 65);
 
                     if (!EvadeHelper.CheckMovePath(movePos, ObjectCache.gamePing + extraDelay))
@@ -792,7 +789,7 @@ namespace ezEvade
 
                 if (lastPosInfo != null && lastPosInfo.dodgeableSpells.Contains(spell.spellID))
                 {
-                    if (myHero.ServerPosition.LSTo2D().InSkillShot(spell, ObjectCache.myHeroCache.boundingRadius))
+                    if (myHero.ServerPosition.To2D().InSkillShot(spell, ObjectCache.myHeroCache.boundingRadius))
                     {
                         playerInDanger = true;
                         break;
@@ -847,7 +844,7 @@ namespace ezEvade
                     Vector2 lastBestPosition = lastPosInfo.position;
 
                     if (ObjectCache.menuCache.cache["ClickOnlyOnce"].GetValue<bool>() == false
-                        || !(myHero.Path.Count() > 0 && lastPosInfo.position.LSDistance(myHero.Path.Last().LSTo2D()) < 5))
+                        || !(myHero.Path.Count() > 0 && lastPosInfo.position.Distance(myHero.Path.Last().To2D()) < 5))
                     //|| lastPosInfo.timestamp > lastEvadeOrderTime)
                     {
                         EvadeCommand.MoveTo(lastBestPosition);
@@ -861,7 +858,7 @@ namespace ezEvade
                 var path = myHero.Path;
                 if (path.Length > 0)
                 {
-                    var movePos = path[path.Length - 1].LSTo2D();
+                    var movePos = path[path.Length - 1].To2D();
 
                     if (EvadeHelper.CheckMovePath(movePos))
                     {
@@ -987,7 +984,7 @@ namespace ezEvade
                     {
                         lastPosInfo = posInfo.CompareLastMovePos();
 
-                        var travelTime = ObjectCache.myHeroCache.serverPos2DPing.LSDistance(lastPosInfo.position) / myHero.MoveSpeed;
+                        var travelTime = ObjectCache.myHeroCache.serverPos2DPing.Distance(lastPosInfo.position) / myHero.MoveSpeed;
 
                         lastPosInfo.endTime = EvadeUtils.TickCount + travelTime * 1000 - 100;
                     }

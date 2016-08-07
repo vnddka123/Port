@@ -50,7 +50,7 @@ namespace ezEvade
             };
 
             Evade.lastMoveToPosition = movePos;
-            Evade.lastMoveToServerPos = myHero.ServerPosition.LSTo2D();
+            Evade.lastMoveToServerPos = myHero.ServerPosition.To2D();
 
             Player.IssueOrder(GameObjectOrder.MoveTo, movePos.To3D(), false);
         }
