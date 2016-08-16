@@ -242,7 +242,6 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void LogicE()
         {
-            Program.debug("LogicE()");
             if ((Program.Combo || Program.JungClear) && Player.Mana > RMANA + EMANA && !ObjectManager.Player.HasBuff("gravesbasicattackammo2"))
             {
                 var dashPos = Dash.CastDash();
@@ -253,11 +252,9 @@ namespace OneKeyToWin_AIO_Sebby
             }//*/
             if (HeroManager.Enemies.Any(target => target.IsValidTarget(500) && target.IsMelee))
             {
-                Program.debug("IN LogicE(11111111)");
                 var dashPos = Dash.CastDash(true);
                 if (!dashPos.IsZero)
                 {
-                    Program.debug("IN LogicE(222222222)");
                     E.Cast(dashPos);
                 }
             }//*/           
