@@ -18,3 +18,4 @@ E:\Git dev\TEST\OKTW\OneKeyToWin_AIO_Sebby\OneKeyToWin_AIO_Sebby\bin\Release\Elo
 E:\Git dev\TEST\OKTW\OneKeyToWin_AIO_Sebby\OneKeyToWin_AIO_Sebby\bin\Release\LeagueSharp.Common.pdb
 E:\Git dev\TEST\OKTW\OneKeyToWin_AIO_Sebby\OneKeyToWin_AIO_Sebby\bin\Release\LeagueSharp.Data.pdb
 E:\Git dev\TEST\OKTW\OneKeyToWin_AIO_Sebby\OneKeyToWin_AIO_Sebby\bin\Release\SebbyLib.pdb
+E:\Git dev\TEST\OKTW\OneKeyToWin_AIO_Sebby\OneKeyToWin_AIO_Sebby\obj\Debug\OneKeyToWin_AIO_Sebby.csprojResolveAssemblyReference.cache

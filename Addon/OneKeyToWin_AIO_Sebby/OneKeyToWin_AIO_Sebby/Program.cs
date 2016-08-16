@@ -248,8 +248,8 @@ namespace OneKeyToWin_AIO_Sebby
 
             if (AIOmode != 1)
             {
-                new Activator().LoadOKTW();
-                new Core.OKTWward().LoadOKTW();
+         //       new Activator().LoadOKTW();
+         //       new Core.OKTWward().LoadOKTW();
          //       new Core.AutoLvlUp().LoadOKTW();
          //       new Core.OKTWtracker().LoadOKTW();
          //       new Core.OKTWdraws().LoadOKTW();
