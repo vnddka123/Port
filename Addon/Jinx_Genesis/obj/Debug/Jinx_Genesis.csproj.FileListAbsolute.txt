@@ -17,3 +17,22 @@ E:\Git dev\TEST\OKTW\Jinx_Genesis\Jinx_Genesis\bin\Release\LeagueSharp.Common.pd
 E:\Git dev\TEST\OKTW\Jinx_Genesis\Jinx_Genesis\bin\Release\SebbyLib.pdb
 E:\Git dev\TEST\OKTW\Jinx_Genesis\Jinx_Genesis\bin\Release\LeagueSharp.Data.pdb
 E:\Git dev\TEST\OKTW\Jinx_Genesis\Jinx_Genesis\obj\Debug\Jinx_Genesis.csproj.Jinx_Genesis.exe.config
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\bin\Release\Jinx_Genesis.exe.config
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\obj\Debug\Jinx_Genesis.exe
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\obj\Debug\Jinx_Genesis.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\bin\Release\Jinx_Genesis.exe
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\bin\Release\Jinx_Genesis.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\bin\Release\EloBuddy.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\bin\Release\EloBuddy.SDK.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\bin\Release\LeagueSharp.Common.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\bin\Release\SebbyLib.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\bin\Release\SharpDX.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\bin\Release\Newtonsoft.Json.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\bin\Release\EloBuddy.Sandbox.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\bin\Release\LeagueSharp.Data.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\bin\Release\LeagueSharp.Common.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\bin\Release\SebbyLib.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\bin\Release\LeagueSharp.Data.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\obj\Debug\Jinx_Genesis.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Jinx_Genesis\obj\Debug\Jinx_Genesis.csproj.Jinx_Genesis.exe.config
