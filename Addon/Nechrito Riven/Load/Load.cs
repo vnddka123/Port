@@ -25,13 +25,13 @@ namespace NechritoRiven.Load
 
             Drawing.OnEndScene += DrawDmg.DmgDraw;
             Drawing.OnDraw += DrawRange.RangeDraw;
-            Drawing.OnDraw += DrawWallSpot.WallDraw;
+//            Drawing.OnDraw += DrawWallSpot.WallDraw;
 
             Game.OnUpdate += KillSteal.Update;
             Game.OnUpdate += AlwaysUpdate.Update;
-            Game.OnUpdate += Skinchanger.Update;
+//            Game.OnUpdate += Skinchanger.Update;
 
-            AssemblyVersion.CheckVersion();
+//            AssemblyVersion.CheckVersion();
 
             Interrupter2.OnInterruptableTarget += Interrupt2.OnInterruptableTarget;
             AntiGapcloser.OnEnemyGapcloser += Gapclose.Gapcloser;

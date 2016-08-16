@@ -15,7 +15,7 @@ namespace NechritoRiven.Core
        private static bool _forceW;
        private static bool _forceR;
        private static bool _forceR2;
-       private static bool _forceItem;
+//       private static bool _forceItem;
         public static float LastQ;
         
         private static int Item
@@ -52,12 +52,12 @@ namespace NechritoRiven.Core
             {
                 Spells.R.Cast();
             }
-
+            /*
             if (_forceItem && Items.CanUseItem(Item) && Items.HasItem(Item) && Item != 0)
             {
                 Items.UseItem(Item);
             }
-
+            //*/
             if (!_forceR2 || Spells.R.Instance.Name != IsSecondR) return;
 
             var target = TargetSelector.GetSelectedTarget();
@@ -67,7 +67,7 @@ namespace NechritoRiven.Core
         {
             if (!sender.IsMe) return;
 
-            if (args.SData.Name.Contains("ItemTiamatCleave")) _forceItem = false;
+//            if (args.SData.Name.Contains("ItemTiamatCleave")) _forceItem = false;
             if (args.SData.Name.Contains("RivenTriCleave")) _forceQ = false;
             if (args.SData.Name.Contains("RivenMartyr")) _forceW = false;
             if (args.SData.Name == IsFirstR) _forceR = false;
@@ -86,12 +86,13 @@ namespace NechritoRiven.Core
                 ? 330 >= Player.Distance(target.Position)
                 : 265 >= Player.Distance(target.Position));
         }
+        /*
         public static void ForceItem()
         {
             if (Items.CanUseItem(Item) && Items.HasItem(Item) && Item != 0) _forceItem = true;
             Utility.DelayAction.Add(500, () => _forceItem = false);
         }
-
+        //*/
         public static void ForceR()
         {
             _forceR = Spells.R.IsReady() && Spells.R.Instance.Name == IsFirstR;

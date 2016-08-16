@@ -33,7 +33,7 @@ namespace NechritoRiven.Event
                     {
                         if (!Spells.Q.IsReady() || !MenuConfig.LaneQ || m.UnderTurret()) continue;
 
-                        ForceItem();
+//                        ForceItem();
                         ForceCastQ(m);
                     }
                 }
@@ -57,13 +57,13 @@ namespace NechritoRiven.Event
 
                     if (Spells.Q.IsReady() && MenuConfig.JnglQ)
                     {
-                        ForceItem();
+//                        ForceItem();
                         ForceCastQ(m);
                     }
 
                     else if (!Spells.W.IsReady() || !MenuConfig.JnglW) return;
 
-                    ForceItem();
+//                    ForceItem();
                     Spells.W.Cast(m);
                 }
             }
@@ -78,7 +78,7 @@ namespace NechritoRiven.Event
             {
                 if (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Combo)
                 {
-                    ForceItem();
+//                    ForceItem();
                     ForceCastQ(target);
                 }
 
@@ -86,7 +86,7 @@ namespace NechritoRiven.Event
                 {
                     if (Qstack == 2)
                     {
-                        ForceItem();
+//                        ForceItem();
                         LeagueSharp.Common.Utility.DelayAction.Add(1, () => ForceCastQ(target));
                     }
                 }
@@ -100,7 +100,7 @@ namespace NechritoRiven.Event
                     Spells.W.Cast(target);
                 }
 
-                ForceItem();
+//                ForceItem();
                 ForceCastQ(target);
 
                 if (Spells.R.IsReady() && Spells.R.Instance.Name == IsSecondR)
@@ -202,7 +202,7 @@ namespace NechritoRiven.Event
             {
                 Usables.CastYoumoo();
 
-                LeagueSharp.Common.Utility.DelayAction.Add(10, ForceItem);
+//                LeagueSharp.Common.Utility.DelayAction.Add(10, ForceItem);
                 LeagueSharp.Common.Utility.DelayAction.Add(190, () => Spells.W.Cast());
             }
 
@@ -230,7 +230,7 @@ namespace NechritoRiven.Event
             Spells.E.Cast(target.Position);
             ForceR();
             LeagueSharp.Common.Utility.DelayAction.Add(170 + Game.Ping / 2, FlashW);
-            ForceItem();
+//            ForceItem();
         }
 
         public static void FastHarass()
@@ -246,7 +246,7 @@ namespace NechritoRiven.Event
                 Spells.E.Cast(target.Position);
             }
 
-            LeagueSharp.Common.Utility.DelayAction.Add(10, ForceItem);
+//            LeagueSharp.Common.Utility.DelayAction.Add(10, ForceItem);
             LeagueSharp.Common.Utility.DelayAction.Add(170, () => ForceCastQ(target));
         }
 

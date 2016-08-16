@@ -2,6 +2,7 @@
 
 using System;
 using EloBuddy;
+using EloBuddy.SDK.Events;
 using LeagueSharp.Common;
 
 #endregion
@@ -12,7 +13,7 @@ namespace NechritoRiven
     {
         private static void Main()
         {
-            CustomEvents.Game.OnGameLoad += OnLoad;
+            Loading.OnLoadingComplete += OnLoad;
         }
 
         private static void OnLoad(EventArgs args)
