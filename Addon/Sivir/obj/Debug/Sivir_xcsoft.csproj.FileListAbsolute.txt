@@ -1,0 +1,15 @@
+E:\Git dev\TEST\BETA\Sivir\bin\Release\Sivir.exe.config
+E:\Git dev\TEST\BETA\Sivir\bin\Release\Sivir.exe
+E:\Git dev\TEST\BETA\Sivir\bin\Release\Sivir.pdb
+E:\Git dev\TEST\BETA\Sivir\bin\Release\EloBuddy.dll
+E:\Git dev\TEST\BETA\Sivir\bin\Release\EloBuddy.SDK.dll
+E:\Git dev\TEST\BETA\Sivir\bin\Release\LeagueSharp.Data.dll
+E:\Git dev\TEST\BETA\Sivir\bin\Release\LeagueSharp.SDKEx.dll
+E:\Git dev\TEST\BETA\Sivir\bin\Release\SharpDX.dll
+E:\Git dev\TEST\BETA\Sivir\bin\Release\SharpDX.Direct3D9.dll
+E:\Git dev\TEST\BETA\Sivir\bin\Release\Newtonsoft.Json.dll
+E:\Git dev\TEST\BETA\Sivir\bin\Release\EloBuddy.Sandbox.dll
+E:\Git dev\TEST\BETA\Sivir\bin\Release\LeagueSharp.Data.pdb
+E:\Git dev\TEST\BETA\Sivir\obj\Debug\Sivir_xcsoft.csprojResolveAssemblyReference.cache
+E:\Git dev\TEST\BETA\Sivir\obj\Debug\Sivir.exe
+E:\Git dev\TEST\BETA\Sivir\obj\Debug\Sivir.pdb
