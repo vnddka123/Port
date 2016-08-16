@@ -9,9 +9,9 @@
     using LeagueSharp.Data.Properties;
     using LeagueSharp.Data.Utility.Resources;
 
-    using EloBuddy;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using EloBuddy;
 
     /// <summary>
     ///     Gets damages. Only loads damages for champions in the game.

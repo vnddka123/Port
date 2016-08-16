@@ -4,7 +4,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
-//    using System.Security.Permissions;
+    using System.Security.Permissions;
     using System.Text;
 
     /// <summary>
@@ -22,7 +22,7 @@
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="Exception"></exception>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static byte[] ByteResource(string file, Assembly assembly = null)
         {
             if (file == null)
@@ -55,7 +55,7 @@
         /// <param name="assembly">The assembly.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static string StringResource(string file, Assembly assembly = null)
         {
             if (file == null)

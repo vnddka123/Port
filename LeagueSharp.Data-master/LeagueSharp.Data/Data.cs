@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-//    using System.Security.Permissions;
+    using System.Security.Permissions;
 
     using LeagueSharp.Data.Utility.Resources;
 
@@ -24,7 +24,7 @@
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static T Get<T>() where T : IDataType
         {
             try

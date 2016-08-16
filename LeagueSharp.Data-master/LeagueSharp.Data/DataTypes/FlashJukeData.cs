@@ -7,6 +7,7 @@
 
     using SharpDX;
     using EloBuddy;
+
     /// <summary>
     ///     Gets data for flash juke locations.
     /// </summary>

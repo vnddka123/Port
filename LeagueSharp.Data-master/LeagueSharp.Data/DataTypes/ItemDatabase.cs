@@ -8,6 +8,7 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using EloBuddy;
+
     public class ItemDatabase : IDataType
     {
         #region Constructors and Destructors

@@ -8,29 +8,15 @@
     [Flags]
     public enum CollisionableObjects
     {
-        /// <summary>
-        ///     Minion Collision-able Flag
-        /// </summary>
-        Minions = 1 << 0,
-
-        /// <summary>
-        ///     Hero Collision-able Flag
-        /// </summary>
-        Heroes = 1 << 1,
-
-        /// <summary>
-        ///     Yasuo's Wall Collision-able Flag
-        /// </summary>
-        YasuoWall = 1 << 2,
-
-        /// <summary>
-        ///     Braum's Shield Collision-able Flag
-        /// </summary>
-        BraumShield = 1 << 3,
-
-        /// <summary>
-        ///     Wall Collision-able Flag
-        /// </summary>
-        Walls = 1 << 4
+        // Token: 0x04000496 RID: 1174
+        Minions,
+        // Token: 0x04000497 RID: 1175
+        Heroes,
+        // Token: 0x04000498 RID: 1176
+        YasuoWall,
+        // Token: 0x04000499 RID: 1177
+        Walls,
+        // Token: 0x0400049A RID: 1178
+        Allies
     }
 }

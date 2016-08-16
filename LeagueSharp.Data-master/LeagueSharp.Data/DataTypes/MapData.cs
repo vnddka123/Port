@@ -6,6 +6,7 @@
 
     using SharpDX;
     using EloBuddy;
+
     /// <summary>
     ///     Gets data on maps.
     /// </summary>

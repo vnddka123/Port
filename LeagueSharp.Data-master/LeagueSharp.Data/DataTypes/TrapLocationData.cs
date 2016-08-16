@@ -2,10 +2,11 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using EloBuddy;
+
     using LeagueSharp.Data.Utility.Resources;
 
     using SharpDX;
+    using EloBuddy;
 
     /// <summary>
     ///     Gets locations to place traps.

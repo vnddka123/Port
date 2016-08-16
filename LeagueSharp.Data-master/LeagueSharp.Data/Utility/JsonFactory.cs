@@ -3,7 +3,7 @@
     using System;
     using System.IO;
     using System.Reflection;
-//    using System.Security.Permissions;
+    using System.Security.Permissions;
 
     using LeagueSharp.Data.Utility.Resources;
 
@@ -55,7 +55,7 @@
         /// <param name="file"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static T JsonFile<T>(string file, JsonSerializerSettings settings = null)
         {
             if (file == null)
@@ -73,7 +73,7 @@
         /// <param name="type"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static object JsonFile(string file, Type type = null, JsonSerializerSettings settings = null)
         {
             if (file == null)
@@ -92,7 +92,7 @@
         /// <param name="assembly"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static T JsonResource<T>(string file, Assembly assembly = null, JsonSerializerSettings settings = null)
         {
             if (file == null)
@@ -111,7 +111,7 @@
         /// <param name="assembly"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static object JsonResource(
             string file,
             Type type = null,
@@ -133,7 +133,7 @@
         /// <param name="s"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static T JsonString<T>(string s, JsonSerializerSettings settings = null)
         {
             if (s == null)
@@ -151,7 +151,7 @@
         /// <param name="type"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
- //       [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static object JsonString(string s, Type type = null, JsonSerializerSettings settings = null)
         {
             if (s == null)
@@ -168,7 +168,7 @@
         /// <param name="file"></param>
         /// <param name="obj"></param>
         /// <param name="settings"></param>
- //       [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static void ToFile(string file, object obj, JsonSerializerSettings settings = null)
         {
             if (file == null)
@@ -190,7 +190,7 @@
         /// <param name="obj"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
- //       [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static string ToString(object obj, JsonSerializerSettings settings = null)
         {
             if (obj == null)

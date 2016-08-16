@@ -7,6 +7,7 @@
     using LeagueSharp.Data.Enumerations;
     using LeagueSharp.Data.Utility.Resources;
     using EloBuddy;
+
     /// <summary>
     ///     Gets data on spells.
     /// </summary>
