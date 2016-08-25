@@ -1,10 +1,15 @@
 # Port
 PortAIO
 
-Mình sẽ hạn chế việc gộp tấc cả thành 1 vì nó sẽ dễ gây bugsplat. 
-Nguồn Lib mình vẫn chưa open được. Nên các bạn sẽ phải copy file Lib vào thư mục Lib của Elo tại : C:\Users\Administrator\AppData\Roaming\EloBuddy\Addons\Libraries
+Hướng dẫn sử dụng Port của CTTBOT
 
-Hiện tại mình vẫn phải làm việc 1 mình nên mất rất nhìu time để check từng chút từng chút.
-Thư viện SDKex hiện tại vẫn chưa hoàn chỉnh, còn khá nhìu lỗi mà mình thì chưa có thời gian để chỉnh sửa nó.
+Trước tiên bạn cần phải cài L# Data tại đây 
+https://github.com/cttbot/Port/tree/master/LeagueSharp.Data
+sau đó bạn tải autoupdate Lib, rồi chạy file UpdateLibVB.exe trong thư mục bạn mới tải về để nó tự update những Lib cơ bản cho Port
+link tải : https://github.com/cttbot/Port/tree/master/AutoUpdate 
 
-Các bạn nhớ chia sẽ và sử dụng, hạn chế đưa lên diễn đàn Elo nhé, vì trên đó họ không thích Port.
+Sau đó bạn cần phải cài một số Lib cơ bản như SebbyLib và Spacebar Prediction trong https://github.com/cttbot/Port/tree/master/Addon
+
+Như vậy là bạn đã có 1 số Lib cơ bản để có thể bắt đầu cài đặt 1 số addon như OKTW, Riven, ...
+
+Mình sẽ Port thêm 1 số addon để làm phong phú thêm kho addon của mình. Xin cảm ơn !!!
