@@ -1,0 +1,16 @@
+E:\Git dev\TEST\BETA\TophSharp\bin\Debug\TophSharp.exe.config
+E:\Git dev\TEST\BETA\TophSharp\bin\Debug\TophSharp.exe
+E:\Git dev\TEST\BETA\TophSharp\bin\Debug\TophSharp.pdb
+E:\Git dev\TEST\BETA\TophSharp\bin\Debug\EloBuddy.dll
+E:\Git dev\TEST\BETA\TophSharp\bin\Debug\EloBuddy.SDK.dll
+E:\Git dev\TEST\BETA\TophSharp\bin\Debug\LeagueSharp.Common.dll
+E:\Git dev\TEST\BETA\TophSharp\bin\Debug\SharpDX.Direct3D9.dll
+E:\Git dev\TEST\BETA\TophSharp\bin\Debug\SharpDX.dll
+E:\Git dev\TEST\BETA\TophSharp\bin\Debug\Newtonsoft.Json.dll
+E:\Git dev\TEST\BETA\TophSharp\bin\Debug\EloBuddy.Sandbox.dll
+E:\Git dev\TEST\BETA\TophSharp\bin\Debug\LeagueSharp.Data.dll
+E:\Git dev\TEST\BETA\TophSharp\bin\Debug\LeagueSharp.Common.pdb
+E:\Git dev\TEST\BETA\TophSharp\bin\Debug\LeagueSharp.Data.pdb
+E:\Git dev\TEST\BETA\TophSharp\obj\Debug\TophSharp.exe
+E:\Git dev\TEST\BETA\TophSharp\obj\Debug\TophSharp.pdb
+E:\Git dev\TEST\BETA\TophSharp\obj\Debug\TophSharp.csprojResolveAssemblyReference.cache
