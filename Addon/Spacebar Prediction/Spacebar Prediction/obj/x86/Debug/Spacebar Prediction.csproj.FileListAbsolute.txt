@@ -28,3 +28,19 @@ E:\Git dev\TEST\OKTW\Spacebar Prediction\Spacebar Prediction\bin\x86\Debug\Leagu
 E:\Git dev\TEST\OKTW\Spacebar Prediction\Spacebar Prediction\obj\x86\Debug\SPrediction.dll
 E:\Git dev\TEST\OKTW\Spacebar Prediction\Spacebar Prediction\obj\x86\Debug\SPrediction.pdb
 E:\Git dev\TEST\OKTW\Spacebar Prediction\Spacebar Prediction\obj\x86\Debug\Spacebar Prediction.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\bin\x86\Debug\SPrediction.dll.config
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\bin\x86\Debug\SPrediction.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\bin\x86\Debug\SPrediction.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\bin\x86\Debug\EloBuddy.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\bin\x86\Debug\EloBuddy.SDK.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\bin\x86\Debug\LeagueSharp.Common.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\bin\x86\Debug\SharpDX.Direct3D9.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\bin\x86\Debug\SharpDX.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\bin\x86\Debug\Newtonsoft.Json.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\bin\x86\Debug\EloBuddy.Sandbox.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\bin\x86\Debug\LeagueSharp.Data.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\bin\x86\Debug\LeagueSharp.Common.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\bin\x86\Debug\LeagueSharp.Data.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\obj\x86\Debug\Spacebar Prediction.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\obj\x86\Debug\SPrediction.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\Spacebar Prediction\Spacebar Prediction\obj\x86\Debug\SPrediction.pdb

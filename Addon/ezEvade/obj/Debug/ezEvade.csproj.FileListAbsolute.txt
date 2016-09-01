@@ -14,3 +14,19 @@ E:\Git dev\TEST\BETA\ezEvade\obj\Debug\ezEvade.pdb
 E:\Git dev\TEST\BETA\ezEvade\bin\Debug\LeagueSharp.Common.pdb
 E:\Git dev\TEST\BETA\ezEvade\bin\Debug\LeagueSharp.Data.pdb
 E:\Git dev\TEST\BETA\ezEvade\obj\Debug\ezEvade.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\bin\Debug\ezEvade.exe.config
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\bin\Debug\ezEvade.exe
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\bin\Debug\ezEvade.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\bin\Debug\EloBuddy.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\bin\Debug\EloBuddy.SDK.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\bin\Debug\LeagueSharp.Common.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\bin\Debug\SharpDX.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\bin\Debug\SharpDX.Direct3D9.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\bin\Debug\LeagueSharp.Data.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\bin\Debug\EloBuddy.Sandbox.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\bin\Debug\LeagueSharp.Common.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\bin\Debug\LeagueSharp.Data.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\obj\Debug\ezEvade.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\obj\Debug\ezEvade.exe
+C:\Users\Administrator\Documents\GitHub\Port\Addon\ezEvade\obj\Debug\ezEvade.pdb

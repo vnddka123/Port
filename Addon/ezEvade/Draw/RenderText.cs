@@ -42,7 +42,7 @@ namespace ezEvade.Draw
 
         override public void Draw()
         {
-            if (renderPosition.IsOnScreen())
+            if (renderPosition.IsOnScreenLS())
             {
                 var textDimension = Drawing.GetTextEntent(text, 0);
                 var wardScreenPos = Drawing.WorldToScreen(renderPosition.To3D());

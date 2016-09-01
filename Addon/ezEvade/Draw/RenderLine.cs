@@ -46,7 +46,7 @@ namespace ezEvade.Draw
 
         override public void Draw()
         {
-            if (start.IsOnScreen() || end.IsOnScreen())
+            if (start.IsOnScreenLS() || end.IsOnScreenLS())
             {
                 var realStart = Drawing.WorldToScreen(start.To3D());
                 var realEnd = Drawing.WorldToScreen(end.To3D());
