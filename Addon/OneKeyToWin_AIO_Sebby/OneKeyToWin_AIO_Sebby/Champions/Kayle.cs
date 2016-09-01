@@ -5,8 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -139,7 +140,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
 
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (Program.Combo)
                     Q.Cast(t);
@@ -154,7 +155,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void LogicW()
         {
-            if (!Player.InFountain() && !Player.HasBuff("Recall") && !Player.IsRecalling())
+            if (!Player.InFountainLS() && !Player.HasBuff("Recall") && !Player.IsRecalling())
             {
                 AIHeroClient lowest = Player;
 
@@ -177,7 +178,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (Config.Item("autoWspeed", true).GetValue<bool>())
                 {
                     var t = TargetSelector.GetTarget(1000, TargetSelector.DamageType.Magical);
-                    if (t.IsValidTarget())
+                    if (t.IsValidTargetLS())
                     {
                         if (Program.Combo && Player.Mana > WMANA + QMANA + EMANA && Player.Distance(t.Position) > Q.Range)
                             W.CastOnUnit(Player);

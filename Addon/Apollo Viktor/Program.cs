@@ -1,8 +1,11 @@
 using System;
 using System.Linq;
 using EloBuddy;
+using EloBuddy.SDK;
 using LeagueSharp.Common;
 using Color = System.Drawing.Color;
+using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
 using SharpDX;
 
 namespace Viktor
@@ -127,7 +130,7 @@ namespace Viktor
 
             if (E.IsReady() && Menu.Item("KsE").GetValue<bool>())
             {
-                foreach (var t in HeroManager.Enemies.Where(h => h.IsValidTarget(ECastRange + E.Range) && h.Health < Player.GetSpellDamage(h, SpellSlot.E)))
+                foreach (var t in HeroManager.Enemies.Where(h => h.IsValidTargetLS(ECastRange + E.Range) && h.Health < Player.GetSpellDamage(h, SpellSlot.E)))
                 {
                     CastE(t, HitChance.VeryHigh);
                 }
@@ -229,7 +232,7 @@ namespace Viktor
                     if (t.Health < ComboDmg(t) && t.HealthPercent > 5)
                         LeagueSharp.Common.Utility.DelayAction.Add(100, () => R.Cast(t, false, true));
                 }
-                foreach (var unit in HeroManager.Enemies.Where(h => h.IsValidTarget(R.Range)))
+                foreach (var unit in HeroManager.Enemies.Where(h => h.IsValidTargetLS(R.Range)))
                 {
                     R.CastIfWillHit(unit, Menu.Item("HitRC").GetValue<Slider>().Value);
                 }
@@ -281,9 +284,9 @@ namespace Viktor
                 if (minionJ != null)
                 {
                     if (minionJ.Distance(Player) > ECastRange)
-                        E.Cast(Player.ServerPosition.Extend(minionJ.ServerPosition, ECastRange), minionJ.ServerPosition);
+                        E.Cast(Player.ServerPosition.Extend(minionJ.ServerPosition, ECastRange).To3DWorld(), minionJ.ServerPosition);
                     else
-                        E.Cast(minionJ.ServerPosition.Extend(Player.ServerPosition, 50), minionJ.ServerPosition);
+                        E.Cast(minionJ.ServerPosition.Extend(Player.ServerPosition, 50).To3DWorld(), minionJ.ServerPosition);
                 }
                 else
                 {
@@ -315,7 +318,7 @@ namespace Viktor
             }
             else if (Player.ServerPosition.Distance(t.ServerPosition) < ECastRange + E.Range)
             {
-                var castStartPos = Player.ServerPosition.Extend(t.ServerPosition, ECastRange);
+                var castStartPos = Player.ServerPosition.Extend(t.ServerPosition, ECastRange).To3DWorld();
                 E.UpdateSourcePosition(castStartPos, castStartPos);
                 var pred = E.GetPrediction(t, true);
                 if (pred.Hitchance >= hitchance)
@@ -331,14 +334,14 @@ namespace Viktor
             if (!W.IsReady() || !Menu.Item("AutoW").GetValue<bool>())
                 return;
 
-            var tPanth = HeroManager.Enemies.Find(h => h.IsValidTarget(W.Range) && h.HasBuff("Pantheon_GrandSkyfall_Jump"));
+            var tPanth = HeroManager.Enemies.Find(h => h.IsValidTargetLS(W.Range) && h.HasBuff("Pantheon_GrandSkyfall_Jump"));
             if (tPanth != null)
             {
                 if (W.Cast(tPanth) == Spell.CastStates.SuccessfullyCasted)
                     return;
             }
 
-            foreach (var enemy in HeroManager.Enemies.Where(h => h.IsValidTarget(W.Range)))
+            foreach (var enemy in HeroManager.Enemies.Where(h => h.IsValidTargetLS(W.Range)))
             {
                 if (enemy.HasBuff("rocketgrab2"))
                 {
@@ -400,7 +403,7 @@ namespace Viktor
 
             if (Player.HasBuff("viktorpowertransferreturn") || Q.IsReady())
             {
-                damage += Player.CalcDamage(enemy, Damage.DamageType.Magical,
+                damage += Player.CalcDamage(enemy, LeagueSharp.Common.Damage.DamageType.Magical,
                     qaaDmg[Player.Level >= 18 ? 18 - 1 : Player.Level - 1] +
                     (Player.TotalMagicalDamage * .5) + Player.TotalAttackDamage());
             }
@@ -418,18 +421,18 @@ namespace Viktor
             if (R.IsReady() && R.Instance.Name == "ViktorChaosStorm")
             {
                 damage += Player.GetSpellDamage(enemy, SpellSlot.R);
-                damage += Player.GetSpellDamage(enemy, SpellSlot.R, 1);
-                damage += 4 * Player.GetSpellDamage(enemy, SpellSlot.R, 2);
+                damage += Player.GetSpellDamage(enemy, SpellSlot.R);
+                damage += 4 * Player.GetSpellDamage(enemy, SpellSlot.R);
             }
 
             if (R.IsReady() && R.Instance.Name != "ViktorChaosStorm")
             {
-                damage += Player.GetSpellDamage(enemy, SpellSlot.R, 2);
+                damage += Player.GetSpellDamage(enemy, SpellSlot.R);
             }
 
             if (IgniteSlot != SpellSlot.Unknown && Player.Spellbook.CanUseSpell(IgniteSlot) == SpellState.Ready)
             {
-                damage += ObjectManager.Player.GetSummonerSpellDamage(enemy, Damage.SummonerSpell.Ignite);
+                damage += ObjectManager.Player.GetSummonerSpellDamage(enemy, LeagueSharp.Common.Damage.SummonerSpell.Ignite);
             }
 
             return (float)damage;
@@ -450,13 +453,13 @@ namespace Viktor
                 var useW = Menu.Item("InterrupterW").GetValue<bool>();
                 var useR = Menu.Item("InterrupterR").GetValue<bool>();
 
-                if (useW && W.IsReady() && unit.IsValidTarget(W.Range) &&
+                if (useW && W.IsReady() && unit.IsValidTargetLS(W.Range) &&
                     (Game.Time + 1.5 + W.Delay) >= args.EndTime)
                 {
                     if (W.Cast(unit) == Spell.CastStates.SuccessfullyCasted)
                         return;
                 }
-                else if (useR && unit.IsValidTarget(R.Range) && R.Instance.Name == "ViktorChaosStorm")
+                else if (useR && unit.IsValidTargetLS(R.Range) && R.Instance.Name == "ViktorChaosStorm")
                 {
                     E.Cast(unit);
                 }

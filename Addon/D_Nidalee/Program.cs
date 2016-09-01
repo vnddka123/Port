@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
+using EloBuddy.SDK;
 using LeagueSharp.Common;
 using SharpDX;
 using Color = System.Drawing.Color;
 using Utility = LeagueSharp.Common.Utility;
+using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using Damage = LeagueSharp.Common.Damage;
 
 namespace D_Nidalee
 {
@@ -353,7 +357,7 @@ namespace D_Nidalee
         private static void Game_OnGameUpdate(EventArgs args)
         {
             var target = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
-            if (target.IsValidTarget(Q.Range)) WC.Range = target.HasBuff("nidaleepassivehunted") ? 730 : 375;
+            if (target.IsValidTargetLS(Q.Range)) WC.Range = target.HasBuff("nidaleepassivehunted") ? 730 : 375;
             if (Config.Item("UseAutoE").GetValue<bool>())
             {
                 AutoE();
@@ -522,8 +526,8 @@ namespace D_Nidalee
         private static void Smiteontarget()
         {
             if (_smite == null) return;
-            var hero = HeroManager.Enemies.FirstOrDefault(x => x.IsValidTarget(570));
-            var smiteDmg = Player.GetSummonerSpellDamage(hero, Damage.SummonerSpell.Smite);
+            var hero = HeroManager.Enemies.FirstOrDefault(x => x.IsValidTargetLS(570));
+            var smiteDmg = Player.GetSummonerSpellDamage(hero, LeagueSharp.Common.Damage.SummonerSpell.Smite);
             var usesmite = Config.Item("smitecombo").GetValue<bool>();
             if (Player.GetSpell(_smiteSlot).Name.ToLower() == "s5_summonersmiteplayerganker" && usesmite &&
                 ObjectManager.Player.Spellbook.CanUseSpell(_smiteSlot) == SpellState.Ready)
@@ -540,7 +544,7 @@ namespace D_Nidalee
 
             if (Player.GetSpell(_smiteSlot).Name.ToLower() == "s5_summonersmiteduel" && usesmite &&
                 ObjectManager.Player.Spellbook.CanUseSpell(_smiteSlot) == SpellState.Ready &&
-                hero.IsValidTarget(570))
+                hero.IsValidTargetLS(570))
             {
                 ObjectManager.Player.Spellbook.CastSpell(_smiteSlot, hero);
             }
@@ -636,7 +640,7 @@ namespace D_Nidalee
                 }
             }
 
-            if (Q.IsReady() && IsHuman && target.IsValidTarget(Q.Range) &&
+            if (Q.IsReady() && IsHuman && target.IsValidTargetLS(Q.Range) &&
                 Config.Item("UseQCombo").GetValue<bool>())
             {
                 var predictionq = Q.GetPrediction(target);
@@ -644,14 +648,14 @@ namespace D_Nidalee
                     Q.Cast(predictionq.CastPosition);
             }
 
-            if (W.IsReady() && IsHuman && target.IsValidTarget(W.Range) &&
+            if (W.IsReady() && IsHuman && target.IsValidTargetLS(W.Range) &&
                 Config.Item("UseWCombo").GetValue<bool>())
             {
                 W.Cast(target);
             }
 
             if (R.IsReady() && IsHuman && Config.Item("UseRCombo").GetValue<bool>())
-                if(Player.Distance(target) <= 325 || (target.HasBuff("nidaleepassivehunted") && target.IsValidTarget(WC.Range)))
+                if(Player.Distance(target) <= 325 || (target.HasBuff("nidaleepassivehunted") && target.IsValidTargetLS(WC.Range)))
             {
                 if (IsHuman)
                 {
@@ -661,19 +665,19 @@ namespace D_Nidalee
                 if (IsCougar)
                 {
                     if (WC.IsReady() && Config.Item("UseWComboCougar").GetValue<bool>() &&
-                        target.IsValidTarget(WC.Range))
+                        target.IsValidTargetLS(WC.Range))
                     {
                         WC.Cast(target.ServerPosition);
                     }
 
                     if (EC.IsReady() && Config.Item("UseEComboCougar").GetValue<bool>() &&
-                        target.IsValidTarget(EC.Range))
+                        target.IsValidTargetLS(EC.Range))
                     {
                         EC.Cast(target.ServerPosition);
                     }
 
                     if (QC.IsReady() && Config.Item("UseQComboCougar").GetValue<bool>() &&
-                        target.IsValidTarget(QC.Range))
+                        target.IsValidTargetLS(QC.Range))
                     {
                         Orbwalker.SetAttack(true);
                         QC.Cast();
@@ -691,19 +695,19 @@ namespace D_Nidalee
                 if (IsCougar)
                 {
                     if (WC.IsReady() && Config.Item("UseWComboCougar").GetValue<bool>() &&
-                        target.IsValidTarget(WC.Range))
+                        target.IsValidTargetLS(WC.Range))
                     {
                         WC.Cast(target.ServerPosition);
                     }
 
                     if (EC.IsReady() && Config.Item("UseEComboCougar").GetValue<bool>() &&
-                       target.IsValidTarget(EC.Range))
+                       target.IsValidTargetLS(EC.Range))
                     {
                         EC.Cast(target.ServerPosition);
                     }
 
                     if (QC.IsReady() && Config.Item("UseQComboCougar").GetValue<bool>() &&
-                        target.IsValidTarget(QC.Range))
+                        target.IsValidTargetLS(QC.Range))
                     {
                         Orbwalker.SetAttack(true);
                         QC.Cast();
@@ -779,33 +783,33 @@ namespace D_Nidalee
                 var iArchangelmyhp = Player.Health <=
                                      (Player.MaxHealth * (Config.Item("Archangelmyhp").GetValue<Slider>().Value) / 100);
 
-                if (hero.IsValidTarget(450) && iBilge && (iBilgeEnemyhp || iBilgemyhp) && _bilge.IsReady())
+                if (hero.IsValidTargetLS(450) && iBilge && (iBilgeEnemyhp || iBilgemyhp) && _bilge.IsReady())
                 {
                     _bilge.Cast(hero);
                 }
 
-                if (hero.IsValidTarget(450) && iBlade && (iBladeEnemyhp || iBlademyhp) && _blade.IsReady())
+                if (hero.IsValidTargetLS(450) && iBlade && (iBladeEnemyhp || iBlademyhp) && _blade.IsReady())
                 {
                     _blade.Cast(hero);
                 }
 
-                if (iTiamat && _tiamat.IsReady() && hero.IsValidTarget(_tiamat.Range))
+                if (iTiamat && _tiamat.IsReady() && hero.IsValidTargetLS(_tiamat.Range))
                 {
                     _tiamat.Cast();
                 }
 
-                if (iHydra && _hydra.IsReady() && hero.IsValidTarget(_hydra.Range))
+                if (iHydra && _hydra.IsReady() && hero.IsValidTargetLS(_hydra.Range))
                 {
                     _hydra.Cast();
                 }
 
-                if (iOmenenemys && iOmen && _rand.IsReady() && hero.IsValidTarget(450))
+                if (iOmenenemys && iOmen && _rand.IsReady() && hero.IsValidTargetLS(450))
                 {
                     Utility.DelayAction.Add(100, () => _rand.Cast());
                 }
 
                 if (iRighteousenemys && iRighteous && Items.HasItem(3800) && Items.CanUseItem(3800) &&
-                    hero.IsValidTarget(Config.Item("Righteousenemysrange").GetValue<Slider>().Value))
+                    hero.IsValidTargetLS(Config.Item("Righteousenemysrange").GetValue<Slider>().Value))
                 {
                     Items.UseItem(3800);
                 }
@@ -815,7 +819,7 @@ namespace D_Nidalee
                     _zhonya.Cast();
                 }
 
-                if (iArchange && iArchangelmyhp && _archangel.IsReady() && Utility.CountEnemiesInRange(800) > 0)
+                if (iArchange && iArchangelmyhp && _archangel.IsReady() && Utility.CountEnemiesInRangeLS(800) > 0)
                 {
                     _archangel.Cast();
                 }
@@ -847,9 +851,9 @@ namespace D_Nidalee
             var iusemppotion = Config.Item("usemppotions").GetValue<bool>();
             var iusepotionmp = Player.Mana
                                <= (Player.MaxMana * (Config.Item("usepotionmp").GetValue<Slider>().Value) / 100);
-            if (Player.InFountain() || ObjectManager.Player.HasBuff("Recall")) return;
+            if (Player.InFountainLS() || ObjectManager.Player.HasBuff("Recall")) return;
 
-            if (Utility.CountEnemiesInRange(800) > 0
+            if (Utility.CountEnemiesInRangeLS(800) > 0
                 || (mobs.Count > 0 && Config.Item("ActiveJungle").GetValue<KeyBind>().Active && _smite != null))
             {
                 if (iusepotionhp && iusehppotion
@@ -919,7 +923,7 @@ namespace D_Nidalee
             var target = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
             if (target != null)
             {
-                if (Q.IsReady() && IsHuman && target.IsValidTarget(Q.Range) &&
+                if (Q.IsReady() && IsHuman && target.IsValidTargetLS(Q.Range) &&
                     Config.Item("UseQHarass").GetValue<bool>())
                 {
                     var prediction = Q.GetPrediction(target);
@@ -927,7 +931,7 @@ namespace D_Nidalee
                         Q.Cast(prediction.CastPosition);
                 }
 
-                if (W.IsReady() && IsHuman && target.IsValidTarget(W.Range) &&
+                if (W.IsReady() && IsHuman && target.IsValidTargetLS(W.Range) &&
                     Config.Item("UseWHarass").GetValue<bool>())
                 {
                     W.Cast(target);
@@ -952,19 +956,19 @@ namespace D_Nidalee
                 var Minion = allMinions[0];
                 if (IsCougar)
                 {
-                    if (QC.IsReady() && Cougarq && Minion.IsValidTarget(QC.Range))
+                    if (QC.IsReady() && Cougarq && Minion.IsValidTargetLS(QC.Range))
                     {
                         QC.Cast();
                     }
 
-                    if (EC.IsReady() && Cougare && Minion.IsValidTarget(EC.Range))
+                    if (EC.IsReady() && Cougare && Minion.IsValidTargetLS(EC.Range))
                     {
                         EC.Cast(Minion.ServerPosition);
                     }
 
                     foreach (var Minio in allMinions)
                     {
-                        if (WC.IsReady() && Cougarw && Player.Distance(Minion) > 200f && Minion.IsValidTarget(WC.Range))
+                        if (WC.IsReady() && Cougarw && Player.Distance(Minion) > 200f && Minion.IsValidTargetLS(WC.Range))
                         {
                             WC.Cast(Minio.ServerPosition);
                         }
@@ -1052,7 +1056,7 @@ namespace D_Nidalee
 
                 if (IsCougar)
                 {
-                    if (Cougarq && mob.IsValidTarget(QC.Range) && QC.IsReady())
+                    if (Cougarq && mob.IsValidTargetLS(QC.Range) && QC.IsReady())
                     {
                         QC.Cast();
                     }
@@ -1060,13 +1064,13 @@ namespace D_Nidalee
                     foreach (var Minion in mobs)
                     {
                         WC.Range = Minion.HasBuff("nidaleepassivehunted") ? 730 : 375;
-                        if (Cougarw && Minion.IsValidTarget(WC.Range) && WC.IsReady())
+                        if (Cougarw && Minion.IsValidTargetLS(WC.Range) && WC.IsReady())
                         {
                             WC.Cast(Minion.ServerPosition);
                         }
                     }
 
-                    if (Cougare && mob.IsValidTarget(EC.Range) && EC.IsReady())
+                    if (Cougare && mob.IsValidTargetLS(EC.Range) && EC.IsReady())
                     {
                         EC.Cast(mob.ServerPosition);
                     }
@@ -1088,7 +1092,7 @@ namespace D_Nidalee
                 var health = Player.Health
                              <= Player.MaxHealth * Config.Item("HPercent").GetValue<Slider>().Value / 100;
                 var mana = Player.Mana >= Player.MaxMana * Config.Item("MPPercent").GetValue<Slider>().Value / 100;
-                if (Player.HasBuff("Recall") || Player.InFountain()) return;
+                if (Player.HasBuff("Recall") || Player.InFountainLS()) return;
                 if (E.IsReady() && health)
                 {
                     if (IsHuman && mana)
@@ -1113,7 +1117,7 @@ namespace D_Nidalee
             var useQ = Config.Item("UseQLH").GetValue<bool>();
             foreach (var minion in allMinions)
             {
-                if (Q.IsReady() && IsHuman && useQ && minion.IsValidTarget(Q.Range) &&
+                if (Q.IsReady() && IsHuman && useQ && minion.IsValidTargetLS(Q.Range) &&
                     minion.Health <= 0.95 * Player.GetSpellDamage(minion, SpellSlot.Q))
                 {
                     Q.Cast(minion);
@@ -1123,15 +1127,15 @@ namespace D_Nidalee
 
         private static void AllyAutoE()
         {
-            foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsAlly && !hero.IsMe && hero.IsValidTarget(E.Range)))
+            foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsAlly && !hero.IsMe && hero.IsValidTargetLS(E.Range)))
             {
                 var forms = Config.Item("AutoSwitchform").GetValue<bool>();
                 var mana = Player.Mana >= Player.MaxMana * Config.Item("MPPercent").GetValue<Slider>().Value / 100;
-                if (Player.HasBuff("Recall") || hero.HasBuff("Recall") || hero.InFountain()) return;
+                if (Player.HasBuff("Recall") || hero.HasBuff("Recall") || hero.InFountainLS()) return;
                 if (E.IsReady() &&
                     hero.Health / hero.MaxHealth * 100 <= Config.Item("AllyHPercent").GetValue<Slider>().Value &&
-                    Utility.CountEnemiesInRange(1200) > 0 &&
-                    hero.IsValidTarget(E.Range))
+                    Utility.CountEnemiesInRangeLS(1200) > 0 &&
+                    hero.IsValidTargetLS(E.Range))
                 {
                     if (IsHuman && mana)
                     {
@@ -1153,7 +1157,7 @@ namespace D_Nidalee
                 var igniteDmg = Player.GetSummonerSpellDamage(hero, Damage.SummonerSpell.Ignite);
                 var qhDmg = Player.GetSpellDamage(hero, SpellSlot.Q);
 
-                if (hero.IsValidTarget(600) && Config.Item("UseIgnite").GetValue<bool>() &&
+                if (hero.IsValidTargetLS(600) && Config.Item("UseIgnite").GetValue<bool>() &&
                     IgniteSlot != SpellSlot.Unknown &&
                     Player.Spellbook.CanUseSpell(IgniteSlot) == SpellState.Ready)
                 {
@@ -1163,7 +1167,7 @@ namespace D_Nidalee
                     }
                 }
 
-                if (Q.IsReady() && hero.IsValidTarget(Q.Range) && IsHuman &&
+                if (Q.IsReady() && hero.IsValidTargetLS(Q.Range) && IsHuman &&
                     Config.Item("UseQKs").GetValue<bool>())
                 {
                     var predictionq = Q.GetPrediction(hero);

@@ -5,8 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -98,7 +99,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         return;
                     }
 
-                    if (Q.IsReady() && t.IsValidTarget(Q.Range) && Player.Mana > RMANA + QMANA)
+                    if (Q.IsReady() && t.IsValidTargetLS(Q.Range) && Player.Mana > RMANA + QMANA)
                     {
                         Qr.Cast(t);
                         args.Process = false;
@@ -106,7 +107,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     }
 
                 }
-                if(R.IsReady() && t.IsValidTarget())
+                if(R.IsReady() && t.IsValidTargetLS())
                      Rtime = Game.Time;
                 
             }
@@ -117,11 +118,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             var t = gapcloser.Sender;
 
-            if (Q.IsReady() && Config.Item("gapQ", true).GetValue<bool>() && t.IsValidTarget(Q.Range))
+            if (Q.IsReady() && Config.Item("gapQ", true).GetValue<bool>() && t.IsValidTargetLS(Q.Range))
             {
                 Q.Cast(gapcloser.End);
             }
-            else if (R.IsReady() && Config.Item("gapcloser" + gapcloser.Sender.ChampionName).GetValue<bool>() && t.IsValidTarget(R.Range))
+            else if (R.IsReady() && Config.Item("gapcloser" + gapcloser.Sender.ChampionName).GetValue<bool>() && t.IsValidTargetLS(R.Range))
             {
                 R.CastOnUnit(t);
             }
@@ -132,7 +133,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (!Config.Item("intQ", true).GetValue<bool>() || !Q.IsReady())
                 return;
 
-            if (t.IsValidTarget(Q.Range))
+            if (t.IsValidTargetLS(Q.Range))
             {
                  Q.Cast(t);
             }
@@ -162,7 +163,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (R.IsReady() && Config.Item("useR", true).GetValue<KeyBind>().Active)
             {
                 var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Magical);
-                if (t.IsValidTarget(R.Range) && Config.Item("Ron" + t.ChampionName).GetValue<bool>())
+                if (t.IsValidTargetLS(R.Range) && Config.Item("Ron" + t.ChampionName).GetValue<bool>())
                 {
                     R.CastOnUnit(t);
                     return;
@@ -188,14 +189,14 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 var qDmg = OktwCommon.GetKsDamage(t, Q) + BonusDmg(t);
 
                 if (qDmg > t.Health)
                     Program.CastSpell(Q, t);
 
-                if (R.IsReady() && t.IsValidTarget(R.Range))
+                if (R.IsReady() && t.IsValidTargetLS(R.Range))
                 {
                     return;
                 }
@@ -206,7 +207,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                 if (Player.Mana > RMANA + QMANA)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Q.Cast(enemy);
                 }
             }
@@ -222,7 +223,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicW()
         {
             var t = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 var qDmg = Q.GetDamage(t);
                 var wDmg = OktwCommon.GetKsDamage(t, W) + BonusDmg(t) ;
@@ -249,7 +250,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicE()
         {
             var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 var eDmg = OktwCommon.GetKsDamage(t, E) + BonusDmg(t);
                 var wDmg = W.GetDamage(t);
@@ -270,7 +271,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 var allMinions = Cache.GetMinions(Player.ServerPosition, E.Range);
                 if (allMinions.Count >= Config.Item("LCminions", true).GetValue<Slider>().Value)
                 {
-                    foreach (var minion in allMinions.Where(minion => minion.IsValidTarget(E.Range) && minion.Health < E.GetDamage(minion) && !minion.HasBuff("AlZaharMaleficVisions")))
+                    foreach (var minion in allMinions.Where(minion => minion.IsValidTargetLS(E.Range) && minion.Health < E.GetDamage(minion) && !minion.HasBuff("AlZaharMaleficVisions")))
                     {
                         E.CastOnUnit(minion);
                     }
@@ -279,10 +280,10 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             else if (Program.Farm && Player.Mana > RMANA + EMANA + WMANA + EMANA && Config.Item("harrasEminion", true).GetValue<bool>())
             {
                 var te = TargetSelector.GetTarget(E.Range + 400, TargetSelector.DamageType.Magical);
-                if (te.IsValidTarget())
+                if (te.IsValidTargetLS())
                 {
                     var allMinions = Cache.GetMinions(Player.ServerPosition, E.Range);
-                    foreach (var minion in allMinions.Where(minion => minion.IsValidTarget(E.Range) && minion.Health < E.GetDamage(minion) && te.Distance(minion.Position) < 500 && !minion.HasBuff("AlZaharMaleficVisions")))
+                    foreach (var minion in allMinions.Where(minion => minion.IsValidTargetLS(E.Range) && minion.Health < E.GetDamage(minion) && te.Distance(minion.Position) < 500 && !minion.HasBuff("AlZaharMaleficVisions")))
                     {
                         E.CastOnUnit(minion);
                     }
@@ -297,7 +298,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Player.CountEnemiesInRange(800) < 3)
                 return;
 
-            foreach (var t in HeroManager.Enemies.Where(t => t.IsValidTarget(R.Range)))
+            foreach (var t in HeroManager.Enemies.Where(t => t.IsValidTargetLS(R.Range)))
             { 
                 var totalComboDamage = R.GetDamage(t) * 2.5;
 

@@ -10,7 +10,7 @@ E:\Git dev\TEST\BETA\Hoola Riven\bin\Release\LeagueSharp.Data.dll
 E:\Git dev\TEST\BETA\Hoola Riven\bin\Release\EloBuddy.SDK.dll
 E:\Git dev\TEST\BETA\Hoola Riven\bin\Release\EloBuddy.Sandbox.dll
 E:\Git dev\TEST\BETA\Hoola Riven\bin\Release\Newtonsoft.Json.dll
-E:\Git dev\TEST\BETA\Hoola Riven\bin\Release\LeagueSharp.Common.pdb
-E:\Git dev\TEST\BETA\Hoola Riven\bin\Release\LeagueSharp.Data.pdb
 E:\Git dev\TEST\BETA\Hoola Riven\obj\Debug\Hoola Riven.exe
 E:\Git dev\TEST\BETA\Hoola Riven\obj\Debug\Hoola Riven.pdb
+E:\Git dev\TEST\BETA\Hoola Riven\bin\Release\LeagueSharp.Common.pdb
+E:\Git dev\TEST\BETA\Hoola Riven\bin\Release\LeagueSharp.Data.pdb

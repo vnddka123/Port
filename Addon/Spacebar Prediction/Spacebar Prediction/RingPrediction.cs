@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
-//using EloBuddy.SDK;
+using EloBuddy.SDK;
 
 namespace SPrediction
 {
@@ -54,7 +54,7 @@ namespace SPrediction
         /// <returns>Prediction result as <see cref="Prediction.Result"/></returns>
         public static Prediction.Result GetPrediction(AIHeroClient target, float radius, float ringRadius, float delay, float missileSpeed, float range, bool collisionable)
         {
-            return GetPrediction(target, radius, ringRadius, delay, missileSpeed, range, collisionable, target.GetWaypoints(), target.AvgMovChangeTime(), target.LastMovChangeTime(), target.AvgPathLenght(), ObjectManager.Player.ServerPosition.To2D(), ObjectManager.Player.ServerPosition.To2D());
+            return GetPrediction(target, radius, ringRadius, delay, missileSpeed, range, collisionable, target.GetWaypointsLS(), target.AvgMovChangeTime(), target.LastMovChangeTime(), target.AvgPathLenght(), ObjectManager.Player.ServerPosition.To2D(), ObjectManager.Player.ServerPosition.To2D());
         }
 
         /// <summary>

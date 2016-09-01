@@ -5,8 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SharpDX.Direct3D9;
 using SebbyLib;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Core
 {
@@ -319,14 +320,14 @@ namespace OneKeyToWin_AIO_Sebby.Core
                     }
                 }
                 
-                if (enemy.IsValidTarget() && ShowClicks)
+                if (enemy.IsValidTargetLS() && ShowClicks)
                 {
-                    var lastWaypoint = enemy.GetWaypoints().Last().To3D();
+                    var lastWaypoint = enemy.GetWaypointsLS().Last().To3D();
                     if (lastWaypoint.IsValid())
                     {
                         drawLine(enemy.Position, lastWaypoint, 1, System.Drawing.Color.Red);
                             
-                        if (enemy.GetWaypoints().Count() > 1)
+                        if (enemy.GetWaypointsLS().Count() > 1)
                             DrawFontTextMap(Tahoma13, enemy.ChampionName, lastWaypoint, SharpDX.Color.WhiteSmoke);
                     }
                 }
@@ -465,7 +466,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                 var Distance = Player.Distance(enemy.Position);
                 if (GankAlert && !enemy.IsDead && Distance > 1200)
                 {
-                    var wts = Drawing.WorldToScreen(ObjectManager.Player.Position.Extend(enemy.Position, positionGang));
+                    var wts = Drawing.WorldToScreen(ObjectManager.Player.Position.Extend(enemy.Position, positionGang).To3DWorld());
 
                     wts[0] = wts[0];
                     wts[1] = wts[1] + 15;
@@ -481,10 +482,10 @@ namespace OneKeyToWin_AIO_Sebby.Core
                         
                         if (Program.jungler.NetworkId == enemy.NetworkId)
                         {
-                            DrawFontTextMap(Tahoma13B, enemy.ChampionName, Player.Position.Extend(enemy.Position, positionGang), SharpDX.Color.OrangeRed);
+                            DrawFontTextMap(Tahoma13B, enemy.ChampionName, Player.Position.Extend(enemy.Position, positionGang).To3DWorld(), SharpDX.Color.OrangeRed);
                         }
                         else
-                            DrawFontTextMap(Tahoma13, enemy.ChampionName, Player.Position.Extend(enemy.Position, positionGang), SharpDX.Color.White);
+                            DrawFontTextMap(Tahoma13, enemy.ChampionName, Player.Position.Extend(enemy.Position, positionGang).To3DWorld(), SharpDX.Color.White);
 
                     }
                     else 
@@ -494,15 +495,15 @@ namespace OneKeyToWin_AIO_Sebby.Core
                         {
                             if (Game.Time - ChampionInfoOne.LastVisableTime > 3 && Game.Time - ChampionInfoOne.LastVisableTime < 7)
                             {
-                                DrawFontTextMap(Tahoma13, "SS " + enemy.ChampionName + " " + (int)(Game.Time - ChampionInfoOne.LastVisableTime), Player.Position.Extend(enemy.Position, positionGang), SharpDX.Color.Yellow);
+                                DrawFontTextMap(Tahoma13, "SS " + enemy.ChampionName + " " + (int)(Game.Time - ChampionInfoOne.LastVisableTime), Player.Position.Extend(enemy.Position, positionGang).To3DWorld(), SharpDX.Color.Yellow);
                             }
                             else
                             {
-                                DrawFontTextMap(Tahoma13, "SS " + enemy.ChampionName + " " + (int)(Game.Time - ChampionInfoOne.LastVisableTime), Player.Position.Extend(enemy.Position, positionGang), SharpDX.Color.Yellow);
+                                DrawFontTextMap(Tahoma13, "SS " + enemy.ChampionName + " " + (int)(Game.Time - ChampionInfoOne.LastVisableTime), Player.Position.Extend(enemy.Position, positionGang).To3DWorld(), SharpDX.Color.Yellow);
                             }
                         }
                         else
-                            DrawFontTextMap(Tahoma13, "SS " + enemy.ChampionName, Player.Position.Extend(enemy.Position, positionGang), SharpDX.Color.Yellow);
+                            DrawFontTextMap(Tahoma13, "SS " + enemy.ChampionName, Player.Position.Extend(enemy.Position, positionGang).To3DWorld(), SharpDX.Color.Yellow);
                     }
   
 
@@ -510,23 +511,23 @@ namespace OneKeyToWin_AIO_Sebby.Core
                     {
                         if (Program.jungler.NetworkId == enemy.NetworkId)
                         {
-                            drawLine(Player.Position.Extend(enemy.Position, 100), Player.Position.Extend(enemy.Position, positionGang - 100), (int)((3500 - Distance) / 280), System.Drawing.Color.Crimson);
+                            drawLine(Player.Position.Extend(enemy.Position, 100).To3DWorld(), Player.Position.Extend(enemy.Position, positionGang - 100).To3DWorld(), (int)((3500 - Distance) / 280), System.Drawing.Color.Crimson);
                         }
                         else
                         {
                             if(enemy.IsFacing(Player))
-                                drawLine(Player.Position.Extend(enemy.Position, 100), Player.Position.Extend(enemy.Position, positionGang - 100), (int)((3500 - Distance) / 280), System.Drawing.Color.Orange);
+                                drawLine(Player.Position.Extend(enemy.Position, 100).To3DWorld(), Player.Position.Extend(enemy.Position, positionGang - 100).To3DWorld(), (int)((3500 - Distance) / 280), System.Drawing.Color.Orange);
                             else
-                                drawLine(Player.Position.Extend(enemy.Position, 100), Player.Position.Extend(enemy.Position, positionGang - 100), (int)((3500 - Distance) / 280), System.Drawing.Color.Gold);
+                                drawLine(Player.Position.Extend(enemy.Position, 100).To3DWorld(), Player.Position.Extend(enemy.Position, positionGang - 100).To3DWorld(), (int)((3500 - Distance) / 280), System.Drawing.Color.Gold);
                         }
                     }
-                    else if (Distance < 3500 && !enemy.IsVisible && !Render.OnScreen(Drawing.WorldToScreen(Player.Position.Extend(enemy.Position, Distance + 500))))
+                    else if (Distance < 3500 && !enemy.IsVisible && !Render.OnScreen(Drawing.WorldToScreen(Player.Position.Extend(enemy.Position, Distance + 500).To3DWorld())))
                     {
                         var need = Core.OKTWtracker.ChampionInfoList.Find(x => x.NetworkId == enemy.NetworkId);
                         if (need != null && Game.Time - need.LastVisableTime < 5)
                         {
                             
-                            drawLine(Player.Position.Extend(enemy.Position, 100), Player.Position.Extend(enemy.Position, positionGang - 100), (int)((3500 - Distance) / 300), System.Drawing.Color.Gray);
+                            drawLine(Player.Position.Extend(enemy.Position, 100).To3DWorld(), Player.Position.Extend(enemy.Position, positionGang - 100).To3DWorld(), (int)((3500 - Distance) / 300), System.Drawing.Color.Gray);
                         }
                     }
                 }

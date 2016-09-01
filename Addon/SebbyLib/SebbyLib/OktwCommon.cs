@@ -4,7 +4,7 @@ using System.Linq;
 using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
-//using EloBuddy.SDK;
+using EloBuddy.SDK;
 
 namespace SebbyLib
 {
@@ -105,7 +105,7 @@ namespace SebbyLib
 
         public static bool IsSpellHeroCollision(AIHeroClient t, LeagueSharp.Common.Spell QWER, int extraWith = 50)
         {
-            foreach (var hero in HeroManager.Enemies.FindAll(hero => hero.IsValidTarget(QWER.Range + QWER.Width, true, QWER.RangeCheckFrom) && t.NetworkId != hero.NetworkId))
+            foreach (var hero in HeroManager.Enemies.FindAll(hero => hero.IsValidTargetLS(QWER.Range + QWER.Width, true, QWER.RangeCheckFrom) && t.NetworkId != hero.NetworkId))
             {
                 var prediction = QWER.GetPrediction(hero);
                 var powCalc = Math.Pow((QWER.Width + extraWith + hero.BoundingRadius), 2);
@@ -124,7 +124,7 @@ namespace SebbyLib
 
         public static bool CanHitSkillShot(Obj_AI_Base target, GameObjectProcessSpellCastEventArgs args)
         {
-            if (args.Target == null && target.IsValidTarget(float.MaxValue, false))
+            if (args.Target == null && target.IsValidTargetLS(float.MaxValue, false))
             {
 
                 var pred = Prediction.Prediction.GetPrediction(target, 0.25f).CastPosition;
@@ -327,7 +327,7 @@ namespace SebbyLib
             {
                 if (args.Target.Type == GameObjectType.AIHeroClient && !sender.IsMelee && args.Target.Team != sender.Team)
                 {
-                    IncomingDamageList.Add(new UnitIncomingDamage { Damage = sender.GetSpellDamage((Obj_AI_Base)args.Target, args.SData.Name), TargetNetworkId = args.Target.NetworkId, Time = Game.Time, Skillshot = false });
+                    IncomingDamageList.Add(new UnitIncomingDamage { Damage = sender.GetSpellDamageLS((Obj_AI_Base)args.Target, args.SData.Name), TargetNetworkId = args.Target.NetworkId, Time = Game.Time, Skillshot = false });
                 }
             }
         }
@@ -351,7 +351,7 @@ namespace SebbyLib
             {
                 if (targed.Type == GameObjectType.AIHeroClient && targed.Team != sender.Team && sender.IsMelee)
                 {
-                    IncomingDamageList.Add(new UnitIncomingDamage { Damage = sender.GetSpellDamage(targed, args.SData.Name), TargetNetworkId = args.Target.NetworkId, Time = Game.Time, Skillshot = false });
+                    IncomingDamageList.Add(new UnitIncomingDamage { Damage = sender.GetSpellDamageLS(targed, args.SData.Name), TargetNetworkId = args.Target.NetworkId, Time = Game.Time, Skillshot = false });
                 }
             }
             else
@@ -360,7 +360,7 @@ namespace SebbyLib
                 {
                     if (CanHitSkillShot(champion, args))
                     {
-                        IncomingDamageList.Add(new UnitIncomingDamage { Damage = sender.GetSpellDamage(champion, args.SData.Name), TargetNetworkId = champion.NetworkId, Time = Game.Time, Skillshot = true });
+                        IncomingDamageList.Add(new UnitIncomingDamage { Damage = sender.GetSpellDamageLS(champion, args.SData.Name), TargetNetworkId = champion.NetworkId, Time = Game.Time, Skillshot = true });
                     }
                 }
 
@@ -373,7 +373,7 @@ namespace SebbyLib
                 if (args.SData.Name == "YasuoWMovingWall")
                 {
                     yasuoWall.CastTime = Game.Time;
-                    yasuoWall.CastPosition = sender.Position.Extend(args.End, 400);
+                    yasuoWall.CastPosition = sender.Position.Extend(args.End, 400).To3DWorld();
                     yasuoWall.YasuoPosition = sender.Position;
                     yasuoWall.WallLvl = sender.Spellbook.Spells[1].Level;
                 }

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Core
 {
@@ -85,7 +86,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                 }
             }
 
-            if (Config.Item("autoBuy").GetValue<bool>() && Player.InFountain() && !ScryingOrb.IsOwned() && Player.Level >= 9 && Shop.IsOpen)
+            if (Config.Item("autoBuy").GetValue<bool>() && Player.InFountainLS() && !ScryingOrb.IsOwned() && Player.Level >= 9 && Shop.IsOpen)
             {
                 var itm = new EloBuddy.SDK.Item(ItemId.Farsight_Alteration);
                 itm.Buy();
@@ -94,7 +95,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
             if(rengar && Player.HasBuff("rengarralertsound"))
                 CastVisionWards(Player.ServerPosition);
             
-            if (Vayne != null && Vayne.IsValidTarget(1000) && Vayne.HasBuff("vaynetumblefade"))
+            if (Vayne != null && Vayne.IsValidTargetLS(1000) && Vayne.HasBuff("vaynetumblefade"))
                 CastVisionWards(Vayne.ServerPosition);
 
             AutoWardLogic();

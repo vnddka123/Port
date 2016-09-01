@@ -5,7 +5,7 @@ using System.Text;
 
 using LeagueSharp.Common;
 using SharpDX;
-//using EloBuddy.SDK;
+using EloBuddy.SDK;
 
 namespace ezEvade
 {

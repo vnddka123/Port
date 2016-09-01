@@ -22,7 +22,7 @@ using System.Linq;
 using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
-//using EloBuddy.SDK;
+using EloBuddy.SDK;
 
 namespace SPrediction
 {
@@ -68,7 +68,7 @@ namespace SPrediction
                 SpellRange = s.Range;
                 SpellCollisionable = s.Collision;
                 SpellSkillShotType = s.Type;
-                Path = Target.GetWaypoints();
+                Path = Target.GetWaypointsLS();
                 if (Target is AIHeroClient)
                 {
                     AIHeroClient t = Target as AIHeroClient;
@@ -97,7 +97,7 @@ namespace SPrediction
                 SpellRange = range;
                 SpellCollisionable = collision;
                 SpellSkillShotType = type;
-                Path = Target.GetWaypoints();
+                Path = Target.GetWaypointsLS();
                 if (Target is AIHeroClient)
                 {
                     AIHeroClient t = Target as AIHeroClient;
@@ -279,7 +279,7 @@ namespace SPrediction
         /// <returns>Prediction result as <see cref="Prediction.Result"/></returns>
         internal static Result GetPrediction(AIHeroClient target, float width, float delay, float missileSpeed, float range, bool collisionable, SkillshotType type)
         {
-            return GetPrediction(target, width, delay, missileSpeed, range, collisionable, type, target.GetWaypoints(), target.AvgMovChangeTime(), target.LastMovChangeTime(), target.AvgPathLenght(), target.LastAngleDiff(), ObjectManager.Player.ServerPosition.To2D(), ObjectManager.Player.ServerPosition.To2D());
+            return GetPrediction(target, width, delay, missileSpeed, range, collisionable, type, target.GetWaypointsLS(), target.AvgMovChangeTime(), target.LastMovChangeTime(), target.AvgPathLenght(), target.LastAngleDiff(), ObjectManager.Player.ServerPosition.To2D(), ObjectManager.Player.ServerPosition.To2D());
         }
 
         /// <summary>
@@ -379,7 +379,7 @@ namespace SPrediction
             finally
             {
                 //check if movement changed while prediction calculations
-                if (!target.GetWaypoints().SequenceEqual(path))
+                if (!target.GetWaypointsLS().SequenceEqual(path))
                     result.HitChance = HitChance.Medium;
             }
         }
@@ -419,7 +419,7 @@ namespace SPrediction
             }
             else
             {
-                result = GetPrediction(target, width, delay, missileSpeed, range, collisionable, type, target.GetWaypoints(), 0, 0, 0, 0, from, rangeCheckFrom);
+                result = GetPrediction(target, width, delay, missileSpeed, range, collisionable, type, target.GetWaypointsLS(), 0, 0, 0, 0, from, rangeCheckFrom);
                 result.Lock(false);
             }
             return result;
@@ -628,7 +628,7 @@ namespace SPrediction
         /// <returns></returns>
         public static Vector2 GetFastUnitPosition(Obj_AI_Base target, float delay, float missileSpeed = 0, Vector2? from = null, float distanceSet = 0)
         {
-            List<Vector2> path = target.GetWaypoints();
+            List<Vector2> path = target.GetWaypointsLS();
             if (from == null)
                 from = ObjectManager.Player.ServerPosition.To2D();
 

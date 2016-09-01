@@ -8,7 +8,7 @@ using Color = System.Drawing.Color;
 using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
-//using EloBuddy.SDK;
+using EloBuddy.SDK;
 
 namespace ezEvade
 {

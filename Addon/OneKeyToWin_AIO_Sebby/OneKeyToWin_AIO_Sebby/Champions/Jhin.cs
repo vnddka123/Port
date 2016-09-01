@@ -6,8 +6,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -126,7 +127,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 rPosCast = args.End;
             }
-            if (!E.IsReady() || sender.IsMinion || !sender.IsEnemy || !Config.Item("Espell", true).GetValue<bool>() || !sender.IsValid<AIHeroClient>() || !sender.IsValidTarget(E.Range))
+            if (!E.IsReady() || sender.IsMinion || !sender.IsEnemy || !Config.Item("Espell", true).GetValue<bool>() || !sender.IsValid<AIHeroClient>() || !sender.IsValidTargetLS(E.Range))
                 return;
 
             var foundSpell = Spells.Find(x => args.SData.Name.ToLower() == x);
@@ -141,7 +142,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (E.IsReady() && Player.Mana > RMANA + WMANA)
             {
                 var t = gapcloser.Sender;
-                if (t.IsValidTarget(W.Range) && Config.Item("EGCchampion" + t.ChampionName, true).GetValue<bool>())
+                if (t.IsValidTargetLS(W.Range) && Config.Item("EGCchampion" + t.ChampionName, true).GetValue<bool>())
                 {
                     if (Config.Item("EmodeGC", true).GetValue<StringList>().SelectedIndex == 0)
                         E.Cast(gapcloser.End);
@@ -198,7 +199,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 R.Range = 3500;
 
             var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 rPosLast = R.GetPrediction(t).CastPosition;
                 if (Config.Item("useR", true).GetValue<KeyBind>().Active && !IsCastingR)
@@ -221,7 +222,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         R.Cast(t);
                     else
                     {
-                        foreach(var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(R.Range) && InCone(t.ServerPosition)).OrderBy(enemy => enemy.Health))
+                        foreach(var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(R.Range) && InCone(t.ServerPosition)).OrderBy(enemy => enemy.Health))
                         {
                             R.Cast(t);
                             rPosLast = R.GetPrediction(enemy).CastPosition;
@@ -240,7 +241,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicW()
         {
             var t = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 var wDmg = GetWdmg(t);
                 if (wDmg > t.Health - OktwCommon.GetIncomingDamage(t))
@@ -271,7 +272,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         W.CastIfWillHit(t, 2);
                     if (Config.Item("autoWcc", true).GetValue<bool>())
                     {
-                        foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && (!OktwCommon.CanMove(enemy) || enemy.HasBuff("jhinespotteddebuff"))))
+                        foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(W.Range) && (!OktwCommon.CanMove(enemy) || enemy.HasBuff("jhinespotteddebuff"))))
                             W.Cast(enemy);
                     }
                 }
@@ -294,12 +295,12 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (!trapPos.IsZero)
                     E.Cast(trapPos);
 
-                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
+                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(E.Range) && !OktwCommon.CanMove(enemy)))
                     E.Cast(enemy);
             }
 
             var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget() && Config.Item("EmodeCombo", true).GetValue<StringList>().SelectedIndex != 2)
+            if (t.IsValidTargetLS() && Config.Item("EmodeCombo", true).GetValue<StringList>().SelectedIndex != 2)
             {
                 if (Program.Combo && !Player.Spellbook.IsAutoAttacking)
                 {
@@ -346,11 +347,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (Config.Item("Qminion", true).GetValue<bool>())
                 {
                     var t = TargetSelector.GetTarget(Q.Range + 300, TargetSelector.DamageType.Physical);
-                    if (t.IsValidTarget() )
+                    if (t.IsValidTargetLS() )
                     {
                         
-                        var minion = Cache.GetMinions(LeagueSharp.Common.Prediction.GetPrediction(t, 0.1f).CastPosition, 300).Where(minion2 => minion2.IsValidTarget(Q.Range)).OrderBy(x => x.Distance(t)).FirstOrDefault();
-                        if (minion.IsValidTarget())
+                        var minion = Cache.GetMinions(LeagueSharp.Common.Prediction.GetPrediction(t, 0.1f).CastPosition, 300).Where(minion2 => minion2.IsValidTargetLS(Q.Range)).OrderBy(x => x.Distance(t)).FirstOrDefault();
+                        if (minion.IsValidTargetLS())
                         {
                             if (t.Health < GetQdmg(t))
                                 Q.CastOnUnit(minion);
@@ -380,7 +381,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (minionList.Count >= Config.Item("LCminions", true).GetValue<Slider>().Value)
                 {
                     var minionAttack = minionList.FirstOrDefault(x => Q.GetDamage(x) > LeagueSharp.Common.HealthPrediction.GetHealthPrediction(x, 300));
-                    if(minionAttack.IsValidTarget())
+                    if(minionAttack.IsValidTargetLS())
                         Q.CastOnUnit(minionAttack);
                 }
                     

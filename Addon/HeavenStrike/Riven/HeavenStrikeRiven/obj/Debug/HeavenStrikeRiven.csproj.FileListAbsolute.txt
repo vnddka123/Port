@@ -29,3 +29,18 @@ E:\Git dev\TEST\BETA\HeavenStrike\Riven\HeavenStrikeRiven\bin\Release\LeagueShar
 E:\Git dev\TEST\BETA\HeavenStrike\Riven\HeavenStrikeRiven\obj\Debug\HeavenStrikeRiven.csprojResolveAssemblyReference.cache
 E:\Git dev\TEST\BETA\HeavenStrike\Riven\HeavenStrikeRiven\obj\Debug\HeavenStrikeRiven.exe
 E:\Git dev\TEST\BETA\HeavenStrike\Riven\HeavenStrikeRiven\obj\Debug\HeavenStrikeRiven.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\HeavenStrike\Riven\HeavenStrikeRiven\bin\Release\HeavenStrikeRiven.exe.config
+C:\Users\Administrator\Documents\GitHub\Port\Addon\HeavenStrike\Riven\HeavenStrikeRiven\obj\Debug\HeavenStrikeRiven.exe
+C:\Users\Administrator\Documents\GitHub\Port\Addon\HeavenStrike\Riven\HeavenStrikeRiven\obj\Debug\HeavenStrikeRiven.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\HeavenStrike\Riven\HeavenStrikeRiven\bin\Release\HeavenStrikeRiven.exe
+C:\Users\Administrator\Documents\GitHub\Port\Addon\HeavenStrike\Riven\HeavenStrikeRiven\bin\Release\HeavenStrikeRiven.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\HeavenStrike\Riven\HeavenStrikeRiven\bin\Release\EloBuddy.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\HeavenStrike\Riven\HeavenStrikeRiven\bin\Release\EloBuddy.SDK.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\HeavenStrike\Riven\HeavenStrikeRiven\bin\Release\LeagueSharp.Common.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\HeavenStrike\Riven\HeavenStrikeRiven\bin\Release\SharpDX.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\HeavenStrike\Riven\HeavenStrikeRiven\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\HeavenStrike\Riven\HeavenStrikeRiven\bin\Release\Newtonsoft.Json.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\HeavenStrike\Riven\HeavenStrikeRiven\bin\Release\LeagueSharp.Data.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\HeavenStrike\Riven\HeavenStrikeRiven\bin\Release\EloBuddy.Sandbox.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\HeavenStrike\Riven\HeavenStrikeRiven\bin\Release\LeagueSharp.Common.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\HeavenStrike\Riven\HeavenStrikeRiven\bin\Release\LeagueSharp.Data.pdb

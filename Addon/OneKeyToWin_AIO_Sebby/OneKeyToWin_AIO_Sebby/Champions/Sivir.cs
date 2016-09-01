@@ -5,8 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby
 {
@@ -82,7 +83,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         public void Orbwalker_AfterAttack(AttackableUnit unit, AttackableUnit target)
         {
-            if (W.IsReady() && !Program.None && target.IsValidTarget())
+            if (W.IsReady() && !Program.None && target.IsValidTargetLS())
             {
                 var t = target as AIHeroClient;
                 if (t != null)
@@ -99,7 +100,7 @@ namespace OneKeyToWin_AIO_Sebby
                 else
                 {
                     var t2 = TargetSelector.GetTarget(900, TargetSelector.DamageType.Physical);
-                    if (t2.IsValidTarget() && Config.Item("harasW", true).GetValue<bool>() && Config.Item("haras" + t2.ChampionName).GetValue<bool>() && !Player.UnderTurret(true) && Player.Mana > RMANA + WMANA + QMANA && t2.Distance(target.Position) < 500)
+                    if (t2.IsValidTargetLS() && Config.Item("harasW", true).GetValue<bool>() && Config.Item("haras" + t2.ChampionName).GetValue<bool>() && !Player.UnderTurret(true) && Player.Mana > RMANA + WMANA + QMANA && t2.Distance(target.Position) < 500)
                     {
                         W.Cast();
                     }
@@ -139,7 +140,7 @@ namespace OneKeyToWin_AIO_Sebby
         private void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
             var Target = gapcloser.Sender;
-            if (Config.Item("AGC", true).GetValue<bool>() && E.IsReady() && Target.IsValidTarget(5000))
+            if (Config.Item("AGC", true).GetValue<bool>() && E.IsReady() && Target.IsValidTargetLS(5000))
                 E.Cast();
             return;
         }
@@ -170,7 +171,7 @@ namespace OneKeyToWin_AIO_Sebby
         private void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 missileManager.Target = t;
                 var qDmg = OktwCommon.GetKsDamage(t,Q) * 1.9;
@@ -195,7 +196,7 @@ namespace OneKeyToWin_AIO_Sebby
                 }
                 if (Player.Mana > RMANA + WMANA)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Q.Cast(enemy);
                 }
             }
@@ -212,7 +213,7 @@ namespace OneKeyToWin_AIO_Sebby
             var t = TargetSelector.GetTarget(800, TargetSelector.DamageType.Physical);
             if (Player.CountEnemiesInRange(800f) > 2)
                 R.Cast();
-            else if (t.IsValidTarget() && Orbwalker.GetTarget() == null && Program.Combo && Player.GetAutoAttackDamage(t) * 2 > t.Health && !Q.IsReady() && t.CountEnemiesInRange(800) < 3)
+            else if (t.IsValidTargetLS() && Orbwalker.GetTarget() == null && Program.Combo && Player.GetAutoAttackDamage(t) * 2 > t.Health && !Q.IsReady() && t.CountEnemiesInRange(800) < 3)
                 R.Cast();
         }
 
@@ -309,7 +310,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (Config.Item("noti", true).GetValue<bool>())
             {
                 var target = TargetSelector.GetTarget(1500, TargetSelector.DamageType.Physical);
-                if (target.IsValidTarget())
+                if (target.IsValidTargetLS())
                 {
                     if (Q.GetDamage(target) * 2 > target.Health)
                     {

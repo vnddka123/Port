@@ -4,7 +4,7 @@ using System.Linq;
 using SharpDX;
 using EloBuddy;
 using LeagueSharp.Common;
-//using EloBuddy.SDK;
+using EloBuddy.SDK;
 
 namespace SebbyLib.Movement
 {
@@ -231,7 +231,7 @@ namespace SebbyLib.Movement
         {
             PredictionOutput result = null;
 
-            if (!input.Unit.IsValidTarget(float.MaxValue, false))
+            if (!input.Unit.IsValidTargetLS(float.MaxValue, false))
             {
                 return new PredictionOutput();
             }
@@ -345,7 +345,7 @@ namespace SebbyLib.Movement
                 return HitChance.Medium;
             }
 
-            var wayPoint = input.Unit.GetWaypoints().Last().To3D();
+            var wayPoint = input.Unit.GetWaypointsLS().Last().To3D();
             var delay = input.Delay
                         + (Math.Abs(input.Speed - float.MaxValue) > float.Epsilon
                                ? hero.Distance(input.From) / input.Speed
@@ -504,13 +504,13 @@ namespace SebbyLib.Movement
                 //input.Delay /= 2;
                 speed /= 1.5f;
             }
-            return GetPositionOnPath(input, input.Unit.GetWaypoints(), speed);
+            return GetPositionOnPath(input, input.Unit.GetWaypointsLS(), speed);
         }
 
         internal static double GetAngle(Vector3 from, Obj_AI_Base target)
         {
             var C = target.ServerPosition.To2D();
-            var A = target.GetWaypoints().Last();
+            var A = target.GetWaypointsLS().Last();
 
             if (C == A)
                 return 60;
@@ -602,7 +602,7 @@ namespace SebbyLib.Movement
                     }
                 }
 
-                path = path.CutPath(d);
+                path = path.CutPathLS(d);
                 var tT = 0f;
                 for (var i = 0; i < path.Count - 1; i++)
                 {
@@ -684,7 +684,7 @@ namespace SebbyLib.Movement
                 HeroManager.Enemies.FindAll(
                     h =>
                         h.NetworkId != originalUnit.NetworkId &&
-                        h.IsValidTarget((input.Range + 200 + input.RealRadius), true, input.RangeCheckFrom)))
+                        h.IsValidTargetLS((input.Range + 200 + input.RealRadius), true, input.RangeCheckFrom)))
             {
                 input.Unit = enemy;
                 var prediction = Prediction.GetPrediction(input, false, false);
@@ -842,7 +842,7 @@ namespace SebbyLib.Movement
             internal static Vector2[] GetCandidates(Vector2 from, Vector2 to, float radius, float range)
             {
                 var middlePoint = (from + to) / 2;
-                var intersections = LeagueSharp.Common.Geometry.CircleCircleIntersection(
+                var intersections = LeagueSharp.Common.Geometry.CircleCircleIntersectionLS(
                     from, middlePoint, radius, from.Distance(middlePoint));
 
                 if (intersections.Length > 1)
@@ -1037,7 +1037,7 @@ namespace SebbyLib.Movement
                             foreach (var hero in
                                 HeroManager.Enemies.FindAll(
                                     hero =>
-                                        hero.IsValidTarget(
+                                        hero.IsValidTargetLS(
                                             Math.Min(input.Range + input.Radius + 100, 2000), true, input.RangeCheckFrom))
                                 )
                             {

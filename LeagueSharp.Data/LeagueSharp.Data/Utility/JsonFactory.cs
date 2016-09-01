@@ -3,7 +3,7 @@
     using System;
     using System.IO;
     using System.Reflection;
-    using System.Security.Permissions;
+    //using System.Security.Permissions;
 
     using LeagueSharp.Data.Utility.Resources;
 

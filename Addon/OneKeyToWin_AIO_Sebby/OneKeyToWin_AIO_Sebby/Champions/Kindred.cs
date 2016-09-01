@@ -4,8 +4,9 @@ using EloBuddy;
 using LeagueSharp.Common;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -72,7 +73,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Program.Combo && Player.Mana > RMANA + QMANA && Q.IsReady() && Config.Item("autoQ", true).GetValue<bool>())
             {
                 var t = target as AIHeroClient;
-                if (t.IsValidTarget())
+                if (t.IsValidTargetLS())
                 {
                     var dashPos = Dash.CastDash();
                     if (!dashPos.IsZero && dashPos.CountEnemiesInRange(500) > 0)
@@ -127,7 +128,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicW()
         {
             var t = TargetSelector.GetTarget(650, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget() && !Q.IsReady())
+            if (t.IsValidTargetLS() && !Q.IsReady())
             {
                 if (Program.Combo && Player.Mana > RMANA + WMANA)
                     W.Cast();
@@ -135,7 +136,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     W.Cast();
             }
             var tks = TargetSelector.GetTarget(1600, TargetSelector.DamageType.Physical);
-            if (tks.IsValidTarget())
+            if (tks.IsValidTargetLS())
             {
                 if (W.GetDamage(tks) * 3 > tks.Health - OktwCommon.GetIncomingDamage(tks))
                     W.Cast();
@@ -158,7 +159,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = torb as AIHeroClient;
 
-                if (t.IsValidTarget(E.Range))
+                if (t.IsValidTargetLS(E.Range))
                 {
                     if (!Config.Item("Euse" + t.ChampionName, true).GetValue<bool>())
                         return;

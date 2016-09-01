@@ -5,10 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpDX;
 using EloBuddy;
+using EloBuddy.SDK;
 using ItemData = LeagueSharp.Common.Data.ItemData;
 using LeagueSharp.Common;
 using Color = System.Drawing.Color;
 using Utility = LeagueSharp.Common.Utility;
+using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+
 
 namespace HeavenStrikeRiven
 {
@@ -181,12 +185,12 @@ namespace HeavenStrikeRiven
         {
             if (Player.IsDead) return;
             var target = TargetSelector.GetSelectedTarget();
-            if (target != null && target.IsValidTarget() && !target.IsZombie)
+            if (target != null && target.IsValidTargetLS() && !target.IsZombie)
                 Render.Circle.DrawCircle(target.Position, 150, Color.AliceBlue, 15);
             if (Menu.Item("Draw dmg text").GetValue<bool>())
                 foreach (var hero in HeroManager.Enemies)
                 {
-                    if (hero.IsValidTarget(1500))
+                    if (hero.IsValidTargetLS(1500))
                     {
                         var dmg = totaldame(hero) > hero.Health ? 100 : totaldame(hero) * 100 / hero.Health;
                         var dmg1 = Math.Round(dmg);
@@ -332,17 +336,17 @@ namespace HeavenStrikeRiven
         }
         public static void interrupt(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (sender.IsEnemy && W.IsReady() && sender.IsValidTarget() && !sender.IsZombie && Menu.Item("W interrupt").GetValue<bool>())
+            if (sender.IsEnemy && W.IsReady() && sender.IsValidTargetLS() && !sender.IsZombie && Menu.Item("W interrupt").GetValue<bool>())
             {
-                if (sender.IsValidTarget(125 + Player.BoundingRadius + sender.BoundingRadius)) W.Cast();
+                if (sender.IsValidTargetLS(125 + Player.BoundingRadius + sender.BoundingRadius)) W.Cast();
             }
         }
         public static void gapcloser(ActiveGapcloser gapcloser)
         {
             var target = gapcloser.Sender;
-            if (target.IsEnemy && W.IsReady() && target.IsValidTarget() && !target.IsZombie && Menu.Item("W gapcloser").GetValue<bool>())
+            if (target.IsEnemy && W.IsReady() && target.IsValidTargetLS() && !target.IsZombie && Menu.Item("W gapcloser").GetValue<bool>())
             {
-                if (target.IsValidTarget(125 + Player.BoundingRadius + target.BoundingRadius)) W.Cast();
+                if (target.IsValidTargetLS(125 + Player.BoundingRadius + target.BoundingRadius)) W.Cast();
             }
         }
         private static void oncast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
@@ -416,7 +420,7 @@ namespace HeavenStrikeRiven
         }
         private static void Cancel()
         {
-            EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.Extend(Game.CursorPos, Player.Distance(Game.CursorPos) + 500));
+            EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.Extend(Game.CursorPos, Player.Distance(Game.CursorPos) + 500).To3DWorld());
             if (Qstrangecancel) EloBuddy.Player.DoEmote(Emote.Dance);
         }
         private static void OnAttack(AttackableUnit unit, AttackableUnit target)
@@ -431,7 +435,7 @@ namespace HeavenStrikeRiven
         private static void Burst()
         {
             var target = TargetSelector.GetSelectedTarget();
-            if (target != null && target.IsValidTarget() && !target.IsZombie)
+            if (target != null && target.IsValidTargetLS() && !target.IsZombie)
             {
                 if (Orbwalking.InAutoAttackRange(target) && Orbwalking.CanMove(Windup + 20) && (!R.IsReady() || (R.IsReady() && R.Instance.Name == R1name)))
                 {
@@ -454,7 +458,7 @@ namespace HeavenStrikeRiven
                     && flash != SpellSlot.Unknown && flash.IsReady() && FlashBurst && Player.Distance(target.Position) <= 425 + Player.BoundingRadius + target.BoundingRadius)
                 {
                     if (R.IsReady() && R.Instance.Name == R1name) R.Cast();
-                    var x = Player.Distance(target.Position) > 425 ? Player.Position.Extend(target.Position, 425) : target.Position;
+                    var x = Player.Distance(target.Position) > 425 ? Player.Position.Extend(target.Position, 425).To3DWorld() : target.Position;
                     Player.Spellbook.CastSpell(flash, x);
                     Utility.DelayAction.Add(350, () => CastItem());
                     Utility.DelayAction.Add(400, () => W.Cast());
@@ -476,16 +480,16 @@ namespace HeavenStrikeRiven
         {
             if (Q.IsReady() && Orbwalking.CanMove(Windup + 20) && QGap && !Player.IsDashing())
             {
-                var target = HeroManager.Enemies.Where(x => x.IsValidTarget()).OrderByDescending(x => 1 - x.Distance(Player.Position)).FirstOrDefault();
-                if (!Player.IsDashing() && Utils.GameTimeTickCount - cQ >= 1000 && target.IsValidTarget())
+                var target = HeroManager.Enemies.Where(x => x.IsValidTargetLS()).OrderByDescending(x => 1 - x.Distance(Player.Position)).FirstOrDefault();
+                if (!Player.IsDashing() && Utils.GameTimeTickCount - cQ >= 1000 && target.IsValidTargetLS())
                 {
-                    if (Prediction.GetPrediction(Player, 100).UnitPosition.Distance(target.Position) <= Player.Distance(target.Position))
+                    if (LeagueSharp.Common.Prediction.GetPrediction(Player, 100).UnitPosition.Distance(target.Position) <= Player.Distance(target.Position))
                         Q.Cast(Game.CursorPos);
                 }
             }
             if (W.IsReady() && Orbwalking.CanMove(Windup + 20))
             {
-                var targets = HeroManager.Enemies.Where(x => x.IsValidTarget() && !x.IsZombie && InWRange(x));
+                var targets = HeroManager.Enemies.Where(x => x.IsValidTargetLS() && !x.IsZombie && InWRange(x));
                 if (targets.Any())
                 {
                     W.Cast();
@@ -494,7 +498,7 @@ namespace HeavenStrikeRiven
             if (E.IsReady() && Orbwalking.CanMove(Windup + 20) && Ecombo)
             {
                 var target = TargetSelector.GetTarget(325 + Player.AttackRange + 70, TargetSelector.DamageType.Physical);
-                if (target.IsValidTarget() && !target.IsZombie)
+                if (target.IsValidTargetLS() && !target.IsZombie)
                 {
                     E.Cast(target.Position);
                 }
@@ -506,14 +510,14 @@ namespace HeavenStrikeRiven
                     if (Rcomboalways)
                     {
                         var target = TargetSelector.GetTarget(325 + Player.AttackRange + 70, TargetSelector.DamageType.Physical);
-                        if (target.IsValidTarget() && !target.IsZombie && E.IsReady())
+                        if (target.IsValidTargetLS() && !target.IsZombie && E.IsReady())
                         {
                             R.Cast();
                         }
                         else
                         {
                             var targetR = TargetSelector.GetTarget(200 + Player.BoundingRadius + 70, TargetSelector.DamageType.Physical);
-                            if (targetR.IsValidTarget() && !targetR.IsZombie)
+                            if (targetR.IsValidTargetLS() && !targetR.IsZombie)
                             {
                                 R.Cast();
                             }
@@ -523,11 +527,11 @@ namespace HeavenStrikeRiven
                     if (RcomboKillable)
                     {
                         var targetR = TargetSelector.GetTarget(200 + Player.BoundingRadius + 70, TargetSelector.DamageType.Physical);
-                        if (targetR.IsValidTarget() && !targetR.IsZombie && basicdmg(targetR) <= targetR.Health && totaldame(targetR) >= targetR.Health)
+                        if (targetR.IsValidTargetLS() && !targetR.IsZombie && basicdmg(targetR) <= targetR.Health && totaldame(targetR) >= targetR.Health)
                         {
                             R.Cast();
                         }
-                        if (targetR.IsValidTarget() && !targetR.IsZombie && Player.CountEnemiesInRange(800) >= 2)
+                        if (targetR.IsValidTargetLS() && !targetR.IsZombie && Player.CountEnemiesInRange(800) >= 2)
                         {
                             R.Cast();
                         }
@@ -537,7 +541,7 @@ namespace HeavenStrikeRiven
                 {
                     if (R2comboKS)
                     {
-                        var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(R.Range) && !x.IsZombie);
+                        var targets = HeroManager.Enemies.Where(x => x.IsValidTargetLS(R.Range) && !x.IsZombie);
                         foreach (var target in targets)
                         {
                             if (target.Health < Rdame(target, target.Health))
@@ -546,7 +550,7 @@ namespace HeavenStrikeRiven
                     }
                     if (R2comboMaxdmg)
                     {
-                        var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(R.Range) && !x.IsZombie);
+                        var targets = HeroManager.Enemies.Where(x => x.IsValidTargetLS(R.Range) && !x.IsZombie);
                         foreach (var target in targets)
                         {
                             if (target.Health / target.MaxHealth <= 0.25)
@@ -556,13 +560,13 @@ namespace HeavenStrikeRiven
                     if (R2BadaoStyle && !Q.IsReady())
                     {
                         var target = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
-                        if (target.IsValidTarget() && !target.IsZombie)
+                        if (target.IsValidTargetLS() && !target.IsZombie)
                         {
                             R.Cast(target);
                         }
                     }
                     var targethits = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
-                    if (targethits.IsValidTarget() && !targethits.IsZombie)
+                    if (targethits.IsValidTargetLS() && !targethits.IsZombie)
                         R.CastIfWillHit(targethits, 4);
 
                 }
@@ -593,7 +597,7 @@ namespace HeavenStrikeRiven
         {
             if (W.IsReady() && Orbwalking.CanMove(Windup + 20))
             {
-                var targets = HeroManager.Enemies.Where(x => x.IsValidTarget() && !x.IsZombie && InWRange(x));
+                var targets = HeroManager.Enemies.Where(x => x.IsValidTargetLS() && !x.IsZombie && InWRange(x));
                 if (targets.Any())
                 {
                     W.Cast();
@@ -602,7 +606,7 @@ namespace HeavenStrikeRiven
             if (E.IsReady() && Orbwalking.CanMove(Windup + 20))
             {
                 var target = TargetSelector.GetTarget(325 + Player.AttackRange + 70, TargetSelector.DamageType.Physical);
-                if (target.IsValidTarget() && !target.IsZombie)
+                if (target.IsValidTargetLS() && !target.IsZombie)
                 {
                     E.Cast(target.Position);
                 }
@@ -611,7 +615,7 @@ namespace HeavenStrikeRiven
         private static void SolvingWaitList()
         {
             if (!Q.IsReady(1000)) Qstate = 1;
-            if (waitQ == true && TTTar.IsValidTarget())
+            if (waitQ == true && TTTar.IsValidTargetLS())
             {
                 //if (Utils.GameTimeTickCount - cQ >= 350 + Player.AttackCastDelay - Game.Ping / 2)
                 if (Orbwalker.ActiveMode != Orbwalking.OrbwalkingMode.LaneClear)
@@ -631,7 +635,7 @@ namespace HeavenStrikeRiven
                 if (Environment.TickCount - waitQTick >= 500 + Game.Ping / 2)
                     waitQ = false;
             }
-            if (waitR2 == true && TTTar.IsValidTarget())
+            if (waitR2 == true && TTTar.IsValidTargetLS())
             {
                 R.Cast(TTTar as Obj_AI_Base);
                 if (Environment.TickCount - waitQTick >= 500 + Game.Ping / 2)
@@ -780,18 +784,18 @@ namespace HeavenStrikeRiven
                 var missinghealth = (target.MaxHealth - health) / target.MaxHealth > 0.75 ? 0.75 : (target.MaxHealth - health) / target.MaxHealth;
                 var pluspercent = missinghealth * (8 / 3);
                 var rawdmg = new double[] { 80, 120, 160 }[R.Level - 1] + 0.6 * Player.FlatPhysicalDamageMod;
-                return Player.CalcDamage(target, Damage.DamageType.Physical, rawdmg * (1 + pluspercent));
+                return Player.CalcDamage(target, LeagueSharp.Common.Damage.DamageType.Physical, rawdmg * (1 + pluspercent));
             }
             else return 0;
         }
 
         public static void walljump()
         {
-            var x = Player.Position.Extend(Game.CursorPos, 100);
-            var y = Player.Position.Extend(Game.CursorPos, 30);
+            var x = Player.Position.Extend(Game.CursorPos, 100).To3DWorld();
+            var y = Player.Position.Extend(Game.CursorPos, 30).To3DWorld();
             if (!x.IsWall() && !y.IsWall()) EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, x);
             if (x.IsWall() && !y.IsWall()) EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, y);
-            if (Prediction.GetPrediction(Player, 500).UnitPosition.Distance(Player.Position) <= 10) { Q.Cast(Game.CursorPos); }
+            if (LeagueSharp.Common.Prediction.GetPrediction(Player, 500).UnitPosition.Distance(Player.Position) <= 10) { Q.Cast(Game.CursorPos); }
         }
         public static void flee()
         {

@@ -3,8 +3,9 @@ using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Core
 {
@@ -97,7 +98,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
 
         public Vector3 CalculateReturnPos()
         {
-            if (Missile != null && Missile.IsValid && Target.IsValidTarget())
+            if (Missile != null && Missile.IsValid && Target.IsValidTargetLS())
             {
                 var finishPosition = Missile.Position;
                 if (Missile.SData.Name.ToLower() == MissileName.ToLower())
@@ -115,7 +116,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                     if (misToTarget < QWER.Range && misToTarget > 50)
                     {
                         var cursorToTarget = Target.Distance(Player.Position.Extend(Game.CursorPos, 100));
-                        var ext = finishPosition.Extend(Target.ServerPosition, cursorToTarget + misToTarget);
+                        var ext = finishPosition.Extend(Target.ServerPosition, cursorToTarget + misToTarget).To3DWorld();
 
                         if (ext.Distance(Player.Position) < 800 && ext.CountEnemiesInRange(400) < 2)
                         {

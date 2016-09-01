@@ -6,8 +6,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby
 {
@@ -90,7 +91,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void Interrupter2_OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (Config.Item("autoRinter", true).GetValue<bool>() && R.IsReady() && sender.IsValidTarget(2500))
+            if (Config.Item("autoRinter", true).GetValue<bool>() && R.IsReady() && sender.IsValidTargetLS(2500))
                 R.Cast(sender);
         }
 
@@ -99,7 +100,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (R.IsReady() )
             {
                 var Target = gapcloser.Sender;
-                if (Target.IsValidTarget(800) && Config.Item("GapCloser" + Target.ChampionName).GetValue<bool>())
+                if (Target.IsValidTargetLS(800) && Config.Item("GapCloser" + Target.ChampionName).GetValue<bool>())
                 {
                     R.Cast(Target.ServerPosition, true);
                     Program.debug("AGC " + Target.ChampionName);
@@ -128,7 +129,7 @@ namespace OneKeyToWin_AIO_Sebby
 
                 if (CastR2)
                 {
-                    if (RTarget.IsValidTarget())
+                    if (RTarget.IsValidTargetLS())
                         Program.CastSpell(R, RTarget);
                 }
 
@@ -138,13 +139,13 @@ namespace OneKeyToWin_AIO_Sebby
                     if (Config.Item("Semi-manual", true).GetValue<StringList>().SelectedIndex == 0)
                     { 
                         var t = TargetSelector.GetTarget(1800, TargetSelector.DamageType.Physical);
-                        if (t.IsValidTarget())
+                        if (t.IsValidTargetLS())
                             Program.CastSpell(R, t);
                     }
                     else if(Config.Item("Semi-manual", true).GetValue<StringList>().SelectedIndex == 1)
                     {
                         var t = HeroManager.Enemies.OrderBy(x => x.Distance(Player)).FirstOrDefault();
-                        if (t.IsValidTarget())
+                        if (t.IsValidTargetLS())
                             Program.CastSpell(R, t);
                     }
                 }
@@ -195,12 +196,12 @@ namespace OneKeyToWin_AIO_Sebby
         {
             if (Config.Item("autoR", true).GetValue<bool>())
             {
-                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(2000) && OktwCommon.ValidUlt(target)))
+                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(2000) && OktwCommon.ValidUlt(target)))
                 {
                     var rDmg = OktwCommon.GetKsDamage(target, R);
-                    if (Program.Combo && target.CountEnemiesInRange(250) > 2 && Config.Item("autoRaoe", true).GetValue<bool>() && target.IsValidTarget(1500))
+                    if (Program.Combo && target.CountEnemiesInRange(250) > 2 && Config.Item("autoRaoe", true).GetValue<bool>() && target.IsValidTargetLS(1500))
                         Program.CastSpell(R, target);
-                    if(Program.Combo && target.IsValidTarget(W.Range)  && Config.Item("Rkscombo", true).GetValue<bool>() &&  Player.GetAutoAttackDamage(target) * 5 + rDmg + W.GetDamage(target) > target.Health && target.HasBuffOfType(BuffType.Slow) && !OktwCommon.IsSpellHeroCollision(target, R))
+                    if(Program.Combo && target.IsValidTargetLS(W.Range)  && Config.Item("Rkscombo", true).GetValue<bool>() &&  Player.GetAutoAttackDamage(target) * 5 + rDmg + W.GetDamage(target) > target.Health && target.HasBuffOfType(BuffType.Slow) && !OktwCommon.IsSpellHeroCollision(target, R))
                         Program.CastSpell(R, target);
                     if (rDmg > target.Health && target.CountAlliesInRange(600) == 0 && target.Distance(Player.Position) > 1000)
                     {
@@ -212,7 +213,7 @@ namespace OneKeyToWin_AIO_Sebby
 
             if (Player.HealthPercent < 50)
             {
-                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(300) && enemy.IsMelee && Config.Item("GapCloser" + enemy.ChampionName).GetValue<bool>() && OktwCommon.ValidUlt(enemy)))
+                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(300) && enemy.IsMelee && Config.Item("GapCloser" + enemy.ChampionName).GetValue<bool>() && OktwCommon.ValidUlt(enemy)))
                 {
                     R.Cast(enemy);
                     Program.debug("R Meele");
@@ -223,7 +224,7 @@ namespace OneKeyToWin_AIO_Sebby
         private void LogicQ()
         {
             var t = Orbwalker.GetTarget() as AIHeroClient;
-            if (t != null && t.IsValidTarget())
+            if (t != null && t.IsValidTargetLS())
             {
                 if (Program.Combo && (Player.Mana > RMANA + QMANA || t.Health < 5 * Player.GetAutoAttackDamage(Player)))
                     Q.Cast();
@@ -248,13 +249,13 @@ namespace OneKeyToWin_AIO_Sebby
             if (t == null)
                 t = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Physical);
 
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (Program.Combo && Player.Mana > RMANA + WMANA)
                     CastW(t);
                 else if (Program.Farm  && Player.Mana > RMANA + WMANA + QMANA + WMANA && OktwCommon.CanHarras())
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && Config.Item("haras" + t.ChampionName).GetValue<bool>()))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(W.Range) && Config.Item("haras" + t.ChampionName).GetValue<bool>()))
                         CastW(t);
                 }
                 else if (OktwCommon.GetKsDamage(t, W) > t.Health)
@@ -264,7 +265,7 @@ namespace OneKeyToWin_AIO_Sebby
 
                 if (!Program.None && Player.Mana > RMANA + WMANA)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(W.Range) && !OktwCommon.CanMove(enemy)))
                         W.Cast(t);
                 }
             }

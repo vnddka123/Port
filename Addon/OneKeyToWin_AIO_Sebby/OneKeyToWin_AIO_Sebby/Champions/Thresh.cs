@@ -5,8 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -120,7 +121,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void Interrupter2_OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (E.IsReady() && Config.Item("inter", true).GetValue<bool>() && sender.IsValidTarget(E.Range))
+            if (E.IsReady() && Config.Item("inter", true).GetValue<bool>() && sender.IsValidTargetLS(E.Range))
             {
                 E.Cast(sender.ServerPosition);
             }
@@ -141,11 +142,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     CastW(allyHero.Position);
                 }
             }
-            if (E.IsReady() && Config.Item("Gap", true).GetValue<bool>() && gapcloser.Sender.IsValidTarget(E.Range))
+            if (E.IsReady() && Config.Item("Gap", true).GetValue<bool>() && gapcloser.Sender.IsValidTargetLS(E.Range))
             {
                 E.Cast(gapcloser.Sender);
             }
-            else if (Q.IsReady() && Config.Item("GapQ", true).GetValue<bool>() && gapcloser.Sender.IsValidTarget(Q.Range))
+            else if (Q.IsReady() && Config.Item("GapQ", true).GetValue<bool>() && gapcloser.Sender.IsValidTargetLS(Q.Range))
             {
                 Q.Cast(gapcloser.Sender);
             }
@@ -165,7 +166,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             else
                 LeagueSharp.Common.Orbwalking.Attack = true;
 
-            if (Marked.IsValidTarget())
+            if (Marked.IsValidTargetLS())
             {
                 if (Program.Combo)
                 {
@@ -203,7 +204,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicE()
         {
             var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget()  && OktwCommon.CanMove(t))
+            if (t.IsValidTargetLS()  && OktwCommon.CanMove(t))
             {
                 
                 if (Program.Combo)
@@ -243,11 +244,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = TargetSelector.GetTarget(maxGrab, TargetSelector.DamageType.Physical);
 
-                if (t.IsValidTarget(maxGrab) && !t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && Config.Item("grab" + t.ChampionName).GetValue<bool>() && Player.Distance(t.ServerPosition) > minGrab)
+                if (t.IsValidTargetLS(maxGrab) && !t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && Config.Item("grab" + t.ChampionName).GetValue<bool>() && Player.Distance(t.ServerPosition) > minGrab)
                     Program.CastSpell(Q, t);
             }
 
-            foreach (var t in HeroManager.Enemies.Where(t => t.IsValidTarget(maxGrab) && Config.Item("grab" + t.ChampionName).GetValue<bool>() && Player.Distance(t.ServerPosition) > minGrab))
+            foreach (var t in HeroManager.Enemies.Where(t => t.IsValidTargetLS(maxGrab) && Config.Item("grab" + t.ChampionName).GetValue<bool>() && Player.Distance(t.ServerPosition) > minGrab))
             {
                 if (!t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) )
                 {
@@ -272,7 +273,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicR()
         {
             bool rKs = Config.Item("rKs", true).GetValue<bool>();
-            foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(R.Range) && target.HasBuff("rocketgrab2")))
+            foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(R.Range) && target.HasBuff("rocketgrab2")))
             {
                 if (rKs && R.GetDamage(target) > target.Health)
                     R.Cast();
@@ -282,7 +283,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Config.Item("comboR", true).GetValue<bool>())
             {
                 var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
-                if (t.IsValidTarget() && ((Player.UnderTurret(false) && !Player.UnderTurret(true)) || Program.Combo))
+                if (t.IsValidTargetLS() && ((Player.UnderTurret(false) && !Player.UnderTurret(true)) || Program.Combo))
                 {
                     if (Player.Distance(t.ServerPosition) > Player.Distance(t.Position))
                         R.Cast();

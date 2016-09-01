@@ -3,8 +3,9 @@ using EloBuddy;
 using LeagueSharp.Common;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -56,7 +57,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
 
-                if (t.IsValidTarget())
+                if (t.IsValidTargetLS())
                 {
                     R.CastIfWillHit(t, 2, true);
                     R.Cast(t, true, true);
@@ -88,7 +89,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicE()
         {
            var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
-           if (t.IsValidTarget())
+           if (t.IsValidTargetLS())
            {
                E.CastOnUnit(t);
            }
@@ -105,7 +106,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicR()
         {
             var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 var poutput = R.GetPrediction(t, true);
 

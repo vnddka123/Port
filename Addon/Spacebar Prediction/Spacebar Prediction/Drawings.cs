@@ -74,7 +74,7 @@ namespace SPrediction
             {
                 foreach (AIHeroClient enemy in HeroManager.Enemies)
                 {
-                    var waypoints = enemy.GetWaypoints();
+                    var waypoints = enemy.GetWaypointsLS();
                     if (waypoints != null && waypoints.Count > 1)
                     {
                         for (int i = 0; i < waypoints.Count - 1; i++)
@@ -85,7 +85,7 @@ namespace SPrediction
                         }
 
                         Vector2 pos = Drawing.WorldToScreen(waypoints[waypoints.Count - 1].To3D());
-                        Drawing.DrawText(pos.X, pos.Y, System.Drawing.Color.Black, (waypoints.PathLength() / enemy.MoveSpeed).ToString("0.00")); //arrival time
+                        Drawing.DrawText(pos.X, pos.Y, System.Drawing.Color.Black, (waypoints.PathLengthLS() / enemy.MoveSpeed).ToString("0.00")); //arrival time
                     }
                 }
 

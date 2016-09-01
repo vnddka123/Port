@@ -23,3 +23,8 @@ E:\Git dev\TEST\OKTW\Spacebar Prediction\Spacebar Prediction\bin\Debug\Newtonsof
 E:\Git dev\TEST\OKTW\Spacebar Prediction\Spacebar Prediction\obj\Debug\Spacebar Prediction.csprojResolveAssemblyReference.cache
 E:\Git dev\TEST\OKTW\Spacebar Prediction\Spacebar Prediction\obj\Debug\SPrediction.dll
 E:\Git dev\TEST\OKTW\Spacebar Prediction\Spacebar Prediction\obj\Debug\SPrediction.pdb
+E:\Git dev\TEST\OKTW\Spacebar Prediction\Spacebar Prediction\bin\Debug\LeagueSharp.Common.dll
+E:\Git dev\TEST\OKTW\Spacebar Prediction\Spacebar Prediction\bin\Debug\EloBuddy.Sandbox.dll
+E:\Git dev\TEST\OKTW\Spacebar Prediction\Spacebar Prediction\bin\Debug\LeagueSharp.Data.dll
+E:\Git dev\TEST\OKTW\Spacebar Prediction\Spacebar Prediction\bin\Debug\LeagueSharp.Common.pdb
+E:\Git dev\TEST\OKTW\Spacebar Prediction\Spacebar Prediction\bin\Debug\LeagueSharp.Data.pdb

@@ -1,5 +1,6 @@
 ﻿using System;
 using EloBuddy;
+using EloBuddy.SDK;
 using LeagueSharp.Common;
 using SharpDX;
 
@@ -92,7 +93,7 @@ namespace TophSharp
         public static void PotionCast(int id, string buff)
         {
             if (ItemReady(id) && !PlayerBuff(buff)
-                && !Player.IsRecalling() && !Player.InFountain()
+                && !Player.IsRecalling() && !Player.InFountainLS()
                 && Player.CountEnemiesInRange(700) >= 1)
             {
                 SelfCast(id);

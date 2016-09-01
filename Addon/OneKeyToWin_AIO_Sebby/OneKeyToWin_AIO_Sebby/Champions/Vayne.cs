@@ -6,8 +6,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby
 {
@@ -41,7 +42,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void Interrupter2_OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (E.IsReady() && sender.IsValidTarget(E.Range))
+            if (E.IsReady() && sender.IsValidTargetLS(E.Range))
                 E.Cast(sender);
         }
         private void LoadMenuOKTW()
@@ -78,7 +79,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             var target = gapcloser.Sender;
 
-            if (E.IsReady() && target.IsValidTarget(E.Range) && Config.Item("gapE", true).GetValue<bool>() && Config.Item("gap" + target.ChampionName).GetValue<bool>())
+            if (E.IsReady() && target.IsValidTargetLS(E.Range) && Config.Item("gapE", true).GetValue<bool>() && Config.Item("gap" + target.ChampionName).GetValue<bool>())
                 E.Cast(target);
         }
 
@@ -94,7 +95,7 @@ namespace OneKeyToWin_AIO_Sebby
 
             if (GetWStacks(t) < 2 && args.Target.Health > 5 * Player.GetAutoAttackDamage(t))
             {
-                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(800) && GetWStacks(target) == 2))
+                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(800) && GetWStacks(target) == 2))
                 {
                     if (LeagueSharp.Common.Orbwalking.InAutoAttackRange(target) && args.Target.Health > 3 * Player.GetAutoAttackDamage(target))
                     {
@@ -141,7 +142,7 @@ namespace OneKeyToWin_AIO_Sebby
 
             if (m != null && Q.IsReady() && Program.Farm && Config.Item("farmQ", true).GetValue<bool>())
             {
-                var dashPosition = Player.Position.Extend(Game.CursorPos, Q.Range);
+                var dashPosition = Player.Position.Extend(Game.CursorPos, Q.Range).To3DWorld();
                 if (!Dash.IsGoodPosition(dashPosition))
                     return;
                 
@@ -170,12 +171,12 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            var dashPosition = Player.Position.Extend(Game.CursorPos, Q.Range);
+            var dashPosition = Player.Position.Extend(Game.CursorPos, Q.Range).To3DWorld();
 
             if (E.IsReady())
             {
                 var ksTarget = Player;
-                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(E.Range) && target.Path.Count() < 2 ))
+                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(E.Range) && target.Path.Count() < 2 ))
                 {
                     if (CondemnCheck(Player.ServerPosition, target) && Config.Item("stun" + target.ChampionName).GetValue<bool>() )
                         E.Cast(target);
@@ -201,7 +202,7 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     var t = TargetSelector.GetTarget(900, TargetSelector.DamageType.Physical);
 
-                    if (t.IsValidTarget() && !LeagueSharp.Common.Orbwalking.InAutoAttackRange(t) && t.Position.Distance(Game.CursorPos) < t.Position.Distance(Player.Position) &&  !t.IsFacing(Player))
+                    if (t.IsValidTargetLS() && !LeagueSharp.Common.Orbwalking.InAutoAttackRange(t) && t.Position.Distance(Game.CursorPos) < t.Position.Distance(Player.Position) &&  !t.IsFacing(Player))
                     {
                         var dashPos = Dash.CastDash();
                         if (!dashPos.IsZero)
@@ -215,9 +216,9 @@ namespace OneKeyToWin_AIO_Sebby
             if (Program.LagFree(2))
             {
                 AIHeroClient bestEnemy = null;
-                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(E.Range)))
+                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(E.Range)))
                 {
-                    if (target.IsValidTarget(250) && target.IsMelee)
+                    if (target.IsValidTargetLS(250) && target.IsMelee)
                     {
                         if (Q.IsReady() && Config.Item("autoQ", true).GetValue<bool>())
                         {
@@ -269,7 +270,7 @@ namespace OneKeyToWin_AIO_Sebby
 
             int radius = 250;
             var start2 = target.ServerPosition;
-            var end2 = prepos.CastPosition.Extend(fromPosition, -pushDistance);
+            var end2 = prepos.CastPosition.Extend(fromPosition, -pushDistance).To3DWorld();
 
             Vector2 start = start2.To2D();
             Vector2 end = end2.To2D();
@@ -333,13 +334,13 @@ namespace OneKeyToWin_AIO_Sebby
 
             if (E.IsReady() && Config.Item("eRange2", true).GetValue<bool>())
             {
-                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(800)))
+                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(800)))
                 {
                     var poutput = E.GetPrediction(target);
 
                     var pushDistance = 460;
 
-                    var finalPosition = poutput.CastPosition.Extend(Player.ServerPosition, -pushDistance);
+                    var finalPosition = poutput.CastPosition.Extend(Player.ServerPosition, -pushDistance).To3DWorld();
                     if (finalPosition.IsWall())
                         Render.Circle.DrawCircle(finalPosition, 100, System.Drawing.Color.Red);
                     else

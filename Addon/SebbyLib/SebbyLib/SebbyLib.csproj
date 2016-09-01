@@ -59,7 +59,6 @@
     <Compile Include="HealthPrediction.cs" />
     <Compile Include="Movement.cs" />
     <Compile Include="OktwCommon.cs" />
-    <Compile Include="Orbwalking.cs" />
     <Compile Include="PredictionOktw.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

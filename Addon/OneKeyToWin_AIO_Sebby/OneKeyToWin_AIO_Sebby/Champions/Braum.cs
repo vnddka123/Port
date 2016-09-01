@@ -5,8 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -111,7 +112,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (R.IsReady() && Config.Item("OnInterruptableSpell", true).GetValue<bool>())
             {
-                if (sender.IsValidTarget(R.Range))
+                if (sender.IsValidTargetLS(R.Range))
                 {
                     R.Cast(sender);
                 }
@@ -125,7 +126,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (Config.Item("useR", true).GetValue<KeyBind>().Active)
                 {
                     var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
-                    if (t.IsValidTarget())
+                    if (t.IsValidTargetLS())
                         R.Cast(t, true, true);
                 }
             }
@@ -141,23 +142,23 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             var t = TargetSelector.GetTarget(500, TargetSelector.DamageType.Physical);
 
-            if (!t.IsValidTarget())
+            if (!t.IsValidTargetLS())
                 t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
 
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (Program.Combo && Player.Mana > RMANA + QMANA)
                     Program.CastSpell(Q, t);
                 else if (Program.Farm)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && Config.Item("haras" + enemy.ChampionName).GetValue<bool>()))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Q.Range) && Config.Item("haras" + enemy.ChampionName).GetValue<bool>()))
                     {
                         Program.CastSpell(Q, enemy);
                     }
                 }
                 if (!Program.None && Player.Mana > RMANA + QMANA + EMANA)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Q.Cast(enemy, true);
                 }
             }
@@ -166,7 +167,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicR()
         {
             var rCount = Config.Item("rCount", true).GetValue<Slider>().Value;
-            foreach (var t in HeroManager.Enemies.Where(t => t.IsValidTarget(R.Range) && OktwCommon.ValidUlt(t)).OrderBy(t => t.Health))
+            foreach (var t in HeroManager.Enemies.Where(t => t.IsValidTargetLS(R.Range) && OktwCommon.ValidUlt(t)).OrderBy(t => t.Health))
             {
                 int Rmode = Config.Item("Rmode" + t.ChampionName, true).GetValue<StringList>().SelectedIndex;
 

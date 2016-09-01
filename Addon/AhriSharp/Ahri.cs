@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 using EloBuddy;
+using EloBuddy.SDK;
 using LeagueSharp.Common;
 using SharpDX;
 
-
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using Spell = LeagueSharp.Common.Spell;
 
 namespace AhriSharp
 {
@@ -190,7 +192,7 @@ namespace AhriSharp
 
             if (target != null)
             {
-                var predictedPos = Prediction.GetPrediction(target, _spellQ.Delay * 1.5f); //correct pos currently not possible with spell acceleration
+                var predictedPos = LeagueSharp.Common.Prediction.GetPrediction(target, _spellQ.Delay * 1.5f); //correct pos currently not possible with spell acceleration
                 if (predictedPos.Hitchance >= HitChance.High)
                 {
                     _spellQ.Speed = GetDynamicQSpeed(ObjectManager.Player.Distance(predictedPos.UnitPosition));

@@ -4,7 +4,7 @@ using System.Linq;
 using SharpDX;
 using EloBuddy;
 using LeagueSharp.Common;
-//using EloBuddy.SDK;
+using EloBuddy.SDK;
 
 namespace SebbyLib.Prediction
 {
@@ -231,7 +231,7 @@ namespace SebbyLib.Prediction
         {
             PredictionOutput result = null;
 
-            if (!input.Unit.IsValidTarget(float.MaxValue, false))
+            if (!input.Unit.IsValidTargetLS(float.MaxValue, false))
             {
                 return new PredictionOutput();
             }
@@ -272,7 +272,7 @@ namespace SebbyLib.Prediction
             //Normal prediction
             if (result == null)
             {
-                result = GetPositionOnPath(input, input.Unit.GetWaypoints(), input.Unit.MoveSpeed);
+                result = GetPositionOnPath(input, input.Unit.GetWaypointsLS(), input.Unit.MoveSpeed);
             }
 
             //Check if the unit position is in range
@@ -327,7 +327,7 @@ namespace SebbyLib.Prediction
             if (result.Hitchance >= HitChance.VeryHigh && input.Unit is AIHeroClient && input.Radius > 1)
             {
 
-                var lastWaypiont = input.Unit.GetWaypoints().Last().To3D();
+                var lastWaypiont = input.Unit.GetWaypointsLS().Last().To3D();
                 var distanceUnitToWaypoint = lastWaypiont.Distance(input.Unit.ServerPosition);
                 var distanceFromToUnit = input.From.Distance(input.Unit.ServerPosition);
                 var distanceFromToWaypoint = lastWaypiont.Distance(input.From);
@@ -341,7 +341,7 @@ namespace SebbyLib.Prediction
                 float fixRange = moveArea * 0.35f;
                 float pathMinLen = 800 + moveArea;
 
-                OktwCommon.debug(input.Radius + " RES Ways: " + input.Unit.GetWaypoints().Count + " W " + input.Unit.IsHPBarRendered + " D " + distanceUnitToWaypoint + " T " + UnitTracker.GetLastNewPathTime(input.Unit) + " " + result.Hitchance);
+                OktwCommon.debug(input.Radius + " RES Ways: " + input.Unit.GetWaypointsLS().Count + " W " + input.Unit.IsHPBarRendered + " D " + distanceUnitToWaypoint + " T " + UnitTracker.GetLastNewPathTime(input.Unit) + " " + result.Hitchance);
             }
             return result;
         }
@@ -382,7 +382,7 @@ namespace SebbyLib.Prediction
             }
 
             // PREPARE MATH ///////////////////////////////////////////////////////////////////////////////////
-            var path = input.Unit.GetWaypoints();
+            var path = input.Unit.GetWaypointsLS();
 
 
             var lastWaypiont = path.Last().To3D();
@@ -466,7 +466,7 @@ namespace SebbyLib.Prediction
                 return result;
             }
 
-            if (input.Unit.GetWaypoints().Count == 1)
+            if (input.Unit.GetWaypointsLS().Count == 1)
             {
                 if (UnitTracker.GetLastAutoAttackTime(input.Unit) < 0.1d && totalDelay < 0.7)
                 {
@@ -708,7 +708,7 @@ namespace SebbyLib.Prediction
                     }
                 }
 
-                path = path.CutPath(d);
+                path = path.CutPathLS(d);
                 var tT = 0f;
                 for (var i = 0; i < path.Count - 1; i++)
                 {
@@ -789,7 +789,7 @@ namespace SebbyLib.Prediction
                 HeroManager.Enemies.FindAll(
                     h =>
                         h.NetworkId != originalUnit.NetworkId &&
-                        h.IsValidTarget((input.Range + 200 + input.RealRadius), true, input.RangeCheckFrom)))
+                        h.IsValidTargetLS((input.Range + 200 + input.RealRadius), true, input.RangeCheckFrom)))
             {
                 input.Unit = enemy;
                 var prediction = Prediction.GetPrediction(input, false, false);
@@ -947,7 +947,7 @@ namespace SebbyLib.Prediction
             internal static Vector2[] GetCandidates(Vector2 from, Vector2 to, float radius, float range)
             {
                 var middlePoint = (from + to) / 2;
-                var intersections = LeagueSharp.Common.Geometry.CircleCircleIntersection(
+                var intersections = LeagueSharp.Common.Geometry.CircleCircleIntersectionLS(
                     from, middlePoint, radius, from.Distance(middlePoint));
 
                 if (intersections.Length > 1)
@@ -1152,7 +1152,7 @@ namespace SebbyLib.Prediction
                             foreach (var hero in
                                 HeroManager.Enemies.FindAll(
                                     hero =>
-                                        hero.IsValidTarget(
+                                        hero.IsValidTargetLS(
                                             Math.Min(input.Range + input.Radius + 100, 2000), true, input.RangeCheckFrom))
                                 )
                             {

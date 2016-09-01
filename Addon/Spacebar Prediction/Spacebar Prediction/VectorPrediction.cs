@@ -22,7 +22,7 @@ using System.Linq;
 using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
-//using EloBuddy.SDK;
+using EloBuddy.SDK;
 
 //typedefs
 using Geometry = SPrediction.Geometry;
@@ -79,7 +79,7 @@ namespace SPrediction
         /// <returns>Prediction result as <see cref="Prediction.Vector.Result"/></returns>
         public static Result GetPrediction(AIHeroClient target, float width, float delay, float vectorSpeed, float range, float vectorLenght)
         {
-            return GetPrediction(target, width, delay, vectorSpeed, range, vectorSpeed, target.GetWaypoints(), target.AvgMovChangeTime(), target.LastMovChangeTime(), target.AvgPathLenght(), ObjectManager.Player.ServerPosition.To2D());
+            return GetPrediction(target, width, delay, vectorSpeed, range, vectorSpeed, target.GetWaypointsLS(), target.AvgMovChangeTime(), target.LastMovChangeTime(), target.AvgPathLenght(), ObjectManager.Player.ServerPosition.To2D());
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace SPrediction
                             Vector2 predPos2 = Prediction.GetFastUnitPosition(enemy, delay); //get enemy unit position after delay
                             if (predPos1.Distance(rangeCheckFrom) < range) //if target is in range 
                             {
-                                Prediction.Result predRes = LinePrediction.GetPrediction(enemy, width, delay, vectorSpeed, vectorLenght, false, enemy.GetWaypoints(), enemy.AvgMovChangeTime(), enemy.LastMovChangeTime(), enemy.AvgPathLenght(), 360, predPos1 - (predPos1 - rangeCheckFrom).Normalized().Perpendicular() * 30, predPos1 - (predPos1 - rangeCheckFrom).Normalized().Perpendicular() * 30); //get enemy prediciton with from = target's position (a bit backward)
+                                Prediction.Result predRes = LinePrediction.GetPrediction(enemy, width, delay, vectorSpeed, vectorLenght, false, enemy.GetWaypointsLS(), enemy.AvgMovChangeTime(), enemy.LastMovChangeTime(), enemy.AvgPathLenght(), 360, predPos1 - (predPos1 - rangeCheckFrom).Normalized().Perpendicular() * 30, predPos1 - (predPos1 - rangeCheckFrom).Normalized().Perpendicular() * 30); //get enemy prediciton with from = target's position (a bit backward)
                                 if(predRes.HitChance >= HitChance.Low)
                                     return predRes.AsVectorResult(predPos1 - (predPos1 - rangeCheckFrom).Normalized().Perpendicular() * 30);
                             }
@@ -220,11 +220,11 @@ namespace SPrediction
         public static AoeResult GetAoePrediction(float width, float delay, float vectorSpeed, float range, float vectorLenght, Vector2 rangeCheckFrom)
         {
             AoeResult result = new AoeResult();
-            var enemies = HeroManager.Enemies.Where(p => p.IsValidTarget() && Prediction.GetFastUnitPosition(p, delay, 0, rangeCheckFrom).Distance(rangeCheckFrom) < range);
+            var enemies = HeroManager.Enemies.Where(p => p.IsValidTargetLS() && Prediction.GetFastUnitPosition(p, delay, 0, rangeCheckFrom).Distance(rangeCheckFrom) < range);
 
             foreach (AIHeroClient enemy in enemies)
             {
-                List<Vector2> path = enemy.GetWaypoints();
+                List<Vector2> path = enemy.GetWaypointsLS();
                 if (path.Count <= 1)
                 {
                     Vector2 from = rangeCheckFrom + (enemy.ServerPosition.To2D() - rangeCheckFrom).Normalized() * range;

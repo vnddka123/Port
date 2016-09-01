@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
-//using EloBuddy.SDK;
+using EloBuddy.SDK;
 
 namespace SebbyLib
 {
@@ -89,7 +89,7 @@ namespace SebbyLib
         /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs"/> instance containing the event data.</param>
         private static void ObjAiBaseOnOnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (sender.Team != ObjectManager.Player.Team || !sender.IsValidTarget(3000, false) || !Orbwalking.IsAutoAttack(args.SData.Name) || !(args.Target is Obj_AI_Base))
+            if (sender.Team != ObjectManager.Player.Team || !sender.IsValidTargetLS(3000, false) || !Orbwalking.IsAutoAttack(args.SData.Name) || !(args.Target is Obj_AI_Base))
             {
                 return;
             }
@@ -117,7 +117,7 @@ namespace SebbyLib
             {
                 var attackDamage = 0f;
                 if (!attack.Processed &&
-                    attack.Target.IsValidTarget(float.MaxValue, false) && attack.Target.NetworkId == unit.NetworkId)
+                    attack.Target.IsValidTargetLS(float.MaxValue, false) && attack.Target.NetworkId == unit.NetworkId)
                 {
 
                     float bonding = Math.Max(attack.Target.BoundingRadius, unit.Distance(attack.StartPos) - attack.Source.BoundingRadius);
@@ -148,8 +148,8 @@ namespace SebbyLib
             {
                 var n = 0;
                 if (Utils.GameTimeTickCount - 100 <= attack.StartTick + attack.AnimationTime &&
-                    attack.Target.IsValidTarget(float.MaxValue, false) &&
-                    attack.Source.IsValidTarget(float.MaxValue, false) && attack.Target.NetworkId == unit.NetworkId)
+                    attack.Target.IsValidTargetLS(float.MaxValue, false) &&
+                    attack.Source.IsValidTargetLS(float.MaxValue, false) && attack.Target.NetworkId == unit.NetworkId)
                 {
                     var fromT = attack.StartTick;
                     var toT = Utils.GameTimeTickCount + time;

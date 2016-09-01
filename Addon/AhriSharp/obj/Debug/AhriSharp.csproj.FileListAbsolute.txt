@@ -11,6 +11,21 @@ E:\Git dev\TEST\BETA\AhriSharp\bin\Release\LeagueSharp.Data.dll
 E:\Git dev\TEST\BETA\AhriSharp\bin\Release\EloBuddy.Sandbox.dll
 E:\Git dev\TEST\BETA\AhriSharp\bin\Release\LeagueSharp.Common.pdb
 E:\Git dev\TEST\BETA\AhriSharp\bin\Release\LeagueSharp.Data.pdb
-E:\Git dev\TEST\BETA\AhriSharp\obj\Debug\AhriSharp.csprojResolveAssemblyReference.cache
 E:\Git dev\TEST\BETA\AhriSharp\obj\Debug\AhriSharp.exe
 E:\Git dev\TEST\BETA\AhriSharp\obj\Debug\AhriSharp.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\bin\Release\AhriSharp.exe.config
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\obj\Debug\AhriSharp.exe
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\obj\Debug\AhriSharp.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\bin\Release\AhriSharp.exe
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\bin\Release\AhriSharp.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\bin\Release\EloBuddy.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\bin\Release\EloBuddy.SDK.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\bin\Release\LeagueSharp.Common.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\bin\Release\SharpDX.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\bin\Release\Newtonsoft.Json.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\bin\Release\LeagueSharp.Data.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\bin\Release\EloBuddy.Sandbox.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\bin\Release\LeagueSharp.Common.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\bin\Release\LeagueSharp.Data.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\AhriSharp\obj\Debug\AhriSharp.csprojResolveAssemblyReference.cache

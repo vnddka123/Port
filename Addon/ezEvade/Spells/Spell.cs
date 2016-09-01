@@ -6,7 +6,7 @@ using System.Text;
 using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
-//using EloBuddy.SDK;
+using EloBuddy.SDK;
 
 namespace ezEvade
 {
@@ -148,7 +148,7 @@ namespace ezEvade
             if (spell.info.collisionObjects.Contains(CollisionObjectType.EnemyChampions))
             {
                 foreach (var hero in HeroManager.Allies
-                    .Where(h => !h.IsMe && h.IsValidTarget(distanceToHero, false, spellPos.To3D())))
+                    .Where(h => !h.IsMe && h.IsValidTargetLS(distanceToHero, false, spellPos.To3D())))
                 {
                     collisionCandidates.Add(hero);
                 }
@@ -157,7 +157,7 @@ namespace ezEvade
             if (spell.info.collisionObjects.Contains(CollisionObjectType.EnemyMinions))
             {
                 foreach (var minion in ObjectManager.Get<Obj_AI_Minion>()
-                    .Where(h => h.Team == Evade.myHero.Team && h.IsValidTarget(distanceToHero, false, spellPos.To3D())))
+                    .Where(h => h.Team == Evade.myHero.Team && h.IsValidTargetLS(distanceToHero, false, spellPos.To3D())))
                 {
                     if (minion.CharData.BaseSkinName.ToLower() == "teemomushroom"
                         || minion.CharData.BaseSkinName.ToLower() == "shacobox")
@@ -379,10 +379,10 @@ namespace ezEvade
             List<LeagueSharp.Common.Geometry.IntersectionResult> intersects = new List<LeagueSharp.Common.Geometry.IntersectionResult>();
             Vector2 heroPos = ObjectManager.Player.ServerPosition.To2D();
 
-            intersects.Add(a.Intersection(b, startRightPos, startLeftPos));
-            intersects.Add(a.Intersection(b, endRightPos, endLeftPos));
-            intersects.Add(a.Intersection(b, startRightPos, endRightPos));
-            intersects.Add(a.Intersection(b, startLeftPos, endLeftPos));
+            intersects.Add(a.IntersectionLS(b, startRightPos, startLeftPos));
+            intersects.Add(a.IntersectionLS(b, endRightPos, endLeftPos));
+            intersects.Add(a.IntersectionLS(b, startRightPos, endRightPos));
+            intersects.Add(a.IntersectionLS(b, startLeftPos, endLeftPos));
 
             var sortedIntersects = intersects.Where(i => i.Intersects).OrderBy(i => i.Point.Distance(heroPos)); //Get first intersection
 

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
-//using EloBuddy.SDK;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 using LeagueSharp.Common;
 using SharpDX;
 using SPrediction;
@@ -243,23 +244,23 @@ namespace OneKeyToWin_AIO_Sebby
 
             if (Config.Item("debug").GetValue<bool>())
             {
-                new Core.OKTWlab().LoadOKTW();
+      //          new Core.OKTWlab().LoadOKTW();
             }
 
             if (AIOmode != 1)
             {
-         //       new Activator().LoadOKTW();
-         //       new Core.OKTWward().LoadOKTW();
-         //       new Core.AutoLvlUp().LoadOKTW();
-         //       new Core.OKTWtracker().LoadOKTW();
-         //       new Core.OKTWdraws().LoadOKTW();
+        //        new Activator().LoadOKTW();
+                new Core.OKTWward().LoadOKTW();
+        //        new Core.AutoLvlUp().LoadOKTW();
+        //        new Core.OKTWtracker().LoadOKTW();
+        //       new Core.OKTWdraws().LoadOKTW();
             }
 
             Config.AddToMainMenu();
             Game.OnUpdate += OnUpdate;
             LeagueSharp.Common.Orbwalking.BeforeAttack += Orbwalking_BeforeAttack;
             Drawing.OnDraw += OnDraw;
-  //          Game.OnWndProc += Game_OnWndProc;
+//            Game.OnWndProc += Game_OnWndProc;
 
             if (Config.Item("print").GetValue<bool>())
             {
@@ -267,7 +268,7 @@ namespace OneKeyToWin_AIO_Sebby
                 Chat.Print("<font color='#b756c5'>OKTW NEWS: </font>OKTW Prediction REWORKED");
             }
         }
-
+        /*
         private static void Game_OnWndProc(WndEventArgs args)
         {
             if (args.WParam == 16)
@@ -279,7 +280,7 @@ namespace OneKeyToWin_AIO_Sebby
 
             }
         }
-
+        //*/
         private static void PositionHelper()
         {
             if (Player.ChampionName == "Draven" || !Config.Item("positioningAssistant").GetValue<bool>() || AIOmode == 2)
@@ -291,7 +292,7 @@ namespace OneKeyToWin_AIO_Sebby
                 return;
             }
 
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsMelee && enemy.IsValidTarget(dodgeRange) && enemy.IsFacing(Player) && Config.Item("posAssistant" + enemy.ChampionName).GetValue<bool>() ))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsMelee && enemy.IsValidTargetLS(dodgeRange) && enemy.IsFacing(Player) && Config.Item("posAssistant" + enemy.ChampionName).GetValue<bool>() ))
             {
                 var points = OktwCommon.CirclePoints(20, 250, Player.Position);   
 
@@ -321,7 +322,7 @@ namespace OneKeyToWin_AIO_Sebby
                 }
                 else
                 {
-                    var fastPoint = enemy.ServerPosition.Extend(Player.ServerPosition, dodgeRange);
+                    var fastPoint = enemy.ServerPosition.Extend(Player.ServerPosition, dodgeRange).To3DWorld();
                     if (fastPoint.CountEnemiesInRange(dodgeRange) <= Player.CountEnemiesInRange(dodgeRange))
                     {
                         Orbwalker.SetOrbwalkingPoint(fastPoint);
@@ -365,7 +366,7 @@ namespace OneKeyToWin_AIO_Sebby
 
             if (AIOmode != 2)
             {
-//                PositionHelper();
+                PositionHelper();
             }
             tickIndex++;
 
@@ -375,7 +376,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (!LagFree(0))
                 return;
 
-//            JunglerTimer();
+            JunglerTimer();
         }
 
         public static void JunglerTimer()
@@ -614,7 +615,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             if (Config.Item("debug").GetValue<bool>())
             {
-                Console.WriteLine(msg);
+            //    Console.WriteLine(msg);
             }
             if (Config.Item("debugChat").GetValue<bool>())
             {
@@ -643,7 +644,7 @@ namespace OneKeyToWin_AIO_Sebby
                 if (DrawSpell.Type == SkillshotType.SkillshotCircle)
                     Render.Circle.DrawCircle(DrawSpellPos.CastPosition, DrawSpell.Width, System.Drawing.Color.DimGray, 1);
 
-                drawText("Aiming " + DrawSpellPos.Hitchance, Player.Position.Extend(DrawSpellPos.CastPosition, 400), System.Drawing.Color.Gray);
+                drawText("Aiming " + DrawSpellPos.Hitchance, Player.Position.Extend(DrawSpellPos.CastPosition, 400).To3DWorld(), System.Drawing.Color.Gray);
             }
             /*
             if (AIOmode != 1 && Config.Item("timer").GetValue<bool>() && jungler != null)

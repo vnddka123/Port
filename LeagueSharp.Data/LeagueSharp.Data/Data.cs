@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Security.Permissions;
+    //using System.Security.Permissions;
 
     using LeagueSharp.Data.Utility.Resources;
 

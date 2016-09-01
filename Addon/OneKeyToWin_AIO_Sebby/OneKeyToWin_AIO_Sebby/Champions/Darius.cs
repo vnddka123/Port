@@ -5,8 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -59,7 +60,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void OnInterruptableSpell(AIHeroClient unit, Interrupter2.InterruptableTargetEventArgs spell)
         {
-            if (E.IsReady()  && unit.IsValidTarget(E.Range))
+            if (E.IsReady()  && unit.IsValidTargetLS(E.Range))
                 E.Cast(unit);
         }
 
@@ -71,7 +72,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             var t = target as AIHeroClient;
 
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
                 W.Cast();
 
         }
@@ -87,7 +88,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (R.IsReady() && Config.Item("useR", true).GetValue<KeyBind>().Active )
             {
                 var targetR = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.True);
-                if (targetR.IsValidTarget())
+                if (targetR.IsValidTargetLS())
                     R.Cast(targetR, true);
             }
 
@@ -129,7 +130,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Player.Mana > RMANA + EMANA )
             {
                 var target = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
-                if (target.IsValidTarget() && ((Player.UnderTurret(false) && !Player.UnderTurret(true)) || Program.Combo) )
+                if (target.IsValidTargetLS() && ((Player.UnderTurret(false) && !Player.UnderTurret(true)) || Program.Combo) )
                 {
                     if (!LeagueSharp.Common.Orbwalking.InAutoAttackRange(target))
                     {
@@ -142,7 +143,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (!Config.Item("qOutRange", true).GetValue<bool>() || LeagueSharp.Common.Orbwalking.InAutoAttackRange(t))
                 {
@@ -169,14 +170,14 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicR()
         {
             var targetR = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.True);
-            if (targetR.IsValidTarget() && OktwCommon.ValidUlt(targetR) && Config.Item("autoRbuff", true).GetValue<bool>())
+            if (targetR.IsValidTargetLS() && OktwCommon.ValidUlt(targetR) && Config.Item("autoRbuff", true).GetValue<bool>())
             {
                 var buffTime = OktwCommon.GetPassiveTime(Player, "dariusexecutemulticast");
                 if((buffTime < 2 || (Player.HealthPercent < 10 && Config.Item("autoRdeath", true).GetValue<bool>())) && buffTime > 0)
                     R.Cast(targetR, true);
             }
 
-            foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(R.Range) && OktwCommon.ValidUlt(target) ))
+            foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(R.Range) && OktwCommon.ValidUlt(target) ))
             {
 
                 var dmgR = OktwCommon.GetKsDamage(target, R);

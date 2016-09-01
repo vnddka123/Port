@@ -6,8 +6,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -87,20 +88,20 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (Config.Item("Edead", true).GetValue<bool>() && E.IsReady() && sender.IsEnemy && sender.IsValidTarget(1500))
+            if (Config.Item("Edead", true).GetValue<bool>() && E.IsReady() && sender.IsEnemy && sender.IsValidTargetLS(1500))
             {
                 double dmg = 0;
 
                 if (args.Target != null && args.Target.IsMe)
                 {
-                    dmg = dmg + sender.GetSpellDamage(Player, args.SData.Name);
+                    dmg = dmg + sender.GetSpellDamageLS(Player, args.SData.Name);
                 }
                 else
                 {
                     var castArea = Player.Distance(args.End) * (args.End - Player.ServerPosition).Normalized() + Player.ServerPosition;
                     if (castArea.Distance(Player.ServerPosition) < Player.BoundingRadius / 2)
                     {
-                        dmg = dmg + sender.GetSpellDamage(Player, args.SData.Name);
+                        dmg = dmg + sender.GetSpellDamageLS(Player, args.SData.Name);
                     }
                 }
 
@@ -114,7 +115,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicR()
         {
             var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (!LeagueSharp.Common.Orbwalking.InAutoAttackRange(t) && Config.Item("Rks", true).GetValue<bool>() && Player.GetAutoAttackDamage(t) * 4 > t.Health)
                     R.Cast();
@@ -127,14 +128,14 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicW()
         {
             var t = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
 
                 if (Program.Combo && Player.Mana > WMANA + RMANA + EMANA && (Player.GetAutoAttackDamage(t) * 2 < t.Health || !LeagueSharp.Common.Orbwalking.InAutoAttackRange(t)))
                     Program.CastSpell(W, t);
                 else if ((Program.Combo || Program.Farm) && Player.Mana > RMANA + WMANA + EMANA)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(W.Range) && !OktwCommon.CanMove(enemy)))
                         W.Cast(enemy, true);
                 }
             }
@@ -150,9 +151,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 return;
 
             var count = 0;
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(3000)))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(3000)))
             {
-                List<Vector2> waypoints = enemy.GetWaypoints();
+                List<Vector2> waypoints = enemy.GetWaypointsLS();
 
                 if (Player.Distance(waypoints.Last().To3D()) < 600)
                     count++;
@@ -164,7 +165,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void LogicE()
         {
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && enemy.HasBuff("TwitchDeadlyVenom") && OktwCommon.ValidUlt(enemy)))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(E.Range) && enemy.HasBuff("TwitchDeadlyVenom") && OktwCommon.ValidUlt(enemy)))
             {
                 if (Config.Item("Eks", true).GetValue<bool>() && E.GetDamage(enemy) > enemy.Health)
                 {
@@ -273,7 +274,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             }
 
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(2000) && enemy.HasBuff("TwitchDeadlyVenom")))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(2000) && enemy.HasBuff("TwitchDeadlyVenom")))
             {
                 if (passiveDmg(enemy) > enemy.Health)
                     drawText("IS DEAD", enemy, System.Drawing.Color.Yellow);

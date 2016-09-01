@@ -5,8 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -73,7 +74,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (target is AIHeroClient)
             {
                 var t = (AIHeroClient)target;
-                if (t.IsValidTarget())
+                if (t.IsValidTargetLS())
                 {
                     if (Program.Combo)
                         Q.Cast();
@@ -91,7 +92,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = (AIHeroClient)args.Target;
 
-                if (t.IsValidTarget())
+                if (t.IsValidTargetLS())
                 {
                     if (E.GetDamage(t) > t.Health)
                     {
@@ -128,7 +129,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             if (Config.Item("focusE", true).GetValue<bool>())
             {
-                var eTarget = HeroManager.Enemies.FirstOrDefault(target => target.IsValidTarget() && LeagueSharp.Common.Orbwalking.InAutoAttackRange(target) && target.HasBuff("tristanaechargesound"));
+                var eTarget = HeroManager.Enemies.FirstOrDefault(target => target.IsValidTargetLS() && LeagueSharp.Common.Orbwalking.InAutoAttackRange(target) && target.HasBuff("tristanaechargesound"));
                 if(eTarget != null)
                 {
                     Orbwalker.ForceTarget(eTarget);
@@ -161,7 +162,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (Config.Item("Wks", true).GetValue<bool>() && Player.Mana > RMANA + WMANA)
             {
-                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && OktwCommon.ValidUlt(enemy) && enemy.CountEnemiesInRange(800) < 2 && enemy.CountAlliesInRange(400) == 0  && enemy.Health > enemy.Level * 2))
+                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(W.Range) && OktwCommon.ValidUlt(enemy) && enemy.CountEnemiesInRange(800) < 2 && enemy.CountAlliesInRange(400) == 0  && enemy.Health > enemy.Level * 2))
                 {
                     var playerAaDmg = Player.GetAutoAttackDamage(enemy);
                     var dmgCombo = playerAaDmg + OktwCommon.GetKsDamage(enemy, W) + GetEDmg(enemy);
@@ -189,7 +190,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             AIHeroClient bestEnemy = null;
             float pushDistance = 400 + (R.Level * 200);
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(R.Range) && OktwCommon.ValidUlt(enemy)))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(R.Range) && OktwCommon.ValidUlt(enemy)))
             {
                 if (bestEnemy == null)
                     bestEnemy = enemy;
@@ -203,7 +204,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 }
                 
                 var prepos = LeagueSharp.Common.Prediction.GetPrediction(enemy, 0.4f);
-                var finalPosition = prepos.CastPosition.Extend(Player.Position, -pushDistance);
+                var finalPosition = prepos.CastPosition.Extend(Player.Position, -pushDistance).To3DWorld();
 
                 if (Config.Item("turrentR", true).GetValue<bool>())
                 {
@@ -221,7 +222,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     R.Cast(enemy);
                 }
 
-                if (Player.HealthPercent < Config.Item("RgapHP", true).GetValue<Slider>().Value && enemy.IsValidTarget(270) && enemy.IsMelee && Config.Item("GapCloser" + enemy.ChampionName).GetValue<bool>())
+                if (Player.HealthPercent < Config.Item("RgapHP", true).GetValue<Slider>().Value && enemy.IsValidTargetLS(270) && enemy.IsMelee && Config.Item("GapCloser" + enemy.ChampionName).GetValue<bool>())
                 {
                     R.Cast(enemy);
                     Program.debug("R Meele");
@@ -253,7 +254,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (R.IsReady() && Config.Item("OnInterruptableSpell", true).GetValue<bool>())
             {
-                if (sender.IsValidTarget(R.Range))
+                if (sender.IsValidTargetLS(R.Range))
                 {
                     R.Cast(sender);
                 }
@@ -265,7 +266,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (R.IsReady() && Player.HealthPercent < Config.Item("RgapHP", true).GetValue<Slider>().Value)
             {
                 var t = gapcloser.Sender;
-                if (t.IsValidTarget(R.Range) && Config.Item("GapCloser" + t.ChampionName).GetValue<bool>())
+                if (t.IsValidTargetLS(R.Range) && Config.Item("GapCloser" + t.ChampionName).GetValue<bool>())
                 {
                     R.Cast(t);
                 }
@@ -320,7 +321,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             if (Config.Item("eInfo", true).GetValue<bool>())
             {
-                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(2000)))
+                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(2000)))
                 {
                     if (GetEDmg(enemy) > enemy.Health)
                         drawText("IS DEAD", enemy, System.Drawing.Color.Yellow);

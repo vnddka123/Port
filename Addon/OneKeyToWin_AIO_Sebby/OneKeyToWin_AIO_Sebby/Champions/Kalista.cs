@@ -5,8 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby
 {
@@ -101,7 +102,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (Q.IsReady() && Player.Mana > QMANA + EMANA)
             {
                 var t = gapcloser.Sender;
-                if (t.IsValidTarget(Q.Range) )
+                if (t.IsValidTargetLS(Q.Range) )
                     Q.Cast(t);
             }
         }
@@ -113,7 +114,7 @@ namespace OneKeyToWin_AIO_Sebby
 
             if (R.IsReady() && AllyR != null && Config.Item("balista", true).GetValue<bool>() &&  AllyR.IsVisible && AllyR.Distance(Player.Position) < R.Range && AllyR.ChampionName == "Blitzcrank" && Player.Distance(AllyR.Position) > Config.Item("rangeBalista", true).GetValue<Slider>().Value)
             {
-                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget() && !enemy.IsDead && enemy.HasBuff("rocketgrab2")))
+                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS() && !enemy.IsDead && enemy.HasBuff("rocketgrab2")))
                 {
                     R.Cast();
                 }
@@ -178,7 +179,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
 
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 var poutput = Q.GetPrediction(t);
                 var col = poutput.CollisionObjects;
@@ -207,7 +208,7 @@ namespace OneKeyToWin_AIO_Sebby
                     castQ(cast, t);
                 if ((Program.Combo || Program.Farm) && Player.Mana > RMANA + QMANA + EMANA)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Q.Range) && !OktwCommon.CanMove(enemy)))
                         castQ(cast, t);
                 }
             }
@@ -219,7 +220,7 @@ namespace OneKeyToWin_AIO_Sebby
             int countMinion = 0;
             Obj_AI_Base bestMinion = null;
 
-                foreach (var minion in minions.Where(minion => minion.HealthPercent < 95 && minion.IsValidTarget(Q.Range) && Q.GetDamage(minion) > minion.Health))
+                foreach (var minion in minions.Where(minion => minion.HealthPercent < 95 && minion.IsValidTargetLS(Q.Range) && Q.GetDamage(minion) > minion.Health))
                 {
                     var poutput = Q.GetPrediction(minion);
                     var col = poutput.CollisionObjects;
@@ -259,7 +260,7 @@ namespace OneKeyToWin_AIO_Sebby
 
             var minions = Cache.GetMinions(Player.ServerPosition, E.Range - 50);
 
-            foreach (var minion in minions.Where(minion => minion.IsValidTarget(E.Range) && minion.HealthPercent < 80))
+            foreach (var minion in minions.Where(minion => minion.IsValidTargetLS(E.Range) && minion.HealthPercent < 80))
             {
                 var eDmg = E.GetDamage(minion);
                 if (minion.Health < eDmg - minion.HPRegenRate && eDmg > 0)
@@ -285,7 +286,7 @@ namespace OneKeyToWin_AIO_Sebby
 
             bool near700 = Player.CountEnemiesInRange(700) == 0;
 
-            foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(E.Range) && target.HasBuff("kalistaexpungemarker") && OktwCommon.ValidUlt(target)))
+            foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(E.Range) && target.HasBuff("kalistaexpungemarker") && OktwCommon.ValidUlt(target)))
             {
                 var eDmg = GetEdmg(target);
                 if (target.Health < eDmg)
@@ -319,7 +320,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void LogicW()
         {
-            if (Config.Item("Wdragon", true).GetValue<bool>() &&  !Orbwalker.GetTarget().IsValidTarget() && !Program.Combo && Player.CountEnemiesInRange(800)==0)
+            if (Config.Item("Wdragon", true).GetValue<bool>() &&  !Orbwalker.GetTarget().IsValidTargetLS() && !Program.Combo && Player.CountEnemiesInRange(800)==0)
             {
                 if (wCount > 0)
                 {
@@ -431,7 +432,7 @@ namespace OneKeyToWin_AIO_Sebby
         private int CountMeleeInRange(float range)
         {
             int count = 0;
-            foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(range) && target.IsMelee))
+            foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(range) && target.IsMelee))
             {
                 count++;
             }
@@ -528,7 +529,7 @@ namespace OneKeyToWin_AIO_Sebby
         private void Drawing_OnDraw(EventArgs args)
         {
 
-            foreach (var enemy in HeroManager.Enemies.Where(target => target.IsValidTarget(E.Range + 500) && target.IsEnemy))
+            foreach (var enemy in HeroManager.Enemies.Where(target => target.IsValidTargetLS(E.Range + 500) && target.IsEnemy))
             {
                 float hp = enemy.Health - E.GetDamage(enemy);
                 int stack = GetEStacks(enemy);

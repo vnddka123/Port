@@ -9,8 +9,9 @@ using SharpDX;
 using SharpDX.Direct3D9;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Enumerations;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Core
 {
@@ -107,7 +108,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                     Vector3 prepos = enemy.Position;
 
                     if (enemy.IsMoving)
-                        prepos = prepos.Extend(enemy.GetWaypoints().Last().To3D(), 125);
+                        prepos = prepos.Extend(enemy.GetWaypointsLS().Last().To3D(), 125).To3DWorld();
 
                     if (ChampionInfoOne == null)
                     {

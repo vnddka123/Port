@@ -1,0 +1,12 @@
+E:\Git dev\BETA 1\LeagueSharp.Data-master\LeagueSharp.Data\bin\Debug\LeagueSharp.Data.dll.config
+E:\Git dev\BETA 1\LeagueSharp.Data-master\LeagueSharp.Data\bin\Debug\LeagueSharp.Data.dll
+E:\Git dev\BETA 1\LeagueSharp.Data-master\LeagueSharp.Data\bin\Debug\LeagueSharp.Data.pdb
+E:\Git dev\BETA 1\LeagueSharp.Data-master\LeagueSharp.Data\bin\Debug\EloBuddy.dll
+E:\Git dev\BETA 1\LeagueSharp.Data-master\LeagueSharp.Data\bin\Debug\Newtonsoft.Json.dll
+E:\Git dev\BETA 1\LeagueSharp.Data-master\LeagueSharp.Data\bin\Debug\SharpDX.dll
+E:\Git dev\BETA 1\LeagueSharp.Data-master\LeagueSharp.Data\bin\Debug\SharpDX.Direct3D9.dll
+E:\Git dev\BETA 1\LeagueSharp.Data-master\LeagueSharp.Data\obj\Debug\LeagueSharp.Data.csprojResolveAssemblyReference.cache
+E:\Git dev\BETA 1\LeagueSharp.Data-master\LeagueSharp.Data\obj\Debug\LeagueSharp.Data.Properties.Resources.resources
+E:\Git dev\BETA 1\LeagueSharp.Data-master\LeagueSharp.Data\obj\Debug\LeagueSharp.Data.csproj.GenerateResource.Cache
+E:\Git dev\BETA 1\LeagueSharp.Data-master\LeagueSharp.Data\obj\Debug\LeagueSharp.Data.dll
+E:\Git dev\BETA 1\LeagueSharp.Data-master\LeagueSharp.Data\obj\Debug\LeagueSharp.Data.pdb

@@ -5,8 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -219,13 +220,13 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 R.Range = R.Range - Config.Item("MaxRangeR", true).GetValue<Slider>().Value;
             
             var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget() )
+            if (t.IsValidTargetLS() )
             {
                 if (Config.Item("useR", true).GetValue<KeyBind>().Active && !IsCastingR)
                 {
                     R.Cast();
                 }
-                if (!t.IsValidTarget(W.Range) && Config.Item("autoR", true).GetValue<bool>() && !IsCastingR && t.CountAlliesInRange(500) == 0 && Player.CountEnemiesInRange(1100) == 0)
+                if (!t.IsValidTargetLS(W.Range) && Config.Item("autoR", true).GetValue<bool>() && !IsCastingR && t.CountAlliesInRange(500) == 0 && Player.CountEnemiesInRange(1100) == 0)
                 {
                     if (OktwCommon.GetKsDamage(t, R) + (R.GetDamage(t) * R.Level)  > t.Health)
                     {
@@ -248,7 +249,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicW()
         {
             var t = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 var qDmg = Q.GetDamage(t);
                 var wDmg = OktwCommon.GetKsDamage(t, W);
@@ -265,7 +266,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     Program.CastSpell(W, t);
                 else if ((Program.Combo || Program.Farm))
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(W.Range) && !OktwCommon.CanMove(enemy)))
                         W.Cast(enemy, true);
                 }
             }
@@ -284,7 +285,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
             var t2 = TargetSelector.GetTarget(1500, TargetSelector.DamageType.Magical);
 
-            if (t.IsValidTarget() && t2.IsValidTarget() && t == t2 && !(Config.Item("separate", true).GetValue<bool>() && Program.LaneClear))
+            if (t.IsValidTargetLS() && t2.IsValidTargetLS() && t == t2 && !(Config.Item("separate", true).GetValue<bool>() && Program.LaneClear))
             {
                 if (Q.IsCharging)
                 {
@@ -296,7 +297,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                     return;
                 }
-                else if (t.IsValidTarget(Q.Range - 300))
+                else if (t.IsValidTargetLS(Q.Range - 300))
                 {
                     if(t.Health < OktwCommon.GetKsDamage(t, Q))
                         Q.StartCharging();
@@ -304,13 +305,13 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     {
                         Q.StartCharging();
                     }
-                    else if (t.IsValidTarget(1200) && Program.Farm && Player.Mana > RMANA + EMANA + QMANA + QMANA && Config.Item("harras" + t.ChampionName).GetValue<bool>() && !Player.UnderTurret(true) && OktwCommon.CanHarras())
+                    else if (t.IsValidTargetLS(1200) && Program.Farm && Player.Mana > RMANA + EMANA + QMANA + QMANA && Config.Item("harras" + t.ChampionName).GetValue<bool>() && !Player.UnderTurret(true) && OktwCommon.CanHarras())
                     {
                         Q.StartCharging();
                     }
                     else if ((Program.Combo || Program.Farm) && Player.Mana > RMANA + WMANA)
                     {
-                        foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                        foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Q.Range) && !OktwCommon.CanMove(enemy)))
                             Q.StartCharging();
                     }
                 }
@@ -326,20 +327,20 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void LogicE()
         {
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && E.GetDamage(enemy) + OktwCommon.GetKsDamage(enemy, Q) + W.GetDamage(enemy) + OktwCommon.GetEchoLudenDamage(enemy) > enemy.Health))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(E.Range) && E.GetDamage(enemy) + OktwCommon.GetKsDamage(enemy, Q) + W.GetDamage(enemy) + OktwCommon.GetEchoLudenDamage(enemy) > enemy.Health))
             {
                 Program.CastSpell(E, enemy);
             }
             var t = Orbwalker.GetTarget() as AIHeroClient;
-            if (!t.IsValidTarget())
+            if (!t.IsValidTargetLS())
                 t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (Program.Combo && Player.Mana > RMANA + EMANA)
                     Program.CastSpell(E, t);
                 if (Program.Farm && OktwCommon.CanHarras() && Config.Item("harrasE", true).GetValue<bool>() && Player.Mana > RMANA + EMANA + WMANA + EMANA)
                     Program.CastSpell(E, t);
-                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
+                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(E.Range) && !OktwCommon.CanMove(enemy)))
                     E.Cast(enemy);
             }
         }
@@ -477,7 +478,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
 
-                if (t.IsValidTarget())
+                if (t.IsValidTargetLS())
                 {
                     var rDamage = R.GetDamage(t);
                     if (rDamage * 3 > t.Health)

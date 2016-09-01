@@ -23,7 +23,7 @@ using System.Reflection;
 using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
-//using EloBuddy.SDK;
+using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
 
 namespace SPrediction

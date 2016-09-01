@@ -6,8 +6,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -81,7 +82,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
             var t = gapcloser.Sender;
-            if (E.IsReady() && t.IsValidTarget(E.Range) && Config.Item("EGCchampion" + t.ChampionName, true).GetValue<bool>())
+            if (E.IsReady() && t.IsValidTargetLS(E.Range) && Config.Item("EGCchampion" + t.ChampionName, true).GetValue<bool>())
             {
                 if (Config.Item("EmodeGC", true).GetValue<StringList>().SelectedIndex == 0)
                     E.Cast(gapcloser.End);
@@ -94,7 +95,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void Interrupter2_OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (E.IsReady() && sender.IsValidTarget(E.Range) && Config.Item("EInterrupter", true).GetValue<bool>())
+            if (E.IsReady() && sender.IsValidTargetLS(E.Range) && Config.Item("EInterrupter", true).GetValue<bool>())
             {
                 E.Cast(sender);
             }
@@ -117,7 +118,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (Config.Item("autoR", true).GetValue<bool>())
                 {
                     var t = TargetSelector.GetTarget(R.Range + 150, TargetSelector.DamageType.Magical);
-                    if (t.IsValidTarget() && OktwCommon.ValidUlt(t))
+                    if (t.IsValidTargetLS() && OktwCommon.ValidUlt(t))
                     {
                         Player.Spellbook.UpdateChargeableSpell(SpellSlot.R, R.GetPrediction(t, true).CastPosition, false, false);
                     }
@@ -165,7 +166,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicR()
         {
             var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget()  && Player.CountEnemiesInRange(400) == 0 && !Player.UnderTurret(true))
+            if (t.IsValidTargetLS()  && Player.CountEnemiesInRange(400) == 0 && !Player.UnderTurret(true))
             {
                 //900 - 100%
                 //1500 - 10 %
@@ -188,7 +189,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicE()
         {
             var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (Program.Combo && Player.Mana > RMANA + EMANA)
                     Program.CastSpell(E, t);
@@ -209,7 +210,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 }
                 if (!Program.None && Player.Mana > RMANA + EMANA)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(E.Range) && !OktwCommon.CanMove(enemy)))
                         E.Cast(enemy);
                 }
             }
@@ -226,7 +227,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicW()
         {
             var t = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (Program.Combo && Player.Mana > RMANA + WMANA)
                     Program.CastSpell(W, t);
@@ -244,7 +245,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 }
                 if (!Program.None && Player.Mana > RMANA + WMANA)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(W.Range) && !OktwCommon.CanMove(enemy)))
                         W.Cast(enemy, true);
                 }
             }
@@ -261,7 +262,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicQ()
         {
             var t = TargetSelector.GetTarget(QDummy.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (Q.Instance.Name == "VelkozQ" && Utils.TickCount - Q.LastCastAttemptT > 150)
                 {
@@ -284,7 +285,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         if (!Program.None && Player.Mana > RMANA + QMANA)
                         {
 
-                            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(QDummy.Range) && !OktwCommon.CanMove(enemy)))
+                            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(QDummy.Range) && !OktwCommon.CanMove(enemy)))
                                 CastQ(t);
                         }
                     }
@@ -321,7 +322,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (QMissile != null && QMissile.IsValid)
             {
                 QSplit.Collision = false;
-                var realPosition = QMissile.StartPosition.Extend(QMissile.EndPosition, QMissile.StartPosition.Distance(QMissile.Position) + Game.Ping / 2 + 60);
+                var realPosition = QMissile.StartPosition.Extend(QMissile.EndPosition, QMissile.StartPosition.Distance(QMissile.Position) + Game.Ping / 2 + 60).To3DWorld();
                 //Q.Cast();
 
                 QSplit.UpdateSourcePosition(realPosition, realPosition);
@@ -380,7 +381,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 for (var j = 400; j <= 1100; j = j + 50)
                 {
-                    var posExtend = Player.Position.Extend(point, j);
+                    var posExtend = Player.Position.Extend(point, j).To3DWorld();
 
                     var a1 = Player.Distance(posExtend);
                     float b1 = (float)Math.Sqrt((c1 * c1) - (a1 * a1));
@@ -388,7 +389,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     if (b1 > QSplit.Range)
                         continue;
                     
-                    var pointA = Player.Position.Extend(point, a1);
+                    var pointA = Player.Position.Extend(point, a1).To3DWorld();
 
                     Vector2 end = pointA.To2D();
                     var dir = (end - start).Normalized();

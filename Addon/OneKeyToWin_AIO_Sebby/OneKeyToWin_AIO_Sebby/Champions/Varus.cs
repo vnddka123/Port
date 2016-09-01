@@ -5,8 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -108,7 +109,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (R.IsReady() && Config.Item("GapCloser" + gapcloser.Sender.ChampionName).GetValue<bool>())
             {
                 var Target = gapcloser.Sender;
-                if (Target.IsValidTarget(R.Range))
+                if (Target.IsValidTargetLS(R.Range))
                 {
                     R.Cast(Target.ServerPosition, true);
                     //Program.debug("AGC " );
@@ -135,7 +136,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (Config.Item("useR", true).GetValue<KeyBind>().Active)
                 {
                     var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
-                    if (t.IsValidTarget())
+                    if (t.IsValidTargetLS())
                         R.Cast(t);
                 }
             }
@@ -150,7 +151,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         return;
                     }
                     var t = Orbwalker.GetTarget() as Obj_AI_Base;
-                    if (t.IsValidTarget())
+                    if (t.IsValidTargetLS())
                     {
                         if (OktwCommon.GetBuffCount(t, "varuswdebuff") < 3)
                             CanCast = true;
@@ -198,7 +199,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void LogicR()
         {
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(R.Range)))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(R.Range)))
             {
 
                 if (enemy.CountEnemiesInRange(400) >= Config.Item("rCount", true).GetValue<Slider>().Value && Config.Item("rCount", true).GetValue<Slider>().Value > 0)
@@ -214,7 +215,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
             if (Player.Health < Player.MaxHealth * 0.5)
             {
-                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(270) && target.IsMelee && Config.Item("GapCloser" + target.ChampionName).GetValue<bool>()))
+                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(270) && target.IsMelee && Config.Item("GapCloser" + target.ChampionName).GetValue<bool>()))
                 {
                     Program.CastSpell(R, target);
                 }
@@ -224,9 +225,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicQ()
         {
 
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(1600) && Q.GetDamage(enemy) + GetWDmg(enemy) > enemy.Health))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(1600) && Q.GetDamage(enemy) + GetWDmg(enemy) > enemy.Health))
             {
-                if (enemy.IsValidTarget(R.Range))
+                if (enemy.IsValidTargetLS(R.Range))
                     CastQ(enemy);
                 return;
             }
@@ -235,10 +236,10 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 return;
 
             var t = Orbwalker.GetTarget() as AIHeroClient;
-            if (!t.IsValidTarget())
+            if (!t.IsValidTargetLS())
                 t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
 
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (Q.IsCharging)
                 {
@@ -264,7 +265,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     }
                     else if (!Program.None && Player.Mana > RMANA + WMANA)
                     {
-                        foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                        foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Q.Range) && !OktwCommon.CanMove(enemy)))
                             CastQ(enemy);
                     }
                 }
@@ -280,14 +281,14 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void LogicE()
         {
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && E.GetDamage(enemy) + GetWDmg(enemy) > enemy.Health))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(E.Range) && E.GetDamage(enemy) + GetWDmg(enemy) > enemy.Health))
             {
                 Program.CastSpell(E, enemy);
             }
             var t = Orbwalker.GetTarget() as AIHeroClient;
-            if (!t.IsValidTarget())
+            if (!t.IsValidTargetLS())
                 t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if ((OktwCommon.GetBuffCount(t, "varuswdebuff") == 3 && CanCast) || !LeagueSharp.Common.Orbwalking.InAutoAttackRange(t))
                 {
@@ -297,7 +298,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     }
                     else if ((Program.Combo || Program.Farm) && Player.Mana > RMANA + WMANA)
                     {
-                        foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
+                        foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(E.Range) && !OktwCommon.CanMove(enemy)))
                             E.Cast(enemy);
                     }
                 }
@@ -322,7 +323,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (!Q.IsCharging)
             {
-                if (target.IsValidTarget(Q.Range - 300))
+                if (target.IsValidTargetLS(Q.Range - 300))
                     Q.StartCharging();
             }
             else

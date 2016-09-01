@@ -8,7 +8,7 @@ using Color = System.Drawing.Color;
 using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
-//using EloBuddy.SDK;
+using EloBuddy.SDK;
 
 namespace ezEvade
 {
@@ -491,7 +491,7 @@ namespace ezEvade
             if (spell.spellTargets.Contains(SpellTargets.Targetables))
             {
                 foreach (var obj in ObjectManager.Get<Obj_AI_Base>()
-                    .Where(h => !h.IsMe && h.IsValidTarget(spell.range, false)))
+                    .Where(h => !h.IsMe && h.IsValidTargetLS(spell.range, false)))
                 {
                     if (!obj.IsValid<Obj_AI_Turret>())
                     {
@@ -518,7 +518,7 @@ namespace ezEvade
                 }
 
 
-                foreach (var hero in heroList.Where(h => !h.IsMe && h.IsValidTarget(spell.range)))
+                foreach (var hero in heroList.Where(h => !h.IsMe && h.IsValidTargetLS(spell.range)))
                 {
                     collisionCandidates.Add(hero);
                 }
@@ -539,7 +539,7 @@ namespace ezEvade
                     minionList = MinionManager.GetMinions(spell.range, MinionTypes.All, MinionTeam.Ally);
                 }
 
-                foreach (var minion in minionList.Where(h => h.IsValidTarget(spell.range)))
+                foreach (var minion in minionList.Where(h => h.IsValidTargetLS(spell.range)))
                 {
                     collisionCandidates.Add(minion);
                 }

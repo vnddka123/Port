@@ -4,8 +4,9 @@ using EloBuddy;
 using LeagueSharp.Common;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby
 {
@@ -93,7 +94,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void Interrupter2_OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (R.IsReady() && Config.Item("inter", true).GetValue<bool>() && sender.IsValidTarget(R.Range))
+            if (R.IsReady() && Config.Item("inter", true).GetValue<bool>() && sender.IsValidTargetLS(R.Range))
                 R.Cast();
         }
 
@@ -113,13 +114,13 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     E.CastOnUnit(ally);
                     return;
-                    //dmg = dmg + sender.GetSpellDamage(ally, args.SData.Name);
+                    //dmg = dmg + sender.GetSpellDamageLS(ally, args.SData.Name);
                 }
                 else if (Config.Item("skillshot" + ally.ChampionName ,true).GetValue<bool>())
                 {
                     if (!OktwCommon.CanHitSkillShot(ally, args))
                         continue;
-                    //dmg = dmg + sender.GetSpellDamage(ally, args.SData.Name);
+                    //dmg = dmg + sender.GetSpellDamageLS(ally, args.SData.Name);
                     E.CastOnUnit(ally);
                     return;
                 }
@@ -128,7 +129,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (R.IsReady() && Config.Item("Gap", true).GetValue<bool>() && gapcloser.Sender.IsValidTarget(R.Range))
+            if (R.IsReady() && Config.Item("Gap", true).GetValue<bool>() && gapcloser.Sender.IsValidTargetLS(R.Range))
                 R.Cast();
         }
 
@@ -166,10 +167,10 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
 
-                if (t.IsValidTarget(Q.Range) && !t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && Config.Item("grab" + t.ChampionName).GetValue<bool>())
+                if (t.IsValidTargetLS(Q.Range) && !t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && Config.Item("grab" + t.ChampionName).GetValue<bool>())
                     Program.CastSpell(Q, t);
             }
-            foreach (var t in HeroManager.Enemies.Where(t => t.IsValidTarget(Q.Range) && Config.Item("grab" + t.ChampionName).GetValue<bool>()))
+            foreach (var t in HeroManager.Enemies.Where(t => t.IsValidTargetLS(Q.Range) && Config.Item("grab" + t.ChampionName).GetValue<bool>()))
             {
                 if (!t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield))
                 {
@@ -190,7 +191,7 @@ namespace OneKeyToWin_AIO_Sebby
         private void LogicR()
         {
             bool rKs = Config.Item("rKs", true).GetValue<bool>();
-            foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(R.Range) && target.HasBuff("rocketgrab2")))
+            foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(R.Range) && target.HasBuff("rocketgrab2")))
             {
                 if (rKs && R.GetDamage(target) > target.Health)
                     R.Cast();
@@ -201,7 +202,7 @@ namespace OneKeyToWin_AIO_Sebby
         private void LogicW()
         {
             var t = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget() )
+            if (t.IsValidTargetLS() )
             {
                 if (!Config.Item("autoWcc", true).GetValue<bool>() && !Q.IsReady())
                 {
@@ -211,7 +212,7 @@ namespace OneKeyToWin_AIO_Sebby
                         Program.CastSpell(W, t);
                 }
 
-                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
+                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(W.Range) && !OktwCommon.CanMove(enemy)))
                     W.Cast(enemy, true);
             }
             else if (Program.LaneClear && Player.ManaPercent > Config.Item("Mana", true).GetValue<Slider>().Value && Config.Item("farmW", true).GetValue<bool>() && Player.Mana > RMANA + WMANA)

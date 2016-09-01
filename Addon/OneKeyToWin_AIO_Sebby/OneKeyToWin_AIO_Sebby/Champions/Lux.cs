@@ -6,8 +6,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -97,7 +98,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (Q.IsReady() && gapcloser.Sender.IsValidTarget(Q.Range) && Config.Item("gapQ", true).GetValue<bool>() && Config.Item("Qgap" + gapcloser.Sender.ChampionName).GetValue<bool>())
+            if (Q.IsReady() && gapcloser.Sender.IsValidTargetLS(Q.Range) && Config.Item("gapQ", true).GetValue<bool>() && Config.Item("Qgap" + gapcloser.Sender.ChampionName).GetValue<bool>())
                 Q.Cast(gapcloser.Sender);
         }
 
@@ -124,7 +125,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (Config.Item("useR", true).GetValue<KeyBind>().Active)
                 {
                     var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Magical);
-                    if (t.IsValidTarget())
+                    if (t.IsValidTargetLS())
                         R.Cast(t, true, true);
                 }
             }
@@ -188,16 +189,16 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void LogicQ()
         {
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && E.GetDamage(enemy) + Q.GetDamage(enemy) + BonusDmg(enemy) > enemy.Health))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Q.Range) && E.GetDamage(enemy) + Q.GetDamage(enemy) + BonusDmg(enemy) > enemy.Health))
             {
                 CastQ(enemy);
                 return;
             }
 
             var t = Orbwalker.GetTarget() as AIHeroClient;
-            if (!t.IsValidTarget())
+            if (!t.IsValidTargetLS())
                 t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget() && Config.Item("Qon" + t.ChampionName).GetValue<bool>())
+            if (t.IsValidTargetLS() && Config.Item("Qon" + t.ChampionName).GetValue<bool>())
             {
                 if (Program.Combo && Player.Mana > RMANA + QMANA)
                     CastQ(t);
@@ -206,7 +207,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 else if(OktwCommon.GetKsDamage(t,Q) > t.Health)
                     CastQ(t);
 
-                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Q.Range) && !OktwCommon.CanMove(enemy)))
                     CastQ(enemy);
             }
         }
@@ -245,7 +246,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             else
             {
                 var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
-                if (t.IsValidTarget() )
+                if (t.IsValidTargetLS() )
                 {
                     if (!Config.Item("autoEcc", true).GetValue<bool>())
                     {
@@ -257,7 +258,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                                 Program.CastSpell(E, t);
                     }
 
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(E.Range) && !OktwCommon.CanMove(enemy)))
                         E.Cast(enemy, true);
                 }
                 else if (Program.LaneClear && Player.ManaPercent > Config.Item("Mana", true).GetValue<Slider>().Value && Config.Item("farmE", true).GetValue<bool>() && Player.Mana > RMANA + WMANA)
@@ -275,7 +276,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (Config.Item("autoR", true).GetValue<bool>() )
             {
-                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(R.Range) && target.CountAlliesInRange(600) < 2 && OktwCommon.ValidUlt(target)))
+                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(R.Range) && target.CountAlliesInRange(600) < 2 && OktwCommon.ValidUlt(target)))
                 {
                     float predictedHealth = target.Health + target.HPRegenRate * 2;
                     float Rdmg = OktwCommon.GetKsDamage(target, R);
@@ -308,7 +309,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         castR(target);
                         Program.debug("R normal");
                     }
-                    else if (!OktwCommon.CanMove(target) && Config.Item("Rcc", true).GetValue<bool>() && target.IsValidTarget(E.Range))
+                    else if (!OktwCommon.CanMove(target) && Config.Item("Rcc", true).GetValue<bool>() && target.IsValidTargetLS(E.Range))
                     {
                         float dmgCombo = Rdmg;
 
@@ -322,7 +323,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                                 dmgCombo += eDmg;
                         }
 
-                        if (target.IsValidTarget(800))
+                        if (target.IsValidTargetLS(800))
                             dmgCombo += BonusDmg(target);
 
                         if (dmgCombo > predictedHealth)
@@ -368,7 +369,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
             else if (inx == 3)
             {
-                List<Vector2> waypoints = target.GetWaypoints();
+                List<Vector2> waypoints = target.GetWaypointsLS();
                 if ((Player.Distance(waypoints.Last<Vector2>().To3D()) - Player.Distance(target.Position)) > 400)
                 {
                     Program.CastSpell(R, target);
@@ -551,7 +552,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
 
-                if ( t.IsValidTarget() && R.GetDamage(t) > t.Health)
+                if ( t.IsValidTargetLS() && R.GetDamage(t) > t.Health)
                 {
                     Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.5f, System.Drawing.Color.Red, "Ult can kill: " + t.ChampionName + " have: " + t.Health + "hp");
                     drawLine(t.Position, Player.Position, 5, System.Drawing.Color.Red);

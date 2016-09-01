@@ -6,8 +6,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby
 {
@@ -113,7 +114,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (Config.Item("AGC", true).GetValue<bool>() && E.IsReady() && Player.Mana > RMANA + EMANA)
             {
                 var Target = gapcloser.Sender;
-                if (Target.IsValidTarget(E.Range))
+                if (Target.IsValidTargetLS(E.Range))
                     E.Cast(gapcloser.End);
             }
         }
@@ -130,7 +131,7 @@ namespace OneKeyToWin_AIO_Sebby
             }
             if (E.IsReady())
             {
-                if (unit.IsEnemy && Config.Item("opsE", true).GetValue<bool>() &&  unit.IsValidTarget(E.Range) && ShouldUseE(args.SData.Name))
+                if (unit.IsEnemy && Config.Item("opsE", true).GetValue<bool>() &&  unit.IsValidTargetLS(E.Range) && ShouldUseE(args.SData.Name))
                 {
                     E.Cast(unit.ServerPosition, true);
                 }
@@ -149,7 +150,7 @@ namespace OneKeyToWin_AIO_Sebby
                 if (Config.Item("useR", true).GetValue<KeyBind>().Active)
                 {
                     var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
-                    if (t.IsValidTarget())
+                    if (t.IsValidTargetLS())
                         R.Cast(t);
                 }
                 if (Config.Item("Rjungle", true).GetValue<bool>())
@@ -194,7 +195,7 @@ namespace OneKeyToWin_AIO_Sebby
             }
 
             var t = TargetSelector.GetTarget(bonusRange() + 60, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (!FishBoneActive && (!LeagueSharp.Common.Orbwalking.InAutoAttackRange(t) || t.CountEnemiesInRange(250) > 2) && Orbwalker.GetTarget() == null)
                 {
@@ -220,10 +221,10 @@ namespace OneKeyToWin_AIO_Sebby
         private void LogicW()
         {
             var t = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
  
-                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && enemy.Distance(Player) > bonusRange()))
+                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(W.Range) && enemy.Distance(Player) > bonusRange()))
                 {
                     var comboDmg = OktwCommon.GetKsDamage(enemy, W);
                     if (R.IsReady() && Player.Mana > RMANA + WMANA + 20)
@@ -242,18 +243,18 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     if (Program.Combo && Player.Mana > RMANA + WMANA + 10)
                     {
-                        foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && GetRealDistance(enemy) > bonusRange() ).OrderBy(enemy => enemy.Health))
+                        foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(W.Range) && GetRealDistance(enemy) > bonusRange() ).OrderBy(enemy => enemy.Health))
                             Program.CastSpell(W, enemy);
                     }
                     else if (Program.Farm && Player.Mana > RMANA + EMANA + WMANA + WMANA + 40 && OktwCommon.CanHarras())
                     {
-                        foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && Config.Item("haras" + enemy.ChampionName).GetValue<bool>()))
+                        foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(W.Range) && Config.Item("haras" + enemy.ChampionName).GetValue<bool>()))
                             Program.CastSpell(W, enemy);
                     }
                 }
                 if (!Program.None && Player.Mana > RMANA + WMANA && Player.CountEnemiesInRange(GetRealPowPowRange(t)) == 0)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(W.Range) && !OktwCommon.CanMove(enemy)))
                         W.Cast(enemy, true);
                 }
             }
@@ -263,7 +264,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             if (Player.Mana > RMANA + EMANA && Config.Item("autoE", true).GetValue<bool>() && Game.Time - grabTime > 1)
             {
-                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
+                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(E.Range) && !OktwCommon.CanMove(enemy)))
                 {
                     E.Cast(enemy);
                     return;
@@ -281,7 +282,7 @@ namespace OneKeyToWin_AIO_Sebby
                 if (Program.Combo && Player.IsMoving && Config.Item("comboE", true).GetValue<bool>() && Player.Mana > RMANA + EMANA + WMANA)
                 {
                     var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
-                    if (t.IsValidTarget(E.Range) && E.GetPrediction(t).CastPosition.Distance(t.Position) > 200 && (int)E.GetPrediction(t).Hitchance == 5)
+                    if (t.IsValidTargetLS(E.Range) && E.GetPrediction(t).CastPosition.Distance(t.Position) > 200 && (int)E.GetPrediction(t).Hitchance == 5)
                     {
                         E.CastIfWillHit(t, 2);
                         if (t.HasBuffOfType(BuffType.Slow))
@@ -315,7 +316,7 @@ namespace OneKeyToWin_AIO_Sebby
                 return;
             if (Game.Time - WCastTime > 0.9 && Config.Item("autoR", true).GetValue<bool>())
             {
-                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(R.Range) && OktwCommon.ValidUlt(target)))
+                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(R.Range) && OktwCommon.ValidUlt(target)))
                 {
                     var predictedHealth = target.Health - OktwCommon.GetIncomingDamage(target);
                     var Rdmg = R.GetDamage(target, 1);
@@ -352,7 +353,7 @@ namespace OneKeyToWin_AIO_Sebby
             }
             else if (inx == 3)
             {
-                List<Vector2> waypoints = target.GetWaypoints();
+                List<Vector2> waypoints = target.GetWaypointsLS();
                 if ((Player.Distance(waypoints.Last<Vector2>().To3D()) - Player.Distance(target.Position)) > 400)
                 {
                     Program.CastSpell(R, target);
@@ -530,12 +531,12 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
 
-                if (R.IsReady() && t.IsValidTarget() && R.GetDamage(t, 1) > t.Health)
+                if (R.IsReady() && t.IsValidTargetLS() && R.GetDamage(t, 1) > t.Health)
                 {
                     Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.5f, System.Drawing.Color.Red, "Ult can kill: " + t.ChampionName + " have: " + t.Health + "hp");
                     drawLine(t.Position, Player.Position, 5, System.Drawing.Color.Red);
                 }
-                else if (t.IsValidTarget(2000) && W.GetDamage(t) > t.Health)
+                else if (t.IsValidTargetLS(2000) && W.GetDamage(t) > t.Health)
                 {
                     Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.5f, System.Drawing.Color.Red, "W can kill: " + t.ChampionName + " have: " + t.Health + "hp");
                     drawLine(t.Position, Player.Position, 3, System.Drawing.Color.Yellow);

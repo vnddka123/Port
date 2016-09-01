@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
-//using EloBuddy.SDK;
+using EloBuddy.SDK;
 
 namespace SPrediction
 {
@@ -302,7 +302,7 @@ namespace SPrediction
 
                     float rotAngle = (float)Math.Atan2(Direction.Y - v1.Y, Direction.X - v1.X) - (float)(Math.PI * 180.0 / 180.0);
                     for (double a = 0; a <= Angle; a += aStep)
-                        result.Add(new Vector2(Center.X + (float)Math.Cos(a) * Width, Center.Y - (float)Math.Sin(a) * Height).RotateAroundPoint(v1, rotAngle));
+                        result.Add(new Vector2(Center.X + (float)Math.Cos(a) * Width, Center.Y - (float)Math.Sin(a) * Height).RotateAroundPointLS(v1, rotAngle));
 
                     return result;
                 }

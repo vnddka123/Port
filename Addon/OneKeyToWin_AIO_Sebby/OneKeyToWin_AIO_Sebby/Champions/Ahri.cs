@@ -5,8 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -116,7 +117,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (E.IsReady() && gapcloser.Sender.IsValidTarget(E.Range) && Config.Item("Egapcloser" + gapcloser.Sender.ChampionName, true).GetValue<bool>())
+            if (E.IsReady() && gapcloser.Sender.IsValidTargetLS(E.Range) && Config.Item("Egapcloser" + gapcloser.Sender.ChampionName, true).GetValue<bool>())
             {
                 E.Cast(gapcloser.Sender);
             }
@@ -150,7 +151,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void LogicR()
         {
-            var dashPosition = Player.Position.Extend(Game.CursorPos, 450);
+            var dashPosition = Player.Position.Extend(Game.CursorPos, 450).To3DWorld();
 
             if (Player.Distance(Game.CursorPos) < 450)
                 dashPosition = Game.CursorPos;
@@ -184,7 +185,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Config.Item("autoR", true).GetValue<bool>())
             {
                 var t = TargetSelector.GetTarget(450 + R.Range, TargetSelector.DamageType.Magical);
-                if (t.IsValidTarget())
+                if (t.IsValidTargetLS())
                 {
                     var comboDmg = R.GetDamage(t) * 3;
                     if (Q.IsReady())
@@ -200,7 +201,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         R.Cast(dashPosition);
                     }
 
-                    foreach (var target in HeroManager.Enemies.Where(target => target.IsMelee && target.IsValidTarget(300)))
+                    foreach (var target in HeroManager.Enemies.Where(target => target.IsMelee && target.IsValidTargetLS(300)))
                     {
                         R.Cast(dashPosition);
                     }
@@ -211,7 +212,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicW()
         {
             var t = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (Program.Combo && Player.Mana > RMANA + WMANA)
                     W.Cast();
@@ -233,7 +234,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 missileManager.Target = t;
                 if (EMissile == null || !EMissile.IsValid)
@@ -248,7 +249,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 }
                 if (!Program.None && Player.Mana > RMANA + WMANA)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Q.Cast(enemy, true);
                 }
             }
@@ -263,14 +264,14 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void LogicE()
         {
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && E.GetDamage(enemy) + Q.GetDamage(enemy) + W.GetDamage(enemy) + OktwCommon.GetEchoLudenDamage(enemy) > enemy.Health))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(E.Range) && E.GetDamage(enemy) + Q.GetDamage(enemy) + W.GetDamage(enemy) + OktwCommon.GetEchoLudenDamage(enemy) > enemy.Health))
             {
                 Program.CastSpell(E, enemy);
             }
             var t = Orbwalker.GetTarget() as AIHeroClient;
-            if (!t.IsValidTarget())
+            if (!t.IsValidTargetLS())
                 t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (Program.Combo && Player.Mana > RMANA + EMANA && Config.Item("Eon" + t.ChampionName, true).GetValue<bool>())
                     Program.CastSpell(E, t);
@@ -280,7 +281,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     Program.CastSpell(E, t);
                 if (Player.Mana > RMANA + EMANA)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && !OktwCommon.CanMove(enemy) && Config.Item("Eon" + enemy.ChampionName, true).GetValue<bool>()))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(E.Range) && !OktwCommon.CanMove(enemy) && Config.Item("Eon" + enemy.ChampionName, true).GetValue<bool>()))
                         E.Cast(enemy);
                 }
             }
@@ -377,7 +378,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                 var t = TargetSelector.GetTarget(1500, TargetSelector.DamageType.Physical);
 
-                if (t.IsValidTarget())
+                if (t.IsValidTargetLS())
                 {
                     var comboDmg = 0f;
                     if (R.IsReady())

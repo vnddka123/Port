@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Linq;
 using EloBuddy;
+using EloBuddy.SDK;
 using LeagueSharp.Common;
 using SharpDX;
 using ItemData = LeagueSharp.Common.Data.ItemData;
 using Utility = LeagueSharp.Common.Utility;
+using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
 
 namespace HoolaRiven
 {
@@ -108,7 +111,7 @@ namespace HoolaRiven
             foreach (
                 var enemy in
                     ObjectManager.Get<AIHeroClient>()
-                        .Where(ene => ene.IsValidTarget() && !ene.IsZombie))
+                        .Where(ene => ene.IsValidTargetLS() && !ene.IsZombie))
             {
                 if (Dind)
                 {
@@ -344,9 +347,9 @@ namespace HoolaRiven
 
         private static void Interrupt(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (sender.IsEnemy && W.IsReady() && sender.IsValidTarget() && !sender.IsZombie && WInterrupt)
+            if (sender.IsEnemy && W.IsReady() && sender.IsValidTargetLS() && !sender.IsZombie && WInterrupt)
             {
-                if (sender.IsValidTarget(125 + Player.BoundingRadius + sender.BoundingRadius)) W.Cast();
+                if (sender.IsValidTargetLS(125 + Player.BoundingRadius + sender.BoundingRadius)) W.Cast();
             }
         }
 
@@ -382,7 +385,7 @@ namespace HoolaRiven
         {
             if (KillstealW && W.IsReady())
             {
-                var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(R.Range) && !x.IsZombie);
+                var targets = HeroManager.Enemies.Where(x => x.IsValidTargetLS(R.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
                     if (target.Health < W.GetDamage(target) && InWRange(target))
@@ -391,7 +394,7 @@ namespace HoolaRiven
             }
             if (KillstealR && R.IsReady() && R.Instance.Name == IsSecondR)
             {
-                var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(R.Range) && !x.IsZombie);
+                var targets = HeroManager.Enemies.Where(x => x.IsValidTargetLS(R.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
                     if (target.Health < Rdame(target, target.Health) && (!target.HasBuff("kindrednodeathbuff") && !target.HasBuff("Undying Rage") && !target.HasBuff("JudicatorIntervention")))
@@ -403,7 +406,7 @@ namespace HoolaRiven
         {
             if (RMaxDam && R.IsReady() && R.Instance.Name == IsSecondR)
             {
-                var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(R.Range) && !x.IsZombie);
+                var targets = HeroManager.Enemies.Where(x => x.IsValidTargetLS(R.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
                     if (target.Health / target.MaxHealth <= 0.25 && (!target.HasBuff("kindrednodeathbuff") || !target.HasBuff("Undying Rage") || !target.HasBuff("JudicatorIntervention")))
@@ -471,7 +474,7 @@ namespace HoolaRiven
                 Utility.DelayAction.Add(1, ForceW);
             }
             if (W.IsReady() && InWRange(targetR) && ComboW && targetR != null) W.Cast();
-            if (UseHoola && R.IsReady() && R.Instance.Name == IsFirstR && W.IsReady() && targetR != null && E.IsReady() && targetR.IsValidTarget() && !targetR.IsZombie && (IsKillableR(targetR) || AlwaysR))
+            if (UseHoola && R.IsReady() && R.Instance.Name == IsFirstR && W.IsReady() && targetR != null && E.IsReady() && targetR.IsValidTargetLS() && !targetR.IsZombie && (IsKillableR(targetR) || AlwaysR))
             {
                 if (!InWRange(targetR))
                 {
@@ -481,7 +484,7 @@ namespace HoolaRiven
                     Utility.DelayAction.Add(305, () => ForceCastQ(targetR));
                 }
             }
-            else if (!UseHoola && R.IsReady() && R.Instance.Name == IsFirstR && W.IsReady() && targetR != null && E.IsReady() && targetR.IsValidTarget() && !targetR.IsZombie && (IsKillableR(targetR) || AlwaysR))
+            else if (!UseHoola && R.IsReady() && R.Instance.Name == IsFirstR && W.IsReady() && targetR != null && E.IsReady() && targetR.IsValidTargetLS() && !targetR.IsZombie && (IsKillableR(targetR) || AlwaysR))
             {
                 if (!InWRange(targetR))
                 {
@@ -492,7 +495,7 @@ namespace HoolaRiven
             }
             else if (UseHoola && W.IsReady() && E.IsReady())
             {
-                if (targetR.IsValidTarget() && targetR != null && !targetR.IsZombie && !InWRange(targetR))
+                if (targetR.IsValidTargetLS() && targetR != null && !targetR.IsZombie && !InWRange(targetR))
                 {
                     E.Cast(targetR.Position);
                     Utility.DelayAction.Add(10, ForceItem);
@@ -502,7 +505,7 @@ namespace HoolaRiven
             }
             else if (!UseHoola && W.IsReady() && targetR != null && E.IsReady())
             {
-                if (targetR.IsValidTarget() && targetR != null && !targetR.IsZombie && !InWRange(targetR))
+                if (targetR.IsValidTargetLS() && targetR != null && !targetR.IsZombie && !InWRange(targetR))
                 {
                     E.Cast(targetR.Position);
                     Utility.DelayAction.Add(10, ForceItem);
@@ -511,7 +514,7 @@ namespace HoolaRiven
             }
             else if (E.IsReady())
             {
-                if (targetR.IsValidTarget() && !targetR.IsZombie && !InWRange(targetR))
+                if (targetR.IsValidTargetLS() && !targetR.IsZombie && !InWRange(targetR))
                 {
                     E.Cast(targetR.Position);
                 }
@@ -521,7 +524,7 @@ namespace HoolaRiven
         private static void Burst()
         {
             var target = TargetSelector.GetSelectedTarget();
-            if (target != null && target.IsValidTarget() && !target.IsZombie)
+            if (target != null && target.IsValidTargetLS() && !target.IsZombie)
             {
                 if (R.IsReady() && R.Instance.Name == IsFirstR && W.IsReady() && E.IsReady() && Player.Distance(target.Position) <= 250 + 70 + Player.AttackRange)
                 {
@@ -563,7 +566,7 @@ namespace HoolaRiven
             if (Q.IsReady() && E.IsReady())
             {
                 var target = TargetSelector.GetTarget(450 + Player.AttackRange + 70, TargetSelector.DamageType.Physical);
-                if (target.IsValidTarget() && !target.IsZombie)
+                if (target.IsValidTargetLS() && !target.IsZombie)
                 {
                     if (!Orbwalking.InAutoAttackRange(target) && !InWRange(target)) E.Cast(target.Position);
                     Utility.DelayAction.Add(10, ForceItem);
@@ -577,16 +580,16 @@ namespace HoolaRiven
             var target = TargetSelector.GetTarget(400, TargetSelector.DamageType.Physical);
             if (Q.IsReady() && W.IsReady() && E.IsReady() && QStack == 1)
             {
-                if (target.IsValidTarget() && !target.IsZombie)
+                if (target.IsValidTargetLS() && !target.IsZombie)
                 {
                     ForceCastQ(target);
                     Utility.DelayAction.Add(1, ForceW);
                 }
             }
-            if (Q.IsReady() && E.IsReady() && QStack == 3 && !Orbwalking.CanAttack && Orbwalking.CanMove(40))
+
+            if (Q.IsReady() && E.IsReady() && QStack == 3 && !Orbwalking.CanAttack && Orbwalking.CanMove(5))
             {
-                var epos = Player.ServerPosition +
-                          (Player.ServerPosition - target.ServerPosition).Normalized() * 300;
+                var epos = Player.ServerPosition + (Player.ServerPosition - target.ServerPosition).Normalized() * 300;
                 E.Cast(epos);
                 Utility.DelayAction.Add(190, () => Q.Cast(epos));
             }
@@ -597,7 +600,7 @@ namespace HoolaRiven
             var enemy =
                 HeroManager.Enemies.Where(
                     hero =>
-                        hero.IsValidTarget(Player.HasBuff("RivenFengShuiEngine")
+                        hero.IsValidTargetLS(Player.HasBuff("RivenFengShuiEngine")
                             ? 70 + 195 + Player.BoundingRadius
                             : 70 + 120 + Player.BoundingRadius) && W.IsReady());
             var x = Player.Position.Extend(Game.CursorPos, 300);
@@ -641,7 +644,7 @@ namespace HoolaRiven
                     break;
                 case "Spell4b":
                     var target = TargetSelector.GetSelectedTarget();
-                    if (Q.IsReady() && target.IsValidTarget()) ForceCastQ(target);
+                    if (Q.IsReady() && target.IsValidTargetLS()) ForceCastQ(target);
                     break;
             }
         }
@@ -661,7 +664,7 @@ namespace HoolaRiven
         {
             Chat.Say("/d");
             Orbwalking.ResetAutoAttackTimer();
-            EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.Extend(Game.CursorPos, Player.Distance(Game.CursorPos) + 10));
+            EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.Extend(Game.CursorPos, Player.Distance(Game.CursorPos) + 10).To3DWorld());
         }
 
         private static bool InWRange(GameObject target) => (Player.HasBuff("RivenFengShuiEngine") && target != null) ? 330 >= Player.Distance(target.Position) : 265 >= Player.Distance(target.Position);
@@ -669,7 +672,7 @@ namespace HoolaRiven
 
         private static void ForceSkill()
         {
-            if (forceQ && QTarget != null && QTarget.IsValidTarget(E.Range + Player.BoundingRadius + 70) && Q.IsReady()) Q.Cast(QTarget.Position);
+            if (forceQ && QTarget != null && QTarget.IsValidTargetLS(E.Range + Player.BoundingRadius + 70) && Q.IsReady()) Q.Cast(QTarget.Position);
             if (forceW) W.Cast();
             if (forceR && R.Instance.Name == IsFirstR) R.Cast();
             if (forceItem && Items.CanUseItem(Item) && Items.HasItem(Item) && Item != 0) Items.UseItem(Item);
@@ -711,7 +714,7 @@ namespace HoolaRiven
         private static void FlashW()
         {
             var target = TargetSelector.GetSelectedTarget();
-            if (target != null && target.IsValidTarget() && !target.IsZombie)
+            if (target != null && target.IsValidTargetLS() && !target.IsZombie)
             {
                 W.Cast();
                 Utility.DelayAction.Add(10, () => Player.Spellbook.CastSpell(Flash, target.Position));
@@ -966,7 +969,7 @@ namespace HoolaRiven
 
         public static bool IsKillableR(AIHeroClient target)
         {
-            if (RKillable && target.IsValidTarget() && (totaldame(target) >= target.Health
+            if (RKillable && target.IsValidTargetLS() && (totaldame(target) >= target.Health
                  && basicdmg(target) <= target.Health) || Player.CountEnemiesInRange(900) >= 2 && (!target.HasBuff("kindrednodeathbuff") && !target.HasBuff("Undying Rage") && !target.HasBuff("JudicatorIntervention")))
             {
                 return true;
@@ -1012,7 +1015,7 @@ namespace HoolaRiven
                 var missinghealth = (target.MaxHealth - health) / target.MaxHealth > 0.75 ? 0.75 : (target.MaxHealth - health) / target.MaxHealth;
                 var pluspercent = missinghealth * (8 / 3);
                 var rawdmg = new double[] { 80, 120, 160 }[R.Level - 1] + 0.6 * Player.FlatPhysicalDamageMod;
-                return Player.CalcDamage(target, Damage.DamageType.Physical, rawdmg * (1 + pluspercent));
+                return Player.CalcDamage(target, LeagueSharp.Common.Damage.DamageType.Physical, rawdmg * (1 + pluspercent));
             }
             return 0;
         }

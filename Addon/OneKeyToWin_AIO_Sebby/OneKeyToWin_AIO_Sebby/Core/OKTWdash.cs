@@ -5,8 +5,9 @@ using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Core
 {
@@ -41,14 +42,14 @@ namespace OneKeyToWin_AIO_Sebby.Core
                 int GapcloserMode = Config.Item("GapcloserMode", true).GetValue<StringList>().SelectedIndex;
                 if (GapcloserMode == 0)
                 {
-                    var bestpoint = Player.Position.Extend(Game.CursorPos, DashSpell.Range);
+                    var bestpoint = Player.Position.Extend(Game.CursorPos, DashSpell.Range).To3DWorld();
                     if (IsGoodPosition(bestpoint))
                         DashSpell.Cast(bestpoint);
                 }
                 else if (GapcloserMode == 1)
                 {
                     var points = OktwCommon.CirclePoints(10, DashSpell.Range, Player.Position);
-                    var bestpoint = Player.Position.Extend(gapcloser.Sender.Position, -DashSpell.Range);
+                    var bestpoint = Player.Position.Extend(gapcloser.Sender.Position, -DashSpell.Range).To3DWorld();
                     int enemies = bestpoint.CountEnemiesInRange(DashSpell.Range);
                     foreach (var point in points)
                     {
@@ -77,7 +78,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
             Vector3 bestpoint = Vector3.Zero;
             if (DashMode == 0)
             {
-                bestpoint = Player.Position.Extend(Game.CursorPos, DashSpell.Range);
+                bestpoint = Player.Position.Extend(Game.CursorPos, DashSpell.Range).To3DWorld();
             }
             else if (DashMode == 1)
             {
@@ -97,18 +98,18 @@ namespace OneKeyToWin_AIO_Sebby.Core
 
                     if (Game.CursorPos.Distance(rEndPos) < Game.CursorPos.Distance(lEndPos))
                     {
-                        bestpoint = Player.Position.Extend(rEndPos, DashSpell.Range);
+                        bestpoint = Player.Position.Extend(rEndPos, DashSpell.Range).To3DWorld();
                     }
                     else
                     {
-                        bestpoint = Player.Position.Extend(lEndPos, DashSpell.Range);
+                        bestpoint = Player.Position.Extend(lEndPos, DashSpell.Range).To3DWorld();
                     }
                 }
             }
             else if (DashMode == 2)
             {
                 var points = OktwCommon.CirclePoints(15, DashSpell.Range, Player.Position);
-                bestpoint = Player.Position.Extend(Game.CursorPos, DashSpell.Range);
+                bestpoint = Player.Position.Extend(Game.CursorPos, DashSpell.Range).To3DWorld();
                 int enemies = bestpoint.CountEnemiesInRange(350);
                 foreach (var point in points)
                 {

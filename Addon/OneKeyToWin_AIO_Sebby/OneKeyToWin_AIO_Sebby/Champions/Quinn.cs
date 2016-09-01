@@ -5,8 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby
 {
@@ -75,14 +76,14 @@ namespace OneKeyToWin_AIO_Sebby
                 var orbTarget = args.Target as AIHeroClient;
                 if (!orbTarget.HasBuff("quinnw"))
                 {
-                    var best = HeroManager.Enemies.FirstOrDefault(enemy => enemy.IsValidTarget() && LeagueSharp.Common.Orbwalking.InAutoAttackRange(enemy) && enemy.HasBuff("quinnw"));
+                    var best = HeroManager.Enemies.FirstOrDefault(enemy => enemy.IsValidTargetLS() && LeagueSharp.Common.Orbwalking.InAutoAttackRange(enemy) && enemy.HasBuff("quinnw"));
                     if(best != null)
                         Orbwalker.ForceTarget(best);
                 }
             }
             else if(Program.LaneClear && args.Target.Type == GameObjectType.obj_AI_Minion && Config.Item("farmP", true).GetValue<bool>())
             {
-                var bestMinion = Cache.GetMinions(Player.Position, Player.AttackRange).FirstOrDefault(minion => minion.IsValidTarget() && LeagueSharp.Common.Orbwalking.InAutoAttackRange(minion) && minion.HasBuff("quinnw"));
+                var bestMinion = Cache.GetMinions(Player.Position, Player.AttackRange).FirstOrDefault(minion => minion.IsValidTargetLS() && LeagueSharp.Common.Orbwalking.InAutoAttackRange(minion) && minion.HasBuff("quinnw"));
 
                 if (bestMinion != null)
                     Orbwalker.ForceTarget(bestMinion);
@@ -127,7 +128,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void Interrupter2_OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (E.IsReady() && Config.Item("Int", true).GetValue<bool>() && sender.IsValidTarget(E.Range))
+            if (E.IsReady() && Config.Item("Int", true).GetValue<bool>() && sender.IsValidTargetLS(E.Range))
                 E.CastOnUnit(sender);
         }
 
@@ -136,7 +137,7 @@ namespace OneKeyToWin_AIO_Sebby
             if ( target.Type == GameObjectType.AIHeroClient)
             {
                 var t = target as AIHeroClient;
-                if (E.IsReady() && Config.Item("autoE", true).GetValue<bool>() && t.IsValidTarget(E.Range) && t.CountEnemiesInRange(800) < 3)
+                if (E.IsReady() && Config.Item("autoE", true).GetValue<bool>() && t.IsValidTargetLS(E.Range) && t.CountEnemiesInRange(800) < 3)
                 {
                     if (Program.Combo && Player.Mana > RMANA + EMANA)
                         E.Cast(t);
@@ -147,7 +148,7 @@ namespace OneKeyToWin_AIO_Sebby
                     else if (OktwCommon.GetKsDamage(t, E) > t.Health)
                         E.Cast(t);
                 }
-                if (Q.IsReady() && t.IsValidTarget(Q.Range))
+                if (Q.IsReady() && t.IsValidTargetLS(Q.Range))
                 {
                     if (Program.Combo && Player.Mana > RMANA + QMANA)
                         Program.CastSpell(Q, t);
@@ -160,7 +161,7 @@ namespace OneKeyToWin_AIO_Sebby
 
                     if (!Program.None && Player.Mana > RMANA + QMANA + EMANA)
                     {
-                        foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                        foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Q.Range) && !OktwCommon.CanMove(enemy)))
                             Q.Cast(enemy);
                     }
                 }
@@ -173,7 +174,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (E.IsReady() && Config.Item("AGC", true).GetValue<bool>() && Config.Item("gap" + gapcloser.Sender.ChampionName,true).GetValue<bool>())
             {
                 var t = gapcloser.Sender;
-                if (t.IsValidTarget(E.Range))
+                if (t.IsValidTargetLS(E.Range))
                 {
                     E.Cast(t);
                 }
@@ -182,7 +183,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void LogicR()
         {
-            if (Player.InFountain() && R.Instance.Name == "QuinnR")
+            if (Player.InFountainLS() && R.Instance.Name == "QuinnR")
             {
                 R.Cast();
             }
@@ -191,7 +192,7 @@ namespace OneKeyToWin_AIO_Sebby
         private void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (LeagueSharp.Common.Orbwalking.InAutoAttackRange(t) && t.HasBuff("quinnw"))
                     return;
@@ -206,7 +207,7 @@ namespace OneKeyToWin_AIO_Sebby
 
                 if (!Program.None && Player.Mana > RMANA + QMANA + EMANA)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Q.Cast(enemy);
                 }
             }

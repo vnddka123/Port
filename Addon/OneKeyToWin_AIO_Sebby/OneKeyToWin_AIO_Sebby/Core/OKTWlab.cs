@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Core
 {
@@ -146,8 +147,8 @@ namespace OneKeyToWin_AIO_Sebby.Core
             var step = start2.Distance(rEndPos) / 10;
             for (var i = 0; i < 10; i++)
             {
-                var pr = start2.Extend(rEndPos, step * i);
-                var pl = start2.Extend(lEndPos, step * i);
+                var pr = start2.Extend(rEndPos, step * i).To3DWorld();
+                var pl = start2.Extend(lEndPos, step * i).To3DWorld();
                 Render.Circle.DrawCircle(pr, 50, System.Drawing.Color.Orange, 1);
                 Render.Circle.DrawCircle(pl, 50, System.Drawing.Color.Orange, 1);
             }

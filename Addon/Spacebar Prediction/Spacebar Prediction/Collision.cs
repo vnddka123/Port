@@ -23,7 +23,7 @@ using System.Text.RegularExpressions;
 using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
-//using EloBuddy.SDK;
+using EloBuddy.SDK;
 
 //typedefs
 using Geometry = SPrediction.Geometry;

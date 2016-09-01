@@ -2,10 +2,10 @@
 using System.Linq;
 using LeagueSharp.Common;
 using EloBuddy;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
-using SebbyLib;
 using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
+using SebbyLib;
 
 namespace OneKeyToWin_AIO_Sebby
 {
@@ -226,13 +226,13 @@ namespace OneKeyToWin_AIO_Sebby
                     double dmg = 0;
                     if (args.Target != null && args.Target.NetworkId == ally.NetworkId)
                     {
-                        dmg = dmg + sender.GetSpellDamage(ally, args.SData.Name);
+                        dmg = dmg + sender.GetSpellDamageLS(ally, args.SData.Name);
                     }
                     else
                     {
                         var castArea = ally.Distance(args.End) * (args.End - ally.ServerPosition).Normalized() + ally.ServerPosition;
                         if (castArea.Distance(ally.ServerPosition) < ally.BoundingRadius / 2)
-                            dmg = dmg + sender.GetSpellDamage(ally, args.SData.Name);
+                            dmg = dmg + sender.GetSpellDamageLS(ally, args.SData.Name);
                         else
                             continue;
                     }
@@ -370,7 +370,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (Player.InFountain() || Player.IsRecalling() || Player.IsDead)
+            if (Player.InFountainLS() || Player.IsRecalling() || Player.IsDead)
             {
                 return;
             }
@@ -422,7 +422,7 @@ namespace OneKeyToWin_AIO_Sebby
                 if (mobs.Count == 0 && (Player.GetSpellSlot("s5_summonersmiteplayerganker") != SpellSlot.Unknown || Player.GetSpellSlot("s5_summonersmiteduel") != SpellSlot.Unknown))
                 {
                     var enemy = TargetSelector.GetTarget(500, TargetSelector.DamageType.True);
-                    if (enemy.IsValidTarget())
+                    if (enemy.IsValidTargetLS())
                     {
                         if(enemy.HealthPercent < 50 && Config.Item("SmiteEnemy").GetValue<bool>())
                             Player.Spellbook.CastSpell(smite, enemy);
@@ -459,7 +459,7 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 if (Config.Item("Exhaust1").GetValue<bool>())
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(650) && enemy.IsChannelingImportantSpell()))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(650) && enemy.IsChannelingImportantSpell()))
                     {
                         Player.Spellbook.CastSpell(exhaust, enemy);
                     }
@@ -468,7 +468,7 @@ namespace OneKeyToWin_AIO_Sebby
                 if (Config.Item("Exhaust2").GetValue<bool>() && Program.Combo)
                 {
                     var t = TargetSelector.GetTarget(650, TargetSelector.DamageType.Physical);
-                    if (t.IsValidTarget())
+                    if (t.IsValidTargetLS())
                     {
                         Player.Spellbook.CastSpell(exhaust, t);
                     }
@@ -480,7 +480,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             if (CanUse(ignite) && Config.Item("Ignite").GetValue<bool>())
             {
-                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(600)))
+                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(600)))
                 {
 
                     var pred = enemy.Health - OktwCommon.GetIncomingDamage(enemy);
@@ -617,7 +617,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (Botrk.IsReady() && Config.Item("Botrk").GetValue<bool>())
             {
                 var t = TargetSelector.GetTarget(Botrk.Range, TargetSelector.DamageType.Physical);
-                if (t.IsValidTarget())
+                if (t.IsValidTargetLS())
                 {
                     if (Config.Item("BotrkKS").GetValue<bool>() && Player.CalcDamage(t, LeagueSharp.Common.Damage.DamageType.Physical, t.MaxHealth * 0.1) > t.Health - OktwCommon.GetIncomingDamage(t))
                         Botrk.Cast(t);
@@ -627,11 +627,11 @@ namespace OneKeyToWin_AIO_Sebby
                         Botrk.Cast(t);
                 }
             }
-
+            /*
             if (GLP800.IsReady() && Config.Item("GLP800").GetValue<bool>())
             {
                 var t = TargetSelector.GetTarget(GLP800.Range, TargetSelector.DamageType.Magical);
-                if (t.IsValidTarget())
+                if (t.IsValidTargetLS())
                 {
                     if (Config.Item("GLP800KS").GetValue<bool>() && Player.CalcDamage(t, LeagueSharp.Common.Damage.DamageType.Magical, 200 + Player.FlatMagicDamageMod * 0.35) > t.Health - OktwCommon.GetIncomingDamage(t))
                         GLP800.Cast(LeagueSharp.Common.Prediction.GetPrediction(t, 0.5f).CastPosition);
@@ -646,7 +646,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (Protobelt.IsReady() && Config.Item("Protobelt").GetValue<bool>())
             {
                 var t = TargetSelector.GetTarget(Protobelt.Range, TargetSelector.DamageType.Magical);
-                if (t.IsValidTarget())
+                if (t.IsValidTargetLS())
                 {
                     if (Config.Item("ProtobeltKS").GetValue<bool>() && Player.CalcDamage(t, LeagueSharp.Common.Damage.DamageType.Magical, 150 + Player.FlatMagicDamageMod * 0.35) > t.Health - OktwCommon.GetIncomingDamage(t))
                         Protobelt.Cast(LeagueSharp.Common.Prediction.GetPrediction(t, 0.5f).CastPosition);
@@ -657,11 +657,11 @@ namespace OneKeyToWin_AIO_Sebby
                     }
                 }
             }
-
+            //*/
             if (Hextech.IsReady() && Config.Item("Hextech").GetValue<bool>())
             {
                 var t = TargetSelector.GetTarget(Hextech.Range, TargetSelector.DamageType.Magical);
-                if (t.IsValidTarget())
+                if (t.IsValidTargetLS())
                 {
                     if (Config.Item("HextechKS").GetValue<bool>() && Player.CalcDamage(t, LeagueSharp.Common.Damage.DamageType.Magical, 150 + Player.FlatMagicDamageMod * 0.4) > t.Health - OktwCommon.GetIncomingDamage(t))
                         Hextech.Cast(t);
@@ -678,7 +678,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (Cutlass.IsReady() && Config.Item("Cutlass").GetValue<bool>())
             {
                 var t = TargetSelector.GetTarget(Cutlass.Range, TargetSelector.DamageType.Magical);
-                if (t.IsValidTarget())
+                if (t.IsValidTargetLS())
                 {
                     if (Config.Item("CutlassKS").GetValue<bool>() && Player.CalcDamage(t, LeagueSharp.Common.Damage.DamageType.Magical, 100) > t.Health - OktwCommon.GetIncomingDamage(t))
                         Cutlass.Cast(t);
@@ -691,7 +691,7 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 var t = Orbwalker.GetTarget();
 
-                if (t.IsValidTarget() && t is AIHeroClient)
+                if (t.IsValidTargetLS() && t is AIHeroClient)
                 {
                     if (Config.Item("YoumuusKS").GetValue<bool>() && t.Health < Player.MaxHealth)
                         Youmuus.Cast();

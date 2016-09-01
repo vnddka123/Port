@@ -5,6 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
+using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -68,7 +71,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             Game.OnUpdate += Game_OnGameUpdate;
             Drawing.OnEndScene += Drawing_OnEndScene;
             Drawing.OnDraw += Drawing_OnDraw;
-            SebbyLib.Orbwalking.BeforeAttack += Orbwalking_BeforeAttack;
+            Orbwalking.BeforeAttack += Orbwalking_BeforeAttack;
             Game.OnWndProc += Game_OnWndProc;
             GameObject.OnCreate += Obj_AI_Base_OnCreate;
         }
@@ -90,7 +93,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
         }
 
-        private void Orbwalking_BeforeAttack(SebbyLib.Orbwalking.BeforeAttackEventArgs args)
+        private void Orbwalking_BeforeAttack(Orbwalking.BeforeAttackEventArgs args)
         {
             if (Program.Combo && W.IsReady() && FindCard == 1 && W.Instance.Name != "PickACard" && Config.Item("WblockAA", true).GetValue<bool>())
             {
@@ -136,7 +139,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     if (Player.HasBuff("destiny_marker"))
                     {
                         var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Magical);
-                        if (t.IsValidTarget())
+                        if (t.IsValidTargetLS())
                         {
                             R.Cast(t);
                         }
@@ -222,7 +225,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 {
                     if (R.IsReady() && (Player.HasBuff("destiny_marker") || Player.HasBuff("gate")))
                         W.Cast();
-                    else if (t.IsValidTarget() && Program.Combo)
+                    else if (t.IsValidTargetLS() && Program.Combo)
                         W.Cast();
                     else if (Orbwalker.GetTarget() != null)
                     {
@@ -256,7 +259,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         if (wName == "TwistedFate_Base_W_GoldCard.troy")
                             W.Cast();
                     }
-                    else if (Program.Combo && orbTarget.IsValidTarget() && W.GetDamage(orbTarget) + Player.GetAutoAttackDamage(orbTarget) > orbTarget.Health)
+                    else if (Program.Combo && orbTarget.IsValidTargetLS() && W.GetDamage(orbTarget) + Player.GetAutoAttackDamage(orbTarget) > orbTarget.Health)
                     {
                         W.Cast();
                         Program.debug("1" + wName);
@@ -267,7 +270,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         if (wName == "TwistedFate_Base_W_BlueCard.troy")
                             W.Cast();
                     }
-                    else if (Program.Farm && orbTarget.IsValidTarget())
+                    else if (Program.Farm && orbTarget.IsValidTargetLS())
                     {
                         FindCard = 1;
                         if (wName == "TwistedFate_Base_W_BlueCard.troy")
@@ -318,7 +321,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Player.CountEnemiesInRange(Config.Item("Renemy", true).GetValue<Slider>().Value) == 0)
             {
                 var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Magical);
-                if (t.IsValidTarget() && t.Distance(Player.Position) > Q.Range && t.CountAlliesInRange(Config.Item("RenemyA", true).GetValue<Slider>().Value) == 0)
+                if (t.IsValidTargetLS() && t.Distance(Player.Position) > Q.Range && t.CountAlliesInRange(Config.Item("RenemyA", true).GetValue<Slider>().Value) == 0)
                 {
                     if (Q.GetDamage(t) + W.GetDamage(t) + Player.GetAutoAttackDamage(t) * 3 > t.Health && t.CountEnemiesInRange(1000) < 3)
                     {
@@ -340,9 +343,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
-                if (OktwCommon.GetKsDamage(t, Q) > t.Health && !SebbyLib.Orbwalking.InAutoAttackRange(t))
+                if (OktwCommon.GetKsDamage(t, Q) > t.Health && !Orbwalking.InAutoAttackRange(t))
                     Program.CastSpell(Q, t);
 
                 if (W.Instance.CooldownExpires - Game.Time < W.Instance.Cooldown - 1.3 && !Player.HasBuff("pickacard_tracker") && (W.Instance.CooldownExpires - Game.Time > 3 || Player.CountEnemiesInRange(950) == 0))
@@ -353,7 +356,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         Program.CastSpell(Q, t);
                 }
 
-                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Q.Range) && !OktwCommon.CanMove(enemy)))
                     Q.Cast(enemy, true, true);
 
             }
@@ -429,7 +432,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (R.IsReady() && Config.Item("notR", true).GetValue<bool>())
             {
                 var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Magical);
-                if (t.IsValidTarget())
+                if (t.IsValidTargetLS())
                 {
                     var comboDMG = Q.GetDamage(t) + W.GetDamage(t) + Player.GetAutoAttackDamage(t) * 3;
                     if (Player.HasBuff("destiny_marker"))

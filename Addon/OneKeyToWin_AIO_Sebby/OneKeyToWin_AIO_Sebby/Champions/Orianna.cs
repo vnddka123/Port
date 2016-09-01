@@ -5,8 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby
 {
@@ -86,7 +87,7 @@ namespace OneKeyToWin_AIO_Sebby
                 R.Cast();
                 Program.debug("interupt");
             }
-            else if (Q.IsReady() && Player.Mana > RMANA + QMANA && sender.IsValidTarget(Q.Range))
+            else if (Q.IsReady() && Player.Mana > RMANA + QMANA && sender.IsValidTargetLS(Q.Range))
                 Q.Cast(sender.ServerPosition);
         }
 
@@ -100,7 +101,7 @@ namespace OneKeyToWin_AIO_Sebby
         private void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
             var Target = gapcloser.Sender;
-            if (Config.Item("AGC", true).GetValue<bool>() && E.IsReady() && Target.IsValidTarget(800) && Player.Mana > RMANA + EMANA)
+            if (Config.Item("AGC", true).GetValue<bool>() && E.IsReady() && Target.IsValidTargetLS(800) && Player.Mana > RMANA + EMANA)
                 E.CastOnUnit(Player);
             return;
         }
@@ -172,7 +173,7 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 Rsmart = true;
                 var target = TargetSelector.GetTarget(Q.Range + 100, TargetSelector.DamageType.Magical);
-                if (target.IsValidTarget())
+                if (target.IsValidTargetLS())
                 {
                     if (CountEnemiesInRangeDeley(BallPos, R.Width, R.Delay) > 1)
                         R.Cast();
@@ -204,7 +205,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             var ta = TargetSelector.GetTarget(1300, TargetSelector.DamageType.Magical);
 
-            if (Program.Combo && ta.IsValidTarget() && !W.IsReady() && Player.Mana > RMANA + EMANA)
+            if (Program.Combo && ta.IsValidTargetLS() && !W.IsReady() && Player.Mana > RMANA + EMANA)
             {
                 if (CountEnemiesInRangeDeley(BallPos, 100, 0.1f) > 0)
                     E.CastOnUnit(best);
@@ -216,7 +217,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void LogicR()
         {            
-            foreach (var t in HeroManager.Enemies.Where(t => t.IsValidTarget() && BallPos.Distance(LeagueSharp.Common.Prediction.GetPrediction(t, R.Delay).CastPosition) < R.Width && BallPos.Distance(t.ServerPosition) < R.Width))
+            foreach (var t in HeroManager.Enemies.Where(t => t.IsValidTargetLS() && BallPos.Distance(LeagueSharp.Common.Prediction.GetPrediction(t, R.Delay).CastPosition) < R.Width && BallPos.Distance(t.ServerPosition) < R.Width))
             {
                 if (Program.Combo && Config.Item("Ralways" + t.ChampionName, true).GetValue<bool>())
                 {
@@ -227,7 +228,7 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     var comboDmg = OktwCommon.GetKsDamage(t, R);
 
-                    if (t.IsValidTarget(Q.Range))
+                    if (t.IsValidTargetLS(Q.Range))
                         comboDmg += Q.GetDamage(t);
                     if (W.IsReady())
                         comboDmg += W.GetDamage(t);
@@ -257,7 +258,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void LogicW()
         {
-            foreach (var t in HeroManager.Enemies.Where(t => t.IsValidTarget() && BallPos.Distance(t.ServerPosition) < 250 && t.Health < W.GetDamage(t)))
+            foreach (var t in HeroManager.Enemies.Where(t => t.IsValidTargetLS() && BallPos.Distance(t.ServerPosition) < 250 && t.Health < W.GetDamage(t)))
             {
                 W.Cast();
                 return;
@@ -274,7 +275,7 @@ namespace OneKeyToWin_AIO_Sebby
         private void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget() && Q.IsReady())
+            if (t.IsValidTargetLS() && Q.IsReady())
             {
                 if (Q.GetDamage(t) + W.GetDamage(t) > t.Health)
                     CastQ(t);
@@ -283,7 +284,7 @@ namespace OneKeyToWin_AIO_Sebby
                 else if (Program.Farm && Player.Mana > RMANA + QMANA + WMANA + EMANA)
                     CastQ(t);
             }
-            if (Config.Item("W", true).GetValue<bool>() && !t.IsValidTarget() && Program.Combo && Player.Mana > RMANA + 3 * QMANA + WMANA + EMANA + WMANA)
+            if (Config.Item("W", true).GetValue<bool>() && !t.IsValidTargetLS() && Program.Combo && Player.Mana > RMANA + 3 * QMANA + WMANA + EMANA + WMANA)
             {
                 if (W.IsReady() && Player.HasBuff("orianaghostself"))
                 {
@@ -304,7 +305,7 @@ namespace OneKeyToWin_AIO_Sebby
             var allMinions = Cache.GetMinions(Player.ServerPosition, Q.Range);
             if (Config.Item("farmQout", true).GetValue<bool>() && Player.Mana > RMANA + QMANA + WMANA + EMANA)
             {
-                foreach (var minion in allMinions.Where(minion => minion.IsValidTarget(Q.Range) && !Orbwalker.InAutoAttackRange(minion) && minion.Health < Q.GetDamage(minion) && minion.Health > minion.FlatPhysicalDamageMod))
+                foreach (var minion in allMinions.Where(minion => minion.IsValidTargetLS(Q.Range) && !Orbwalker.InAutoAttackRange(minion) && minion.Health < Q.GetDamage(minion) && minion.Health > minion.FlatPhysicalDamageMod))
                 {
                     Q.Cast(minion);
                 }
@@ -420,13 +421,13 @@ namespace OneKeyToWin_AIO_Sebby
                 double dmg = 0;
                 if (args.Target != null && args.Target.NetworkId == ally.NetworkId)
                 {
-                    dmg = dmg + sender.GetSpellDamage(ally, args.SData.Name);
+                    dmg = dmg + sender.GetSpellDamageLS(ally, args.SData.Name);
                 }
                 else
                 {
                     var castArea = ally.Distance(args.End) * (args.End - ally.ServerPosition).Normalized() + ally.ServerPosition;
                     if (castArea.Distance(ally.ServerPosition) < ally.BoundingRadius / 2)
-                        dmg = dmg + sender.GetSpellDamage(ally, args.SData.Name);
+                        dmg = dmg + sender.GetSpellDamageLS(ally, args.SData.Name);
                     else
                         continue;
                 }
@@ -443,7 +444,7 @@ namespace OneKeyToWin_AIO_Sebby
         private int CountEnemiesInRangeDeley(Vector3 position, float range, float delay)
         {
             int count = 0;
-            foreach (var t in HeroManager.Enemies.Where(t => t.IsValidTarget()))
+            foreach (var t in HeroManager.Enemies.Where(t => t.IsValidTargetLS()))
             {
                 Vector3 prepos = LeagueSharp.Common.Prediction.GetPrediction(t, delay).CastPosition;
                 if (position.Distance(prepos) < range)

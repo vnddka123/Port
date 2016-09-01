@@ -4,8 +4,9 @@ using EloBuddy;
 using LeagueSharp.Common;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby
 {
@@ -97,9 +98,9 @@ namespace OneKeyToWin_AIO_Sebby
                 if (flash.IsReady())
                     realRange = FR.Range;
 
-                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(realRange) && OktwCommon.ValidUlt(enemy)))
+                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(realRange) && OktwCommon.ValidUlt(enemy)))
                 {
-                    if (enemy.IsValidTarget(R.Range))
+                    if (enemy.IsValidTargetLS(R.Range))
                     {
                         int Rmode = Config.Item("UM" + enemy.ChampionName, true).GetValue<StringList>().SelectedIndex;
 
@@ -147,7 +148,7 @@ namespace OneKeyToWin_AIO_Sebby
             }
 
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
-            if (t.IsValidTarget() && Program.LagFree(2))
+            if (t.IsValidTargetLS() && Program.LagFree(2))
             {
                 if (Q.IsReady() && Config.Item("autoQ", true).GetValue<bool>())
                 {
@@ -165,7 +166,7 @@ namespace OneKeyToWin_AIO_Sebby
                             Q.Cast(t);
                     }
                 }
-                if (W.IsReady() && Config.Item("autoW", true).GetValue<bool>() && t.IsValidTarget(W.Range))
+                if (W.IsReady() && Config.Item("autoW", true).GetValue<bool>() && t.IsValidTargetLS(W.Range))
                 {
                     var poutput = W.GetPrediction(t, true);
                     var aoeCount = poutput.AoeTargetsHitCount;
@@ -208,14 +209,14 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     if (E.IsReady() && !Program.LaneClear && Config.Item("autoE", true).GetValue<bool>() && Player.Mana > RMANA + EMANA + QMANA + WMANA)
                         E.Cast();
-                    else if (W.IsReady() && Player.InFountain())
+                    else if (W.IsReady() && Player.InFountainLS())
                         W.Cast(Player.Position);
                 }
                 if (R.IsReady())
                 {
                     if (Config.Item("tibers", true).GetValue<bool>() && HaveTibers && Tibbers != null && Tibbers.IsValid)
                     {
-                        var enemy = HeroManager.Enemies.Where(x => x.IsValidTarget() && Tibbers.Distance(x.Position) < 1000 && !x.UnderTurret(true)).OrderBy(x => x.Distance(Tibbers)).FirstOrDefault();
+                        var enemy = HeroManager.Enemies.Where(x => x.IsValidTargetLS() && Tibbers.Distance(x.Position) < 1000 && !x.UnderTurret(true)).OrderBy(x => x.Distance(Tibbers)).FirstOrDefault();
                         if(enemy != null)
                         {
 

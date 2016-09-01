@@ -14,3 +14,20 @@ E:\Git dev\TEST\BETA\TophSharp\bin\Debug\LeagueSharp.Data.pdb
 E:\Git dev\TEST\BETA\TophSharp\obj\Debug\TophSharp.exe
 E:\Git dev\TEST\BETA\TophSharp\obj\Debug\TophSharp.pdb
 E:\Git dev\TEST\BETA\TophSharp\obj\Debug\TophSharp.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\bin\Debug\TophSharp.exe.config
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\obj\Debug\TophSharp.exe
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\obj\Debug\TophSharp.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\bin\Debug\TophSharp.exe
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\bin\Debug\TophSharp.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\bin\Debug\EloBuddy.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\bin\Debug\EloBuddy.SDK.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\bin\Debug\LeagueSharp.Common.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\bin\Debug\SharpDX.Direct3D9.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\bin\Debug\SharpDX.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\bin\Debug\EloBuddy.Sandbox.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\bin\Debug\LeagueSharp.Data.dll
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\bin\Debug\LeagueSharp.Common.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\bin\Debug\LeagueSharp.Data.pdb
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\obj\Debug\TophSharp.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\GitHub\Port\Addon\TophSharp_Taliyah\obj\Debug\TophSharp.csproj.TophSharp.exe.config

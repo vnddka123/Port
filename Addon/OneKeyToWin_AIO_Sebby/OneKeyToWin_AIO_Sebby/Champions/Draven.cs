@@ -6,8 +6,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -75,7 +76,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void Interrupter2_OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (E.IsReady() && sender.IsValidTarget(E.Range))
+            if (E.IsReady() && sender.IsValidTargetLS(E.Range))
             {
                 E.Cast(sender);
             }
@@ -83,7 +84,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (E.IsReady() && gapcloser.Sender.IsValidTarget(E.Range))
+            if (E.IsReady() && gapcloser.Sender.IsValidTargetLS(E.Range))
             {
                 E.Cast(gapcloser.Sender);
             }
@@ -204,14 +205,14 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void LogicE()
         {
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && !LeagueSharp.Common.Orbwalking.InAutoAttackRange(enemy) && E.GetDamage(enemy) > enemy.Health))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(E.Range) && !LeagueSharp.Common.Orbwalking.InAutoAttackRange(enemy) && E.GetDamage(enemy) > enemy.Health))
             {
                 Program.CastSpell(E, enemy);
                 return;
             }
 
             var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (Program.Combo )
                 {
@@ -231,9 +232,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     E.CastIfWillHit(t, 2, true);
                 }
             }
-            foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(E.Range)))
+            foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(E.Range)))
             {
-                if (target.IsValidTarget(300) && target.IsMelee)
+                if (target.IsValidTargetLS(300) && target.IsMelee)
                 {
                     Program.CastSpell(E, t);
                 }
@@ -246,7 +247,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
 
-                if (t.IsValidTarget())
+                if (t.IsValidTargetLS())
                 {
                     R.CastIfWillHit(t, 2, true);
                     R.Cast(t, true, true);
@@ -254,7 +255,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
             if (Config.Item("autoR", true).GetValue<bool>())
             {
-                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(R.Range) && OktwCommon.ValidUlt(target) && target.CountAlliesInRange(500) == 0))
+                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(R.Range) && OktwCommon.ValidUlt(target) && target.CountAlliesInRange(500) == 0))
                 {
                     float predictedHealth = target.Health - (float)OktwCommon.GetIncomingDamage(target);
                     double Rdmg = CalculateR(target) ;
@@ -274,7 +275,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         castR(target);
                         Program.debug("R normal");
                     }
-                    else if (Config.Item("Rcc", true).GetValue<bool>() && Rdmg * 2 > predictedHealth && !OktwCommon.CanMove(target) &&  target.IsValidTarget( E.Range))
+                    else if (Config.Item("Rcc", true).GetValue<bool>() && Rdmg * 2 > predictedHealth && !OktwCommon.CanMove(target) &&  target.IsValidTargetLS( E.Range))
                     {
                         R.Cast(target);
                         Program.debug("R normal");
@@ -283,7 +284,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     {
                         R.CastIfWillHit(target, 3, true);
                     }
-                    else if (target.IsValidTarget(E.Range) && Rdmg * 2 + qDmg + eDmg > predictedHealth && Config.Item("Raoe", true).GetValue<bool>())
+                    else if (target.IsValidTargetLS(E.Range) && Rdmg * 2 + qDmg + eDmg > predictedHealth && Config.Item("Raoe", true).GetValue<bool>())
                     {
                         R.CastIfWillHit(target, 2, true);
                     }
@@ -295,7 +296,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (Config.Item("hitchanceR", true).GetValue<bool>())
             {
-                List<Vector2> waypoints = target.GetWaypoints();
+                List<Vector2> waypoints = target.GetWaypointsLS();
                 if (target.Path.Count() < 2 && (Player.Distance(waypoints.Last<Vector2>().To3D()) - Player.Distance(target.Position)) > 300)
                 {
                     Program.CastSpell(R, target);
@@ -317,7 +318,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             PredictionOutput output = R.GetPrediction(target);
             Vector2 direction = output.CastPosition.To2D() - Player.Position.To2D();
             direction.Normalize();
-            List<AIHeroClient> enemies = HeroManager.Enemies.Where(x => x.IsValidTarget()).ToList();
+            List<AIHeroClient> enemies = HeroManager.Enemies.Where(x => x.IsValidTargetLS()).ToList();
             foreach (var enemy in enemies)
             {
                 PredictionOutput Prediction = R.GetPrediction(enemy);
@@ -361,7 +362,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             var t = TargetSelector.GetTarget(800, TargetSelector.DamageType.Physical);
 
-            if (Config.Item("axeKill", true).GetValue<bool>() && t.IsValidTarget() && Player.Distance(t.Position) > 400 && Player.GetAutoAttackDamage(t) * 2 > t.Health)
+            if (Config.Item("axeKill", true).GetValue<bool>() && t.IsValidTargetLS() && Player.Distance(t.Position) > 400 && Player.GetAutoAttackDamage(t) * 2 > t.Health)
             {
                 Orbwalker.SetOrbwalkingPoint(Game.CursorPos);
                 return;

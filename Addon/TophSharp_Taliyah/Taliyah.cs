@@ -8,6 +8,9 @@ using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
 using Color = System.Drawing.Color;
+using EloBuddy.SDK;
+using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
 
 namespace TophSharp
 {
@@ -45,7 +48,7 @@ namespace TophSharp
         {
             var usee = GetBool("usee", typeof(bool));
             var target = TargetSelector.GetTarget(Player, _q.Range, TargetSelector.DamageType.Magical);
-            if (!target.IsValidTarget())
+            if (!target.IsValidTargetLS())
                 return;
 
             if (CanUse(_e, target) && (CanUse(_w, target) || SpellUpSoon(SpellSlot.W) < 0.5f) && usee)
@@ -206,12 +209,12 @@ MinionOrderTypes.MaxHealth);
         {
             if (Ignite == SpellSlot.Unknown || Player.Spellbook.CanUseSpell(Ignite) != SpellState.Ready)
                 return 0f;
-            return (float)Player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite);
+            return (float)Player.GetSummonerSpellDamage(target, LeagueSharp.Common.Damage.SummonerSpell.Ignite);
         }
 
         private static bool CanUse(Spell spell, AttackableUnit target)
         {
-            return spell.IsReady() && Player.Mana >= spell.ManaCost && target.IsValidTarget(spell.Range);
+            return spell.IsReady() && Player.Mana >= spell.ManaCost && target.IsValidTargetLS(spell.Range);
         }
 
         public static float SpellUpSoon(SpellSlot slot)
@@ -231,7 +234,7 @@ MinionOrderTypes.MaxHealth);
             var usew = GetBool("usewh", typeof(bool));
 
             var target = TargetSelector.GetTarget(Player, _q.Range, TargetSelector.DamageType.Magical);
-            if (!target.IsValidTarget())
+            if (!target.IsValidTargetLS())
                 return;
 
             var wpred = _w.GetPrediction(target);
@@ -245,7 +248,6 @@ MinionOrderTypes.MaxHealth);
             {
                 _w.Cast(wpred.CastPosition);
             }
-
         }
 
         private static void Combo()
@@ -256,7 +258,7 @@ MinionOrderTypes.MaxHealth);
 
 
             var target = TargetSelector.GetTarget(Player, _q.Range, TargetSelector.DamageType.Magical);
-            if (!target.IsValidTarget()) return;
+            if (!target.IsValidTargetLS()) return;
 
             if (GetBool("useignite", typeof(bool)))
             {
@@ -279,7 +281,7 @@ MinionOrderTypes.MaxHealth);
                 _q.Cast(qpred.CastPosition);
             }
 
-            if ((CanUse(_w, target) || SpellUpSoon(SpellSlot.W) < 0.5f) && usee && _e.IsReady() && target.IsValidTarget(_q.Range))
+            if ((CanUse(_w, target) || SpellUpSoon(SpellSlot.W) < 0.5f) && usee && _e.IsReady() && target.IsValidTargetLS(_q.Range))
             {         
                       
                 _e.Cast(target);              

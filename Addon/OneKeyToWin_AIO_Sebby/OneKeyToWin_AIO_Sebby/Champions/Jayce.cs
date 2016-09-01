@@ -5,8 +5,9 @@ using LeagueSharp.Common;
 using SharpDX;
 using SebbyLib;
 using Utility = LeagueSharp.Common.Utility;
-//using EloBuddy.SDK;
 using Spell = LeagueSharp.Common.Spell;
+using TargetSelector = LeagueSharp.Common.TargetSelector;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -114,7 +115,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             var t = gapcloser.Sender;
 
-            if (t.IsValidTarget(400))
+            if (t.IsValidTargetLS(400))
             {
                 if (Range)
                 {
@@ -133,7 +134,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Range && !R.IsReady())
                 return;
 
-            if (t.IsValidTarget(300))
+            if (t.IsValidTargetLS(300))
             {
                 if (Range)
                 {
@@ -143,7 +144,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     E.Cast(t);
 
             }
-            else if (Q2cd < 0.2 && t.IsValidTarget(Q2.Range))
+            else if (Q2cd < 0.2 && t.IsValidTargetLS(Q2.Range))
             {
                 if (Range)
                 {
@@ -152,7 +153,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 else
                 {
                     Q.Cast(t);
-                    if(t.IsValidTarget(E2.Range))
+                    if(t.IsValidTargetLS(E2.Range))
                         E.Cast(t);
                 }
             }
@@ -175,7 +176,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 if (Range && E.IsReady() && Config.Item("autoE", true).GetValue<bool>())
                 {
-                    EcastPos = Player.ServerPosition.Extend(args.End, 130 + (Game.Ping /2));
+                    EcastPos = Player.ServerPosition.Extend(args.End, 130 + (Game.Ping /2)).To3DWorld();
                     Etick = Utils.TickCount;
                     E.Cast(EcastPos);
 
@@ -241,18 +242,18 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         {
                             if (W.IsReady())
                                 W.Cast();
-                            else if (E.IsReady() && (Player.InFountain() || Player.IsMoving))
+                            else if (E.IsReady() && (Player.InFountainLS() || Player.IsMoving))
                                 E.Cast(Player.ServerPosition);
                             else if (Q.IsReady() && !E.IsReady())
                                 Q.Cast(Player.Position.Extend(Game.CursorPos, 500));
-                            else if (R.IsReady() && Player.InFountain())
+                            else if (R.IsReady() && Player.InFountainLS())
                                 R.Cast();
                         }
                         else
                         {
                             if (W.IsReady())
                                 W.Cast();
-                            else if (R.IsReady() && Player.InFountain())
+                            else if (R.IsReady() && Player.InFountainLS())
                                 R.Cast();
                         }
                     }
@@ -288,7 +289,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         Obj_AI_Base best;
                         best = mobs[0];
 
-                        foreach (var mob in mobs.Where(mob => mob.IsValidTarget(Q2.Range)))
+                        foreach (var mob in mobs.Where(mob => mob.IsValidTargetLS(Q2.Range)))
                         {
                             if (mob.Distance(Game.CursorPos) < best.Distance(Game.CursorPos) )
                                 best = mob;
@@ -315,7 +316,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (Config.Item("useQE", true).GetValue<KeyBind>().Active)
                 {
                     var mouseTarget = HeroManager.Enemies.Where(enemy =>
-                        enemy.IsValidTarget(Qtype.Range)).OrderBy(enemy => enemy.Distance(Game.CursorPos)).FirstOrDefault();
+                        enemy.IsValidTargetLS(Qtype.Range)).OrderBy(enemy => enemy.Distance(Game.CursorPos)).FirstOrDefault();
 
                     if (mouseTarget != null)
                     {
@@ -327,7 +328,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             var t = TargetSelector.GetTarget(Qtype.Range, TargetSelector.DamageType.Physical);
 
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 var qDmg = OktwCommon.GetKsDamage(t, Qtype);
 
@@ -342,14 +343,14 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     CastQ(t);
                 else if (Program.Farm && Player.ManaPercent > Config.Item("harassMana", true).GetValue<Slider>().Value && OktwCommon.CanHarras())
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(Qtype.Range) && Config.Item("haras" + enemy.ChampionName).GetValue<bool>()))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Qtype.Range) && Config.Item("haras" + enemy.ChampionName).GetValue<bool>()))
                     {
                         CastQ(t);
                     }
                 }
                 else if ((Program.Combo || Program.Farm) && Player.Mana > RMANA + QMANA + EMANA)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(Qtype.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Qtype.Range) && !OktwCommon.CanMove(enemy)))
                         CastQ(t);
                 }
             }
@@ -357,7 +358,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void LogicW()
         {
-            if (Program.Combo && R.IsReady() && Range && Orbwalker.GetTarget().IsValidTarget() && Orbwalker.GetTarget() is AIHeroClient)
+            if (Program.Combo && R.IsReady() && Range && Orbwalker.GetTarget().IsValidTargetLS() && Orbwalker.GetTarget() is AIHeroClient)
             {
                 W.Cast();
             }
@@ -367,7 +368,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             var t = TargetSelector.GetTarget(E2.Range, TargetSelector.DamageType.Physical);
 
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 var qDmg = OktwCommon.GetKsDamage(t, E2);
                 if (qDmg > t.Health)
@@ -381,7 +382,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             var t = TargetSelector.GetTarget(Q2.Range, TargetSelector.DamageType.Physical);
 
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (OktwCommon.GetKsDamage(t, Q2) > t.Health)
                     Q2.Cast(t);
@@ -399,7 +400,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private void LogicE2()
         {
             var t = TargetSelector.GetTarget(E2.Range, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (OktwCommon.GetKsDamage(t, E2) > t.Health)
                     E2.Cast(t);
@@ -413,7 +414,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Range && Config.Item("autoRm", true).GetValue<bool>())
             {
                 var t = TargetSelector.GetTarget(Q2.Range + 200, TargetSelector.DamageType.Physical);
-                if (Program.Combo && Qcd > 0.5  && t.IsValidTarget() && ((!W.IsReady() && !t.IsMelee ) || (!W.IsReady() && !Player.HasBuff("jaycehyperchargevfx") && t.IsMelee)))
+                if (Program.Combo && Qcd > 0.5  && t.IsValidTargetLS() && ((!W.IsReady() && !t.IsMelee ) || (!W.IsReady() && !Player.HasBuff("jaycehyperchargevfx") && t.IsMelee)))
                 {
                     if (Q2cd < 0.5 && t.CountEnemiesInRange(800) < 3)
                         R.Cast();
@@ -425,7 +426,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
 
                 var t = TargetSelector.GetTarget(1400, TargetSelector.DamageType.Physical);
-                if(t.IsValidTarget()&& !t.IsValidTarget(Q2.Range + 200) && Q.GetDamage(t) * 1.4 > t.Health && Qcd < 0.5 && Ecd < 0.5)
+                if(t.IsValidTargetLS()&& !t.IsValidTargetLS(Q2.Range + 200) && Q.GetDamage(t) * 1.4 > t.Health && Qcd < 0.5 && Ecd < 0.5)
                 {
                     R.Cast();
                 }
@@ -499,7 +500,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     }
                     else
                     {
-                        if (Q2.IsReady() && Config.Item("jungleQm", true).GetValue<bool>() && mob.IsValidTarget(Q2.Range))
+                        if (Q2.IsReady() && Config.Item("jungleQm", true).GetValue<bool>() && mob.IsValidTargetLS(Q2.Range))
                         {
                             Q2.Cast(mob);
                             return;
@@ -507,13 +508,13 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                         if (W2.IsReady() && Config.Item("jungleWm", true).GetValue<bool>() )
                         {
-                            if(mob.IsValidTarget(300))
+                            if(mob.IsValidTargetLS(300))
                                 W.Cast();
                             return;
                         }
-                        if (E2.IsReady() && Config.Item("jungleEm", true).GetValue<bool>() && mob.IsValidTarget(E2.Range))
+                        if (E2.IsReady() && Config.Item("jungleEm", true).GetValue<bool>() && mob.IsValidTargetLS(E2.Range))
                         {
-                            if( mob.IsValidTarget(E2.Range))
+                            if( mob.IsValidTargetLS(E2.Range))
                                 E2.Cast(mob);
                             return;
                         }
@@ -688,7 +689,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = TargetSelector.GetTarget(1600, TargetSelector.DamageType.Physical);
 
-                if (t.IsValidTarget())
+                if (t.IsValidTargetLS())
                 {
                     var damageCombo = GetComboDMG(t);
                     if (damageCombo > t.Health)
