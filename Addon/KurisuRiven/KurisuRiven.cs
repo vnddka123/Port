@@ -3,14 +3,13 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
 using EloBuddy;
-using EloBuddy.SDK;
 using LeagueSharp.Common;
 using Color = System.Drawing.Color;
 using SharpDX;
 using Utility = LeagueSharp.Common.Utility;
 using Spell = LeagueSharp.Common.Spell;
 using TargetSelector = LeagueSharp.Common.TargetSelector;
-using Damage = LeagueSharp.Common.Damage;
+using EloBuddy.SDK;
 
 namespace KurisuRiven
 {
@@ -1127,9 +1126,9 @@ namespace KurisuRiven
                 {
                     if (unit.Distance(player.ServerPosition) <= q.Range + 90)
                     {
-                        if (canhd) return;
+                    //    if (canhd) return;
           
-                        if (qtarg != null && qtarg.NetworkId == unit.NetworkId)
+                    //    if (qtarg != null && qtarg.NetworkId == unit.NetworkId)
                             q.Cast(unit.ServerPosition);
                     }
                 }
@@ -1142,7 +1141,7 @@ namespace KurisuRiven
 
             foreach (var unit in minions.Where(x => x.IsMinion))
             {
-//                OrbTo(menubool("useaoeq") && GetCenterMinion().IsValidTargetLS() ? GetCenterMinion() : unit);
+                OrbTo(menubool("useaoeq") && GetCenterMinion().IsValidTargetLS() ? GetCenterMinion() : unit);
 
                 if (q.IsReady() && unit.Distance(player.ServerPosition) <= truerange + 100)
                 {
@@ -1788,27 +1787,27 @@ namespace KurisuRiven
             var rr = r.IsReady() ? Rdmg(target) : 0;
 
             var ii = (ignote != SpellSlot.Unknown && player.GetSpell(ignote).State == SpellState.Ready && r.IsReady()
-                ? player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite)
+                ? player.GetSummonerSpellDamage(target, LeagueSharp.Common.Damage.SummonerSpell.Ignite)
                 : 0);
 
             var tmt = Items.HasItem(3077) && Items.CanUseItem(3077)
-                ? player.GetItemDamage(target, Damage.DamageItems.Tiamat)
+                ? player.GetItemDamage(target, LeagueSharp.Common.Damage.DamageItems.Tiamat)
                 : 0;
 
             var hyd = Items.HasItem(3074) && Items.CanUseItem(3074)
-                ? player.GetItemDamage(target, Damage.DamageItems.Hydra)
+                ? player.GetItemDamage(target, LeagueSharp.Common.Damage.DamageItems.Hydra)
                 : 0;
 
             var tdh = Items.HasItem(3748) && Items.CanUseItem(3748)
-                ? player.GetItemDamage(target, Damage.DamageItems.Hydra)
+                ? player.GetItemDamage(target, LeagueSharp.Common.Damage.DamageItems.Hydra)
                 : 0;
 
             var bwc = Items.HasItem(3144) && Items.CanUseItem(3144)
-                ? player.GetItemDamage(target, Damage.DamageItems.Bilgewater)
+                ? player.GetItemDamage(target, LeagueSharp.Common.Damage.DamageItems.Bilgewater)
                 : 0;
 
             var brk = Items.HasItem(3153) && Items.CanUseItem(3153)
-                ? player.GetItemDamage(target, Damage.DamageItems.Botrk)
+                ? player.GetItemDamage(target, LeagueSharp.Common.Damage.DamageItems.Botrk)
                 : 0;
 
             var items = tmt + hyd + tdh + bwc + brk;
@@ -1824,7 +1823,7 @@ namespace KurisuRiven
             double dmg = 0;
             if (w.IsReady() && target != null)
             {
-                dmg += player.CalcDamage(target, Damage.DamageType.Physical,
+                dmg += player.CalcDamage(target, LeagueSharp.Common.Damage.DamageType.Physical,
                     new[] {50, 80, 110, 150, 170}[w.Level - 1] + 1*player.FlatPhysicalDamageMod + player.BaseAttackDamage);
             }
 
@@ -1836,7 +1835,7 @@ namespace KurisuRiven
             double dmg = 0;
             if (q.IsReady() && target != null)
             {
-                dmg += player.CalcDamage(target, Damage.DamageType.Physical,
+                dmg += player.CalcDamage(target, LeagueSharp.Common.Damage.DamageType.Physical,
                     -10 + (q.Level * 20) + (0.35 + (q.Level * 0.05)) * (player.FlatPhysicalDamageMod + player.BaseAttackDamage));
             }
 
@@ -1849,7 +1848,7 @@ namespace KurisuRiven
 
             if (r.IsReady() && target != null)
             {
-                dmg += player.CalcDamage(target, Damage.DamageType.Physical,
+                dmg += player.CalcDamage(target, LeagueSharp.Common.Damage.DamageType.Physical,
                     (new double[] {80, 120, 160}[Math.Max(r.Level, 1) - 1] + 0.6 * player.FlatPhysicalDamageMod) *
                     (((target.MaxHealth - target.Health) / target.MaxHealth) * 2.67 + 1));
             }
