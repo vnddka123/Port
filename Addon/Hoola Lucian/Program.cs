@@ -250,7 +250,7 @@ namespace HoolaLucian
                 var target = (Obj_AI_Base)args.Target;
                 if (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Combo && target.IsValid)
                 {
-                    if (ItemData.Youmuus_Ghostblade.GetItem().IsReady()) ItemData.Youmuus_Ghostblade.GetItem().Cast();
+                //    if (ItemData.Youmuus_Ghostblade.GetItem().IsReady()) ItemData.Youmuus_Ghostblade.GetItem().Cast();
                     if (E.IsReady() && !AAPassive && CE == 0) E.Cast((Deviation(Player.Position.To2D(), target.Position.To2D(), 65).To3D()));
                     if (E.IsReady() && !AAPassive && CE == 1) E.Cast(Game.CursorPos);
                     if (E.IsReady() && !AAPassive && CE == 2) E.Cast(Player.Position.Extend(target.Position, 50));
