@@ -667,8 +667,16 @@ namespace HoolaRiven
             EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.Extend(Game.CursorPos, Player.Distance(Game.CursorPos) + 10).To3DWorld());
         }
 
-        private static bool InWRange(GameObject target) => (Player.HasBuff("RivenFengShuiEngine") && target != null) ? 330 >= Player.Distance(target.Position) : 265 >= Player.Distance(target.Position);
+//        private static bool InWRange(GameObject target) => (Player.HasBuff("RivenFengShuiEngine") && target != null) ? 330 >= Player.Distance(target.Position) : 265 >= Player.Distance(target.Position);
 
+        public static bool InWRange(GameObject target)
+        {
+            if (target != null)
+            {
+                return (Player.HasBuff("RivenFengShuiEngine") && target != null) ? 330 >= Player.Distance(target.Position) : 265 >= Player.Distance(target.Position);
+            }
+            else return false;
+        }
 
         private static void ForceSkill()
         {
