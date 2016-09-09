@@ -70,8 +70,8 @@ namespace OneKeyToWin_AIO_Sebby
 
             if (AIOmode != 2)
             {
-            //    Config.AddSubMenu(new Menu("Orbwalking", "Orbwalking"));
-            //    Orbwalker = new Orbwalking.Orbwalker(Config.SubMenu("Orbwalking"));
+                Config.AddSubMenu(new Menu("Orbwalking", "Orbwalking"));
+                Orbwalker = new Orbwalking.Orbwalker(Config.SubMenu("Orbwalking"));
             }
 
             if (AIOmode != 1)
