@@ -108,6 +108,7 @@
     <Compile Include="Champions\Sivir.cs" />
     <Compile Include="Champions\Swain.cs" />
     <Compile Include="Champions\Syndra.cs" />
+    <Compile Include="Champions\Teemo.cs" />
     <Compile Include="Champions\Thresh.cs" />
     <Compile Include="Champions\Tristana.cs" />
     <Compile Include="Champions\TwistedFate.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Core\OKTWlab.cs" />
     <Compile Include="Core\OKTWtracker.cs" />
     <Compile Include="Core\OKTWward.cs" />
+    <Compile Include="Core\PredictionAio.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resource1.Designer.cs">

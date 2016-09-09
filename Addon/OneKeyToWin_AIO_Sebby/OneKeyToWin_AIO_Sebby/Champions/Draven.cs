@@ -54,6 +54,8 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             Config.SubMenu(Player.ChampionName).SubMenu("E config").AddItem(new MenuItem("autoE", "Auto E", true).SetValue(true));
             Config.SubMenu(Player.ChampionName).SubMenu("E config").AddItem(new MenuItem("autoE2", "Harras E if can hit 2 targets", true).SetValue(true));
+            Config.SubMenu(Player.ChampionName).SubMenu("E config").AddItem(new MenuItem("agcE", "Auto E", true).SetValue(true));
+            Config.SubMenu(Player.ChampionName).SubMenu("E config").AddItem(new MenuItem("intE", "Auto E", true).SetValue(true));
 
             Config.SubMenu(Player.ChampionName).SubMenu("R config").AddItem(new MenuItem("autoR", "Auto R", true).SetValue(true));
             Config.SubMenu(Player.ChampionName).SubMenu("R config").AddItem(new MenuItem("Rdmg", "KS damage calculation", true).SetValue(new StringList(new[] { "X 1", "X 2" }, 1)));
@@ -76,7 +78,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void Interrupter2_OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (E.IsReady() && sender.IsValidTargetLS(E.Range))
+            if (Config.Item("intE", true).GetValue<bool>() && E.IsReady() && sender.IsValidTargetLS(E.Range))
             {
                 E.Cast(sender);
             }
@@ -84,7 +86,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (E.IsReady() && gapcloser.Sender.IsValidTargetLS(E.Range))
+            if (Config.Item("agcE", true).GetValue<bool>() && E.IsReady() && gapcloser.Sender.IsValidTargetLS(E.Range))
             {
                 E.Cast(gapcloser.Sender);
             }

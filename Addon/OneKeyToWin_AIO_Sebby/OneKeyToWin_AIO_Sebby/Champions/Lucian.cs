@@ -121,7 +121,6 @@ namespace OneKeyToWin_AIO_Sebby
             if (Program.LagFree(0))
             {
                 SetMana();
-
             }
             if (Program.LagFree(1) && Q.IsReady() && !passRdy && !SpellLock)
                 LogicQ();
@@ -133,11 +132,8 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 if (R.IsReady() && Game.Time - castR > 5 && Config.Item("autoR", true).GetValue<bool>())
                 {
-                //    castRauto();
                     LogicR();
-                }
-                   
-
+                }                 
                 if (!passRdy && !SpellLock)
                     farm();
             }
@@ -372,7 +368,7 @@ namespace OneKeyToWin_AIO_Sebby
                             var poutput = Q1.GetPrediction(minion);
                             var col = poutput.CollisionObjects;
 
-                            if (col.Count() > 2)
+                            if (col.Count() > 3)
                             {
                                 var minionQ = col.First();
                                 if (minionQ.IsValidTargetLS(Q.Range))

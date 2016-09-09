@@ -118,6 +118,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                         continue;
                     if (point.UnderAllyTurret())
                     {
+                        Chat.Print("true or false");
                         bestpoint = point;
                         enemies = count - 1;
                     }

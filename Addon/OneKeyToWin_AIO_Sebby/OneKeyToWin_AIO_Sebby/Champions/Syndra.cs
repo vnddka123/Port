@@ -389,7 +389,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Player.Distance(castQpos) > Q.Range)
                 castQpos = Player.Position.Extend(castQpos, Q.Range).To3DWorld();
 
-            if (Config.Item("HitChance", true).GetValue<StringList>().SelectedIndex == 0)
+            if (Config.Item("EHitChance", true).GetValue<StringList>().SelectedIndex == 0)
             {
                 if (poutput2.Hitchance >= SebbyLib.Prediction.HitChance.VeryHigh)
                 {
@@ -398,7 +398,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 }
 
             }
-            else if (Config.Item("HitChance", true).GetValue<StringList>().SelectedIndex == 1)
+            else if (Config.Item("EHitChance", true).GetValue<StringList>().SelectedIndex == 1)
             {
                 if (poutput2.Hitchance >= SebbyLib.Prediction.HitChance.High)
                 {
@@ -407,7 +407,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 }
 
             }
-            else if (Config.Item("HitChance", true).GetValue<StringList>().SelectedIndex == 2)
+            else if (Config.Item("EHitChance", true).GetValue<StringList>().SelectedIndex == 2)
             {
                 if (poutput2.Hitchance >= SebbyLib.Prediction.HitChance.Medium)
                 {

@@ -75,6 +75,7 @@ namespace OneKeyToWin_AIO_Sebby
             Config.SubMenu(Player.ChampionName).SubMenu("Farm").AddItem(new MenuItem("Mana", "LaneClear Mana", true).SetValue(new Slider(80, 100, 0)));
             Config.SubMenu(Player.ChampionName).SubMenu("Farm").AddItem(new MenuItem("jungleQ", "Jungle clear Q", true).SetValue(true));
             Config.SubMenu(Player.ChampionName).SubMenu("Farm").AddItem(new MenuItem("jungleW", "Jungle clear W", true).SetValue(true));
+            Config.SubMenu(Player.ChampionName).SubMenu("Farm").AddItem(new MenuItem("jungleE", "Jungle clear E", true).SetValue(true));
 
             Config.SubMenu(Player.ChampionName).AddItem(new MenuItem("QWlogic", "Use Q and W only if don't have ammo", true).SetValue(false));
         }
@@ -84,6 +85,12 @@ namespace OneKeyToWin_AIO_Sebby
             if (E.IsReady() && Config.Item("autoE", true).GetValue<bool>())
             {
                 LogicE();
+
+                if (Config.Item("jungleE", true).GetValue<bool>() && Program.LaneClear)
+                {
+                    if (E.IsReady() && Cache.GetMinions(Player.ServerPosition, 700, MinionTeam.Neutral).Any(x => x.NetworkId == target.NetworkId))
+                        E.Cast(Game.CursorPos);
+                }
             }               
         }
 
@@ -161,7 +168,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void LogicQ()
         {
-            var t = TargetSelector.GetTarget(Q.Range - 50, TargetSelector.DamageType.Physical);
+            var t = TargetSelector.GetTarget(Q.Range - 75, TargetSelector.DamageType.Physical);
             if (t.IsValidTargetLS())
             {
                 var step = t.Distance(Player) / 20;
@@ -199,13 +206,13 @@ namespace OneKeyToWin_AIO_Sebby
 
                 if (!Program.None && Player.Mana > RMANA + QMANA + EMANA)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Q.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(Q.Range - 75) && !OktwCommon.CanMove(enemy)))
                         Q.Cast(enemy);
                 }
             }
             else if (Program.LaneClear && Player.ManaPercent > Config.Item("Mana", true).GetValue<Slider>().Value && Config.Item("farmQ", true).GetValue<bool>() && Player.Mana > RMANA + QMANA)
             {
-                var allMinionsQ = Cache.GetMinions(Player.ServerPosition, Q.Range);
+                var allMinionsQ = Cache.GetMinions(Player.ServerPosition, Q.Range - 75);
                 var Qfarm = Q.GetLineFarmLocation(allMinionsQ, Q.Width);
                 if (Qfarm.MinionsHit > 2)
                     Q.Cast(Qfarm.Position);
@@ -242,7 +249,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void LogicE()
         {
-            if ((Program.Combo || Program.JungClear) && Player.Mana > RMANA + EMANA && !ObjectManager.Player.HasBuff("gravesbasicattackammo2"))
+            if (Program.Combo && Player.Mana > RMANA + EMANA && !ObjectManager.Player.HasBuff("gravesbasicattackammo2"))
             {
                 var dashPos = Dash.CastDash();
                 if (!dashPos.IsZero)

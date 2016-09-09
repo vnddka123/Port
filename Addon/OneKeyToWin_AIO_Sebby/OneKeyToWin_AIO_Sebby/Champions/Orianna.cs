@@ -366,7 +366,7 @@ namespace OneKeyToWin_AIO_Sebby
                 return;
             }
 
-            if (Config.Item("PredictionMODE", true).GetValue<StringList>().SelectedIndex == 1)
+            if (Config.Item("Qpred", true).GetValue<StringList>().SelectedIndex == 1)
             {
                 //var prepos5 = Core.Prediction.GetPrediction(target, delay, Q.Width);
 
@@ -384,7 +384,7 @@ namespace OneKeyToWin_AIO_Sebby
                 };
                 var prepos5 = SebbyLib.Prediction.Prediction.GetPrediction(predInput2);
 
-                if ((int)prepos5.Hitchance > 5 - Config.Item("HitChance", true).GetValue<StringList>().SelectedIndex)
+                if ((int)prepos5.Hitchance > 5 - Config.Item("QHitChance", true).GetValue<StringList>().SelectedIndex)
                 {
                     if (prepos5.CastPosition.Distance(prepos5.CastPosition) < Q.Range)
                     {
@@ -397,7 +397,7 @@ namespace OneKeyToWin_AIO_Sebby
                 float delay = (distance / Q.Speed + Q.Delay);
                 var prepos = LeagueSharp.Common.Prediction.GetPrediction(target, delay, Q.Width);
 
-                if ((int)prepos.Hitchance > 5 - Config.Item("HitChance", true).GetValue<StringList>().SelectedIndex)
+                if ((int)prepos.Hitchance > 5 - Config.Item("QHitChance", true).GetValue<StringList>().SelectedIndex)
                 {
                     if (prepos.CastPosition.Distance(prepos.CastPosition) < Q.Range)
                     {
