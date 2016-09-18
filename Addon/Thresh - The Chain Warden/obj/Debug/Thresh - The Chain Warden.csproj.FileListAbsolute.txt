@@ -12,5 +12,5 @@ E:\Git dev\TEST\LS\Thresh - The Chain Warden\bin\Release\LeagueSharp.Data.pdb
 E:\Git dev\TEST\LS\Thresh - The Chain Warden\obj\Debug\Thresh - The Chain Warden.exe
 E:\Git dev\TEST\LS\Thresh - The Chain Warden\obj\Debug\Thresh - The Chain Warden.pdb
 E:\Git dev\TEST\LS\Thresh - The Chain Warden\obj\Debug\Thresh - The Chain Warden.csprojResolveAssemblyReference.cache
-E:\Git dev\TEST\LS\Thresh - The Chain Warden\bin\Release\LeagueSharp.Common.dll
 E:\Git dev\TEST\LS\Thresh - The Chain Warden\bin\Release\EloBuddy.Sandbox.dll
+E:\Git dev\TEST\LS\Thresh - The Chain Warden\bin\Release\LeagueSharp.Common.dll

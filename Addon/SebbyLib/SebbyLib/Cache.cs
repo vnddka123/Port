@@ -110,7 +110,7 @@ namespace SebbyLib
                     return true;
                 else if (range == 0)
                 {
-                    if (Orbwalking.InAutoAttackRange(minion))
+                    if (EloBuddy.Player.Instance.IsInAutoAttackRange(minion))
                         return true;
                     else
                         return false;

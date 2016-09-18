@@ -76,14 +76,14 @@ namespace OneKeyToWin_AIO_Sebby
                 var orbTarget = args.Target as AIHeroClient;
                 if (!orbTarget.HasBuff("quinnw"))
                 {
-                    var best = HeroManager.Enemies.FirstOrDefault(enemy => enemy.IsValidTargetLS() && LeagueSharp.Common.Orbwalking.InAutoAttackRange(enemy) && enemy.HasBuff("quinnw"));
+                    var best = HeroManager.Enemies.FirstOrDefault(enemy => enemy.IsValidTargetLS() && EloBuddy.Player.Instance.IsInAutoAttackRange(enemy) && enemy.HasBuff("quinnw"));
                     if(best != null)
                         Orbwalker.ForceTarget(best);
                 }
             }
             else if(Program.LaneClear && args.Target.Type == GameObjectType.obj_AI_Minion && Config.Item("farmP", true).GetValue<bool>())
             {
-                var bestMinion = Cache.GetMinions(Player.Position, Player.AttackRange).FirstOrDefault(minion => minion.IsValidTargetLS() && LeagueSharp.Common.Orbwalking.InAutoAttackRange(minion) && minion.HasBuff("quinnw"));
+                var bestMinion = Cache.GetMinions(Player.Position, Player.AttackRange).FirstOrDefault(minion => minion.IsValidTargetLS() && EloBuddy.Player.Instance.IsInAutoAttackRange(minion) && minion.HasBuff("quinnw"));
 
                 if (bestMinion != null)
                     Orbwalker.ForceTarget(bestMinion);
@@ -194,7 +194,7 @@ namespace OneKeyToWin_AIO_Sebby
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
             if (t.IsValidTargetLS())
             {
-                if (LeagueSharp.Common.Orbwalking.InAutoAttackRange(t) && t.HasBuff("quinnw"))
+                if (EloBuddy.Player.Instance.IsInAutoAttackRange(t) && t.HasBuff("quinnw"))
                     return;
                 if (Program.Combo && Player.Mana > RMANA + QMANA)
                     Program.CastSpell(Q, t);

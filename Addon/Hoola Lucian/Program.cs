@@ -152,7 +152,7 @@ namespace HoolaLucian
         private static void OnDoCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             var spellName = args.SData.Name;
-            if (!sender.IsMe || !Orbwalking.IsAutoAttack(spellName)) return;
+            if (!sender.IsMe || !Orbwalking.IsAutoAttackLS(spellName)) return;
 
             if (args.Target is AIHeroClient)
             {
@@ -177,7 +177,7 @@ namespace HoolaLucian
         private static void OnDoCastLC(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             var spellName = args.SData.Name;
-            if (!sender.IsMe || !Orbwalking.IsAutoAttack(spellName)) return;
+            if (!sender.IsMe || !Orbwalking.IsAutoAttackLS(spellName)) return;
 
             if (args.Target is Obj_AI_Minion)
             {
@@ -250,7 +250,7 @@ namespace HoolaLucian
                 var target = (Obj_AI_Base)args.Target;
                 if (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Combo && target.IsValid)
                 {
-                //    if (ItemData.Youmuus_Ghostblade.GetItem().IsReady()) ItemData.Youmuus_Ghostblade.GetItem().Cast();
+                    if (ItemData.Youmuus_Ghostblade.GetItem().IsReady()) ItemData.Youmuus_Ghostblade.GetItem().Cast();
                     if (E.IsReady() && !AAPassive && CE == 0) E.Cast((Deviation(Player.Position.To2D(), target.Position.To2D(), 65).To3D()));
                     if (E.IsReady() && !AAPassive && CE == 1) E.Cast(Game.CursorPos);
                     if (E.IsReady() && !AAPassive && CE == 2) E.Cast(Player.Position.Extend(target.Position, 50));

@@ -28,9 +28,9 @@ E:\Git dev\TEST\BETA\MoonDraven\bin\Release\LeagueSharp.Data.dll
 E:\Git dev\TEST\BETA\MoonDraven\bin\Release\EloBuddy.Sandbox.dll
 E:\Git dev\TEST\BETA\MoonDraven\bin\Release\LeagueSharp.Common.pdb
 E:\Git dev\TEST\BETA\MoonDraven\bin\Release\LeagueSharp.Data.pdb
-E:\Git dev\TEST\BETA\MoonDraven\obj\Debug\MoonDraven.csprojResolveAssemblyReference.cache
 E:\Git dev\TEST\BETA\MoonDraven\obj\Debug\MoonDraven.exe
 E:\Git dev\TEST\BETA\MoonDraven\obj\Debug\MoonDraven.pdb
 C:\Users\Administrator\Documents\GitHub\Port\Addon\MoonDraven\bin\Release\MoonDraven.exe.config
 C:\Users\Administrator\Documents\GitHub\Port\Addon\MoonDraven\obj\Debug\MoonDraven.exe
 C:\Users\Administrator\Documents\GitHub\Port\Addon\MoonDraven\obj\Debug\MoonDraven.pdb
+E:\Git dev\TEST\BETA\MoonDraven\obj\Debug\MoonDraven.csprojResolveAssemblyReference.cache

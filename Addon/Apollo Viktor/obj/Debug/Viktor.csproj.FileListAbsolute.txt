@@ -3,7 +3,6 @@ E:\Git dev\TEST\BETA\Apollo Viktor\bin\Release\Viktor.exe
 E:\Git dev\TEST\BETA\Apollo Viktor\bin\Release\Viktor.pdb
 E:\Git dev\TEST\BETA\Apollo Viktor\bin\Release\EloBuddy.dll
 E:\Git dev\TEST\BETA\Apollo Viktor\bin\Release\EloBuddy.SDK.dll
-E:\Git dev\TEST\BETA\Apollo Viktor\bin\Release\LeagueSharp.Common.dll
 E:\Git dev\TEST\BETA\Apollo Viktor\bin\Release\SharpDX.Direct3D9.dll
 E:\Git dev\TEST\BETA\Apollo Viktor\bin\Release\SharpDX.dll
 E:\Git dev\TEST\BETA\Apollo Viktor\bin\Release\Newtonsoft.Json.dll
@@ -13,7 +12,6 @@ E:\Git dev\TEST\BETA\Apollo Viktor\bin\Release\LeagueSharp.Common.pdb
 E:\Git dev\TEST\BETA\Apollo Viktor\bin\Release\LeagueSharp.Data.pdb
 E:\Git dev\TEST\BETA\Apollo Viktor\obj\Debug\Viktor.exe
 E:\Git dev\TEST\BETA\Apollo Viktor\obj\Debug\Viktor.pdb
-E:\Git dev\TEST\BETA\Apollo Viktor\obj\Debug\Viktor.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Documents\GitHub\Port\Addon\Apollo Viktor\bin\Release\Viktor.exe.config
 C:\Users\Administrator\Documents\GitHub\Port\Addon\Apollo Viktor\obj\Debug\Viktor.exe
 C:\Users\Administrator\Documents\GitHub\Port\Addon\Apollo Viktor\obj\Debug\Viktor.pdb
@@ -30,3 +28,5 @@ C:\Users\Administrator\Documents\GitHub\Port\Addon\Apollo Viktor\bin\Release\Elo
 C:\Users\Administrator\Documents\GitHub\Port\Addon\Apollo Viktor\bin\Release\LeagueSharp.Common.pdb
 C:\Users\Administrator\Documents\GitHub\Port\Addon\Apollo Viktor\bin\Release\LeagueSharp.Data.pdb
 C:\Users\Administrator\Documents\GitHub\Port\Addon\Apollo Viktor\obj\Debug\Viktor.csprojResolveAssemblyReference.cache
+E:\Git dev\TEST\BETA\Apollo Viktor\bin\Release\LeagueSharp.Common.dll
+E:\Git dev\TEST\BETA\Apollo Viktor\obj\Debug\Viktor.csprojResolveAssemblyReference.cache

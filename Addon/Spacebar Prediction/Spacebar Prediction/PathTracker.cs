@@ -161,7 +161,7 @@ namespace SPrediction
         /// </summary>
         private static void AIHeroClient_OnDoCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (args.SData.IsAutoAttack() && sender.IsEnemy && sender.IsChampion())
+            if (args.SData.IsAutoAttackLS() && sender.IsEnemy && sender.IsChampion())
             {
                 EnemyData enemy = EnemyInfo[sender.NetworkId];
 
@@ -176,7 +176,7 @@ namespace SPrediction
         /// </summary>
         private static void AIHeroClient_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (args.SData.IsAutoAttack() && sender.IsEnemy && sender.IsChampion())
+            if (args.SData.IsAutoAttackLS() && sender.IsEnemy && sender.IsChampion())
             {
                 EnemyData enemy = EnemyInfo[sender.NetworkId];
 

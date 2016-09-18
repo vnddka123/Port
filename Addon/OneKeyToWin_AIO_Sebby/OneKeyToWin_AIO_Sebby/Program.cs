@@ -36,7 +36,7 @@ namespace OneKeyToWin_AIO_Sebby
         private static float spellFarmTimer = 0;
         private static Font TextBold;
 
-        static void Main(string[] args) { CustomEvents.Game.OnGameLoad += GameOnOnGameLoad;}
+        static void Main(string[] args) { EloBuddy.SDK.Events.Loading.OnLoadingComplete += GameOnOnGameLoad;}
 
         private static void GameOnOnGameLoad(EventArgs args)
         {
@@ -378,7 +378,7 @@ namespace OneKeyToWin_AIO_Sebby
                 return;
             }
 
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsMelee && enemy.IsValidTarget(dodgeRange) && enemy.IsFacing(Player) && Config.Item("posAssistant" + enemy.ChampionName).GetValue<bool>() ))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsMelee && enemy.IsValidTargetLS(dodgeRange) && enemy.IsFacing(Player) && Config.Item("posAssistant" + enemy.ChampionName).GetValue<bool>() ))
             {
                 var points = OktwCommon.CirclePoints(20, 250, Player.Position);   
 
@@ -541,7 +541,7 @@ namespace OneKeyToWin_AIO_Sebby
                 return false;
         }
 
-        public static bool Farm { get { return (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.LaneClear && Config.Item("harassLaneclear").GetValue<bool>()) || Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Mixed || Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Freeze; } }
+        public static bool Farm { get { return (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.LaneClear /*&& Config.Item("harassLaneclear").GetValue<bool>()*/) || Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Mixed || Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Freeze; } }
 
         public static bool None { get { return (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.None); } }
 

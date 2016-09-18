@@ -11,11 +11,9 @@ E:\Git dev\TEST\BETA\Syndra\obj\Debug\Syndra.Properties.Resources.resources
 E:\Git dev\TEST\BETA\Syndra\obj\Debug\Syndra.csproj.GenerateResource.Cache
 E:\Git dev\TEST\BETA\Syndra\obj\Debug\Syndra.exe
 E:\Git dev\TEST\BETA\Syndra\obj\Debug\Syndra.pdb
-E:\Git dev\TEST\BETA\Syndra\bin\Release\LeagueSharp.Common.dll
 E:\Git dev\TEST\BETA\Syndra\bin\Release\EloBuddy.Sandbox.dll
 E:\Git dev\TEST\BETA\Syndra\bin\Release\LeagueSharp.Common.pdb
 E:\Git dev\TEST\BETA\Syndra\bin\Release\LeagueSharp.Data.pdb
-E:\Git dev\TEST\BETA\Syndra\obj\Debug\Syndra.csproj.Syndra.exe.config
 C:\Users\Administrator\Documents\GitHub\Port\Addon\Syndra\bin\Release\Syndra.exe.config
 C:\Users\Administrator\Documents\GitHub\Port\Addon\Syndra\obj\Debug\Syndra.exe
 C:\Users\Administrator\Documents\GitHub\Port\Addon\Syndra\obj\Debug\Syndra.pdb
@@ -35,3 +33,5 @@ C:\Users\Administrator\Documents\GitHub\Port\Addon\Syndra\obj\Debug\Syndra.cspro
 C:\Users\Administrator\Documents\GitHub\Port\Addon\Syndra\obj\Debug\Syndra.csproj.Syndra.exe.config
 C:\Users\Administrator\Documents\GitHub\Port\Addon\Syndra\obj\Debug\Syndra.Properties.Resources.resources
 C:\Users\Administrator\Documents\GitHub\Port\Addon\Syndra\obj\Debug\Syndra.csproj.GenerateResource.Cache
+E:\Git dev\TEST\BETA\Syndra\bin\Release\LeagueSharp.Common.dll
+E:\Git dev\TEST\BETA\Syndra\obj\Debug\Syndra.csprojResolveAssemblyReference.cache

@@ -491,7 +491,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         }
                         if (W.IsReady() && Config.Item("jungleE", true).GetValue<bool>())
                         {
-                            if( LeagueSharp.Common.Orbwalking.InAutoAttackRange(mob))
+                            if( EloBuddy.Player.Instance.IsInAutoAttackRange(mob))
                                 W.Cast();
                             return;
                         }

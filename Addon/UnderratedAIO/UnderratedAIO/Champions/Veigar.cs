@@ -379,7 +379,7 @@ namespace UnderratedAIO.Champions
                     case 1:
                         CastE(target, false);
                         return;
-                        break;
+                //        break;
                 }
             }
             if (config.Item("usee", true).GetValue<bool>() && E.IsReady())
@@ -582,7 +582,7 @@ namespace UnderratedAIO.Champions
                     select minion;
                 if (objAiBases.Any())
                 {
-                    Obj_AI_Base target = null;
+             //       Obj_AI_Base target = null;
                     foreach (var minion in
                         objAiBases.Where(
                             minion =>

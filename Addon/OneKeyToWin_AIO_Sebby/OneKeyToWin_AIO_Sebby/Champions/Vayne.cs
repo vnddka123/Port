@@ -97,7 +97,7 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTargetLS(800) && GetWStacks(target) == 2))
                 {
-                    if (LeagueSharp.Common.Orbwalking.InAutoAttackRange(target) && args.Target.Health > 3 * Player.GetAutoAttackDamage(target))
+                    if (EloBuddy.Player.Instance.IsInAutoAttackRange(target) && args.Target.Health > 3 * Player.GetAutoAttackDamage(target))
                     {
                         args.Process = false;
                         Orbwalker.ForceTarget(target);
@@ -202,7 +202,7 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     var t = TargetSelector.GetTarget(900, TargetSelector.DamageType.Physical);
 
-                    if (t.IsValidTargetLS() && !LeagueSharp.Common.Orbwalking.InAutoAttackRange(t) && t.Position.Distance(Game.CursorPos) < t.Position.Distance(Player.Position) &&  !t.IsFacing(Player))
+                    if (t.IsValidTargetLS() && !EloBuddy.Player.Instance.IsInAutoAttackRange(t) && t.Position.Distance(Game.CursorPos) < t.Position.Distance(Player.Position) &&  !t.IsFacing(Player))
                     {
                         var dashPos = Dash.CastDash();
                         if (!dashPos.IsZero)

@@ -165,7 +165,7 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     
 
-                    if (Config.Item("Raa", true).GetValue<bool>() && LeagueSharp.Common.Orbwalking.InAutoAttackRange(target))
+                    if (Config.Item("Raa", true).GetValue<bool>() && EloBuddy.Player.Instance.IsInAutoAttackRange(target))
                         return;
 
                     var harasStack = Config.Item("harasStack", true).GetValue<Slider>().Value;

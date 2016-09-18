@@ -253,7 +253,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     return;
                 }
 
-                if ((OktwCommon.GetBuffCount(t, "varuswdebuff") == 3 && CanCast && !E.IsReady()) || !LeagueSharp.Common.Orbwalking.InAutoAttackRange(t))
+                if ((OktwCommon.GetBuffCount(t, "varuswdebuff") == 3 && CanCast && !E.IsReady()) || !EloBuddy.Player.Instance.IsInAutoAttackRange(t))
                 {
                     if ((Program.Combo || (OktwCommon.GetBuffCount(t, "varuswdebuff") == 3 && Program.Farm)) && Player.Mana > RMANA + QMANA)
                     {
@@ -290,7 +290,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
             if (t.IsValidTargetLS())
             {
-                if ((OktwCommon.GetBuffCount(t, "varuswdebuff") == 3 && CanCast) || !LeagueSharp.Common.Orbwalking.InAutoAttackRange(t))
+                if ((OktwCommon.GetBuffCount(t, "varuswdebuff") == 3 && CanCast) || !EloBuddy.Player.Instance.IsInAutoAttackRange(t))
                 {
                     if (Program.Combo && Player.Mana > RMANA + QMANA)
                     {

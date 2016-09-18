@@ -738,8 +738,8 @@ namespace D_Nidalee
                 dmg += Player.GetSummonerSpellDamage(hero, Damage.SummonerSpell.Ignite);
             }
 
-            if (Items.HasItem(3153) && Items.CanUseItem(3153)) dmg += Player.GetItemDamage(hero, Damage.DamageItems.Botrk);
-            if (Items.HasItem(3144) && Items.CanUseItem(3144)) dmg += Player.GetItemDamage(hero, Damage.DamageItems.Bilgewater);
+            if (Items.HasItem(3153) && Items.CanUseItem(3153)) dmg += Player.GetItemDamageLS(hero, Damage.DamageItems.Botrk);
+            if (Items.HasItem(3144) && Items.CanUseItem(3144)) dmg += Player.GetItemDamageLS(hero, Damage.DamageItems.Bilgewater);
             if (IsCougar)
             {
                 if (QC.IsReady()) dmg += Player.GetSpellDamage(hero, SpellSlot.Q);

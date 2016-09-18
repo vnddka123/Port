@@ -176,11 +176,11 @@ namespace OneKeyToWin_AIO_Sebby
                 //debug("" + ObjectManager.Player.AttackRange);
             }
             
-            if (Program.LagFree(1) && E.IsReady() && LeagueSharp.Common.Orbwalking.CanMove(40))
+            if (Program.LagFree(1) && E.IsReady() && EloBuddy.SDK.Orbwalker.CanMove)//LeagueSharp.Common.Orbwalking.CanMove(40))
                 LogicE();
-            if (Program.LagFree(2) && W.IsReady() && LeagueSharp.Common.Orbwalking.CanMove(40))
+            if (Program.LagFree(2) && W.IsReady() && EloBuddy.SDK.Orbwalker.CanMove)//LeagueSharp.Common.Orbwalking.CanMove(40))
                 LogicW();
-            if (Program.LagFree(3) && Q.IsReady() && LeagueSharp.Common.Orbwalking.CanMove(40) && Config.Item("autoQ2", true).GetValue<bool>())
+            if (Program.LagFree(3) && Q.IsReady() && EloBuddy.SDK.Orbwalker.CanMove /*LeagueSharp.Common.Orbwalking.CanMove(40)*/ && Config.Item("autoQ2", true).GetValue<bool>())
                 LogicQ();
             if (Program.LagFree(4) && R.IsReady() && Config.Item("autoR", true).GetValue<bool>() && !ObjectManager.Player.UnderTurret(true) && Game.Time - QCastTime > 1)
                 LogicR();
@@ -280,7 +280,7 @@ namespace OneKeyToWin_AIO_Sebby
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
             if (t.IsValidTargetLS(Q.Range))
             {
-                if (GetRealDistance(t) > bonusRange() + 250 && !LeagueSharp.Common.Orbwalking.InAutoAttackRange(t) && OktwCommon.GetKsDamage(t, Q) > t.Health && Player.CountEnemiesInRange(400) == 0)
+                if (GetRealDistance(t) > bonusRange() + 250 && !EloBuddy.Player.Instance.IsInAutoAttackRange(t) && OktwCommon.GetKsDamage(t, Q) > t.Health && Player.CountEnemiesInRange(400) == 0)
                 {
                     Program.CastSpell(Q, t);
                     Program.debug("Q KS");

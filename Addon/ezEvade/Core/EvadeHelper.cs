@@ -9,6 +9,7 @@ using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Events;
 
 namespace ezEvade
 {
@@ -1119,9 +1120,9 @@ namespace ezEvade
             }*/
             var startPoint = myHero.Position;
             
-            if (myHero.IsDashing())
+            if (myHero.IsDashingLS())
             {
-                var dashItem = myHero.GetDashInfo();
+                var dashItem = myHero.GetDashInfoLS();
                 startPoint = dashItem.EndPos.To3D();                
             }
             

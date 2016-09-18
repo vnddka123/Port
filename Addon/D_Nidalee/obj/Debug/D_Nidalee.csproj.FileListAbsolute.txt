@@ -4,7 +4,6 @@ E:\Git dev\TEST\BETA\D_Nidalee\bin\Release\D_Nidalee.exe
 E:\Git dev\TEST\BETA\D_Nidalee\bin\Release\D_Nidalee.pdb
 E:\Git dev\TEST\BETA\D_Nidalee\bin\Release\EloBuddy.dll
 E:\Git dev\TEST\BETA\D_Nidalee\bin\Release\EloBuddy.SDK.dll
-E:\Git dev\TEST\BETA\D_Nidalee\bin\Release\LeagueSharp.Common.dll
 E:\Git dev\TEST\BETA\D_Nidalee\bin\Release\SharpDX.dll
 E:\Git dev\TEST\BETA\D_Nidalee\bin\Release\SharpDX.Direct3D9.dll
 E:\Git dev\TEST\BETA\D_Nidalee\bin\Release\Newtonsoft.Json.dll
@@ -31,3 +30,4 @@ C:\Users\Administrator\Documents\GitHub\Port\Addon\D_Nidalee\bin\Release\EloBudd
 C:\Users\Administrator\Documents\GitHub\Port\Addon\D_Nidalee\bin\Release\LeagueSharp.Common.pdb
 C:\Users\Administrator\Documents\GitHub\Port\Addon\D_Nidalee\bin\Release\LeagueSharp.Data.pdb
 C:\Users\Administrator\Documents\GitHub\Port\Addon\D_Nidalee\obj\Debug\D_Nidalee.csprojResolveAssemblyReference.cache
+E:\Git dev\TEST\BETA\D_Nidalee\bin\Release\LeagueSharp.Common.dll

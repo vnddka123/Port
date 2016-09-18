@@ -74,7 +74,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         }
         private void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!R.IsReady() || sender.IsMinion || !sender.IsEnemy || args.SData.IsAutoAttack() || !Config.Item("autoR", true).GetValue<bool>()
+            if (!R.IsReady() || sender.IsMinion || !sender.IsEnemy || args.SData.IsAutoAttackLS() || !Config.Item("autoR", true).GetValue<bool>()
                  || !sender.IsValid<AIHeroClient>() || args.SData.Name.ToLower() == "tormentedsoil")
                 return;
 

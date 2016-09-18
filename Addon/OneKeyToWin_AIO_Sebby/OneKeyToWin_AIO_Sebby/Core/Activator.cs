@@ -189,7 +189,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (Config.Item("HydraTitanic").GetValue<bool>() && Program.Combo && HydraTitanic.IsReady() && target.IsValid<AIHeroClient>())
             {
                 HydraTitanic.Cast();
-                LeagueSharp.Common.Orbwalking.ResetAutoAttackTimer();
+                LeagueSharp.Common.Orbwalking.LastAATick = 0;
             }
         }
 

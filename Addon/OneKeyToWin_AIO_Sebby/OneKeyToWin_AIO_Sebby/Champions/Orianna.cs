@@ -232,7 +232,7 @@ namespace OneKeyToWin_AIO_Sebby
                         comboDmg += Q.GetDamage(t);
                     if (W.IsReady())
                         comboDmg += W.GetDamage(t);
-                    if (Orbwalker.InAutoAttackRange(t))
+                    if (EloBuddy.Player.Instance.IsInAutoAttackRange(t))
                         comboDmg += (float)Player.GetAutoAttackDamage(t) * 2;
                     if (t.Health < comboDmg)
                         R.Cast();
@@ -305,7 +305,7 @@ namespace OneKeyToWin_AIO_Sebby
             var allMinions = Cache.GetMinions(Player.ServerPosition, Q.Range);
             if (Config.Item("farmQout", true).GetValue<bool>() && Player.Mana > RMANA + QMANA + WMANA + EMANA)
             {
-                foreach (var minion in allMinions.Where(minion => minion.IsValidTargetLS(Q.Range) && !Orbwalker.InAutoAttackRange(minion) && minion.Health < Q.GetDamage(minion) && minion.Health > minion.FlatPhysicalDamageMod))
+                foreach (var minion in allMinions.Where(minion => minion.IsValidTargetLS(Q.Range) && !EloBuddy.Player.Instance.IsInAutoAttackRange(minion) && minion.Health < Q.GetDamage(minion) && minion.Health > minion.FlatPhysicalDamageMod))
                 {
                     Q.Cast(minion);
                 }

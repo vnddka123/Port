@@ -181,7 +181,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
 
 
-            if (Program.LagFree(4) && E.IsReady() && Orbwalking.CanMove(50))
+            if (Program.LagFree(4) && E.IsReady() && EloBuddy.SDK.Orbwalker.CanMove)//Orbwalking.CanMove(50))
                 LogicE();
 
             if (Program.LagFree(2) && Q.IsReady() && Config.Item("autoQ", true).GetValue<bool>())
@@ -364,7 +364,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 }
 
             }
-            else if(!LeagueSharp.Common.Orbwalking.CanAttack && !Player.Spellbook.IsAutoAttacking)
+            else if(!EloBuddy.SDK.Orbwalker.CanAutoAttack/*Orbwalking.CanAttack*/ && !Player.Spellbook.IsAutoAttacking)
             {
                 var t = torb as AIHeroClient;
                 if (t.Health < GetQdmg(t) + GetWdmg(t))

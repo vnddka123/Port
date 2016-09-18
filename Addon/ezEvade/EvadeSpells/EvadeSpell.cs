@@ -43,10 +43,10 @@ namespace ezEvade
 
         public static void CheckDashing()
         {
-            if (EvadeUtils.TickCount - lastSpellEvadeCommand.timestamp < 250 && myHero.IsDashing()
+            if (EvadeUtils.TickCount - lastSpellEvadeCommand.timestamp < 250 && myHero.IsDashingLS()
                 && lastSpellEvadeCommand.evadeSpellData.evadeType == EvadeType.Dash)
             {
-                var dashInfo = myHero.GetDashInfo();
+                var dashInfo = myHero.GetDashInfoLS();
 
                 //Console.WriteLine("" + dashInfo.EndPos.Distance(lastSpellEvadeCommand.targetPosition));
                 lastSpellEvadeCommand.targetPosition = dashInfo.EndPos;

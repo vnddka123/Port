@@ -132,7 +132,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 var target = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
                 if (target.IsValidTargetLS() && ((Player.UnderTurret(false) && !Player.UnderTurret(true)) || Program.Combo) )
                 {
-                    if (!LeagueSharp.Common.Orbwalking.InAutoAttackRange(target))
+                    if (!EloBuddy.Player.Instance.IsInAutoAttackRange(target))
                     {
                         E.Cast(target);
                     }
@@ -145,7 +145,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
             if (t.IsValidTargetLS())
             {
-                if (!Config.Item("qOutRange", true).GetValue<bool>() || LeagueSharp.Common.Orbwalking.InAutoAttackRange(t))
+                if (!Config.Item("qOutRange", true).GetValue<bool>() || EloBuddy.Player.Instance.IsInAutoAttackRange(t))
                 {
                     if (Player.Mana > RMANA + QMANA && Program.Combo)
                         Q.Cast();

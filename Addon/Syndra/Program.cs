@@ -546,7 +546,7 @@ namespace Syndra
                         var minion in
                             allMinionsQ.Where(
                                 minion =>
-                                !Orbwalking.InAutoAttackRange(minion) && minion.Health < 0.75 * Q.GetDamage(minion)))
+                                !EloBuddy.Player.Instance.IsInAutoAttackRange(minion) && minion.Health < 0.75 * Q.GetDamage(minion)))
                     {
                         Q.Cast(minion);
                     }

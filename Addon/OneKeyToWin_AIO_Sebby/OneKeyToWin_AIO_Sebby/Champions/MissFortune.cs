@@ -157,7 +157,7 @@ namespace OneKeyToWin_AIO_Sebby
                 if (mobs.Count > 0)
                 {
                     var mob = mobs[0];
-                    if (Q.IsReady() && Config.Item("jungleQ", true).GetValue<bool>() && !LeagueSharp.Common.Orbwalking.CanAttack && !Player.Spellbook.IsAutoAttacking)
+                    if (Q.IsReady() && Config.Item("jungleQ", true).GetValue<bool>() && !EloBuddy.SDK.Orbwalker.CanAutoAttack /*Orbwalking.CanAttack*/ && !Player.Spellbook.IsAutoAttacking)
                     {
                         Q.Cast(mob);
                         return;
@@ -236,7 +236,7 @@ namespace OneKeyToWin_AIO_Sebby
                 if (t2.IsValidTargetLS() && t2.NetworkId == LastAttackId)
                 {
                     var ta = HeroManager.Enemies.Where(enemy => 
-                        enemy.IsValidTargetLS() && LeagueSharp.Common.Orbwalking.InAutoAttackRange(enemy) 
+                        enemy.IsValidTargetLS() && EloBuddy.Player.Instance.IsInAutoAttackRange(enemy) 
                             && (enemy.NetworkId != LastAttackId || enemy.Health < Player.GetAutoAttackDamage(enemy) * 2) ).FirstOrDefault();
 
                     if (ta!=null)
@@ -338,7 +338,7 @@ namespace OneKeyToWin_AIO_Sebby
                     Program.CastSpell(E, t);
                 else if (Program.Combo && Player.Mana > RMANA + WMANA + QMANA + EMANA)
                 {
-                    if (!LeagueSharp.Common.Orbwalking.InAutoAttackRange(t) || Player.CountEnemiesInRange(300) > 0 || t.CountEnemiesInRange(250) > 1)
+                    if (!EloBuddy.Player.Instance.IsInAutoAttackRange(t) || Player.CountEnemiesInRange(300) > 0 || t.CountEnemiesInRange(250) > 1)
                         Program.CastSpell(E, t);
                     else 
                     {

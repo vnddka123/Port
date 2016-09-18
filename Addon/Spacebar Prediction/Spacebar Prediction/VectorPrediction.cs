@@ -26,6 +26,8 @@ using EloBuddy.SDK;
 
 //typedefs
 using Geometry = SPrediction.Geometry;
+using EloBuddy.SDK.Events;
+
 namespace SPrediction
 {
     /// <summary>

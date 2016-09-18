@@ -194,7 +194,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             if (Program.LagFree(1))
             {
-                if (!LeagueSharp.Common.Orbwalking.CanMove(40))
+                if (!EloBuddy.SDK.Orbwalker.CanMove)//LeagueSharp.Common.Orbwalking.CanMove(40))
                     return;
                 bool cc = !Program.None && Player.Mana > RMANA + QMANA + EMANA;
                 bool harass = Program.Farm && Player.ManaPercent > Config.Item("HarassMana", true).GetValue<Slider>().Value && OktwCommon.CanHarras();
@@ -287,7 +287,7 @@ namespace OneKeyToWin_AIO_Sebby
                 }
             }
 
-            if (t.IsValidTargetLS() && Program.Combo && Config.Item("EKsCombo", true).GetValue<bool>() && Player.HealthPercent > 40 && t.Distance(Game.CursorPos) + 300 < t.Position.Distance(Player.Position) && !LeagueSharp.Common.Orbwalking.InAutoAttackRange(t) && !Player.UnderTurret(true) && (Game.Time - OverKill > 0.3) )
+            if (t.IsValidTargetLS() && Program.Combo && Config.Item("EKsCombo", true).GetValue<bool>() && Player.HealthPercent > 40 && t.Distance(Game.CursorPos) + 300 < t.Position.Distance(Player.Position) && !EloBuddy.Player.Instance.IsInAutoAttackRange(t) && !Player.UnderTurret(true) && (Game.Time - OverKill > 0.3) )
             {
                 var dashPosition = Player.Position.Extend(Game.CursorPos, E.Range).To3DWorld();
 
@@ -435,7 +435,7 @@ namespace OneKeyToWin_AIO_Sebby
                 }
             }
 
-            if (!LeagueSharp.Common.Orbwalking.CanMove(40) || (Orbwalker.ShouldWait() && LeagueSharp.Common.Orbwalking.CanAttack))
+            if (!EloBuddy.SDK.Orbwalker.CanMove /*LeagueSharp.Common.Orbwalking.CanMove(40)*/ || (Orbwalker.ShouldWait() && EloBuddy.SDK.Orbwalker.CanAutoAttack))//LeagueSharp.Common.Orbwalking.CanAttack))
             {
                 return;
             }
@@ -448,19 +448,19 @@ namespace OneKeyToWin_AIO_Sebby
 
             if (Config.Item("FQ", true).GetValue<bool>())
             {
-                foreach (var minion in minions.Where(minion => minion.IsValidTargetLS() && orbTarget != minion.NetworkId && minion.HealthPercent < 70 && !Orbwalker.InAutoAttackRange(minion) && minion.Health < Q.GetDamage(minion)))
+                foreach (var minion in minions.Where(minion => minion.IsValidTargetLS() && orbTarget != minion.NetworkId && minion.HealthPercent < 70 && !EloBuddy.Player.Instance.IsInAutoAttackRange(minion) && minion.Health < Q.GetDamage(minion)))
                 {
                     if (Q.Cast(minion) == Spell.CastStates.SuccessfullyCasted)
                         return;
                 }
             }
 
-            if (Config.Item("farmQ", true).GetValue<bool>() && Program.LaneClear && !LeagueSharp.Common.Orbwalking.CanAttack && Player.ManaPercent > Config.Item("Mana", true).GetValue<Slider>().Value)
+            if (Config.Item("farmQ", true).GetValue<bool>() && Program.LaneClear && !EloBuddy.SDK.Orbwalker.CanAutoAttack /*Orbwalking.CanAttack*/ && Player.ManaPercent > Config.Item("Mana", true).GetValue<Slider>().Value)
             {
                 var LCP = Config.Item("LCP", true).GetValue<bool>();
                 var PT = Game.Time - GetPassiveTime() > -1.5 || !E.IsReady();
 
-                foreach (var minion in minions.Where(minion => Orbwalker.InAutoAttackRange(minion)))
+                foreach (var minion in minions.Where(minion => EloBuddy.Player.Instance.IsInAutoAttackRange(minion)))
                 {
                     
                     var hpPred = LeagueSharp.Common.HealthPrediction.GetHealthPrediction(minion, 300);

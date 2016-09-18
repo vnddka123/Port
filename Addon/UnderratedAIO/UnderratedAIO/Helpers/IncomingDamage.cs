@@ -233,7 +233,7 @@ namespace UnderratedAIO.Helpers
                                 var missileSpeed = (sender.Distance(target) / args.SData.MissileSpeed) +
                                                    args.SData.SpellCastTime;
                                 missileSpeed = missileSpeed > 1f ? 0.8f : missileSpeed;
-                                if (Orbwalking.IsAutoAttack(args.SData.Name))
+                                if (Orbwalking.IsAutoAttackLS(args.SData.Name))
                                 {
                                     var dmg =
                                         (float)

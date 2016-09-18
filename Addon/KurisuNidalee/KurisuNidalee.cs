@@ -249,7 +249,7 @@ namespace KurisuNidalee
 
         private static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (sender.IsEnemy || sender.Type != Player.Type || !args.SData.IsAutoAttack())
+            if (sender.IsEnemy || sender.Type != Player.Type || !args.SData.IsAutoAttackLS())
             {
                 return;
             }
@@ -291,7 +291,7 @@ namespace KurisuNidalee
 
         private static void Obj_AI_Base_OnDoCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (sender.IsMe && args.SData.IsAutoAttack())
+            if (sender.IsMe && args.SData.IsAutoAttackLS())
             {
                 if (Root.Item("usecombo2").GetValue<KeyBind>().Active)
                 {

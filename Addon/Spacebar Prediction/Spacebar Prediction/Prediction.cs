@@ -23,6 +23,7 @@ using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Events;
 
 namespace SPrediction
 {
@@ -404,7 +405,7 @@ namespace SPrediction
 
             if (target.IsDashing())
             {
-                var dashInfo = target.GetDashInfo();
+                var dashInfo = target.GetDashInfoLS();
                 if (dashInfo.IsBlink)
                 {
                     result.HitChance = HitChance.Impossible;

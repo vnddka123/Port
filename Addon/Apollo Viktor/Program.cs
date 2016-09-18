@@ -179,7 +179,7 @@ namespace Viktor
                 var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
                 if (t != null)
                 {
-                    if (Orbwalking.InAutoAttackRange(t))
+                    if (EloBuddy.Player.Instance.IsInAutoAttackRange(t))
                         Q.Cast(t);
                     else if (!Menu.Item("UseQinAA").GetValue<bool>())
                         Q.Cast(t);
@@ -249,7 +249,7 @@ namespace Viktor
                 var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
                 if (t != null)
                 {
-                    if (Orbwalking.InAutoAttackRange(t))
+                    if (EloBuddy.Player.Instance.IsInAutoAttackRange(t))
                         Q.Cast(t);
                     else if (!Menu.Item("UseQinAA").GetValue<bool>())
                         Q.Cast(t);

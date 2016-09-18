@@ -237,7 +237,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                 if (Config.Item("farmQout", true).GetValue<bool>())
                 {
-                    foreach (var minion in allMinions.Where(minion => minion.IsValidTargetLS(Q.Range) && (!Orbwalker.InAutoAttackRange(minion) || (!minion.UnderTurret(true) && minion.UnderTurret()))))
+                    foreach (var minion in allMinions.Where(minion => minion.IsValidTargetLS(Q.Range) && (!EloBuddy.Player.Instance.IsInAutoAttackRange(minion) || (!minion.UnderTurret(true) && minion.UnderTurret()))))
                     {
                         var hpPred = LeagueSharp.Common.HealthPrediction.GetHealthPrediction(minion, 1100);
                         if (hpPred < GetQDamage(minion) * 0.9 && hpPred > minion.Health - hpPred * 2)
@@ -250,7 +250,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                 if (Program.LaneClear && Config.Item("farmQ", true).GetValue<bool>() && Player.ManaPercent > Config.Item("Mana", true).GetValue<Slider>().Value)
                 {
-                    foreach (var minion in allMinions.Where(minion => minion.IsValidTargetLS(Q.Range) && Orbwalker.InAutoAttackRange(minion)))
+                    foreach (var minion in allMinions.Where(minion => minion.IsValidTargetLS(Q.Range) && EloBuddy.Player.Instance.IsInAutoAttackRange(minion)))
                     {    
                         var hpPred = LeagueSharp.Common.HealthPrediction.GetHealthPrediction(minion, 1100);
                         if (hpPred < GetQDamage(minion) * 0.9 && hpPred > minion.Health - hpPred * 2)

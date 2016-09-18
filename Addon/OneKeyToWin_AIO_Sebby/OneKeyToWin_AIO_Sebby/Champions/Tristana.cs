@@ -129,7 +129,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             if (Config.Item("focusE", true).GetValue<bool>())
             {
-                var eTarget = HeroManager.Enemies.FirstOrDefault(target => target.IsValidTargetLS() && LeagueSharp.Common.Orbwalking.InAutoAttackRange(target) && target.HasBuff("tristanaechargesound"));
+                var eTarget = HeroManager.Enemies.FirstOrDefault(target => target.IsValidTargetLS() && EloBuddy.Player.Instance.IsInAutoAttackRange(target) && target.HasBuff("tristanaechargesound"));
                 if(eTarget != null)
                 {
                     Orbwalker.ForceTarget(eTarget);
@@ -169,7 +169,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     
                     if (dmgCombo > enemy.Health)
                     {
-                        if (LeagueSharp.Common.Orbwalking.InAutoAttackRange(enemy))
+                        if (EloBuddy.Player.Instance.IsInAutoAttackRange(enemy))
                         {
                             if (playerAaDmg * 2 + GetEDmg(enemy) < LeagueSharp.Common.HealthPrediction.GetHealthPrediction(enemy,700))
                                 Program.CastSpell(W, enemy);

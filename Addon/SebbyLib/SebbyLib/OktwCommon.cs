@@ -75,7 +75,7 @@ namespace SebbyLib
 
         public static bool CanHarras()
         {
-            if (!Player.IsHPBarRendered && !Player.UnderTurret(true) && Orbwalking.CanMove(50))
+            if (!Player.IsHPBarRendered && !Player.UnderTurret(true) && Orbwalker.CanMove)// Orbwalking.CanMove(50))
                 return true;
             else
                 return false;
@@ -389,7 +389,7 @@ namespace SebbyLib
                 if (!YasuoInGame)
                     return;
 
-                if (!sender.IsEnemy || sender.IsMinion || args.SData.IsAutoAttack() || sender.Type != GameObjectType.AIHeroClient)
+                if (!sender.IsEnemy || sender.IsMinion || args.SData.IsAutoAttackLS() || sender.Type != GameObjectType.AIHeroClient)
                     return;
 
                 if (args.SData.Name == "YasuoWMovingWall")

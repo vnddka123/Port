@@ -179,10 +179,10 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void LogicQ()
         {
-            if (Program.Farm && !FishBoneActive && !Player.Spellbook.IsAutoAttacking && Orbwalker.GetTarget() == null && LeagueSharp.Common.Orbwalking.CanAttack && Config.Item("farmQout", true).GetValue<bool>() && Player.Mana > RMANA + WMANA + EMANA + 10)
+            if (Program.Farm && !FishBoneActive && !Player.Spellbook.IsAutoAttacking && Orbwalker.GetTarget() == null && EloBuddy.SDK.Orbwalker.CanAutoAttack /*Orbwalking.CanAttack*/ && Config.Item("farmQout", true).GetValue<bool>() && Player.Mana > RMANA + WMANA + EMANA + 10)
             {
                 foreach (var minion in Cache.GetMinions(Player.Position, bonusRange() + 30).Where(
-                minion => !LeagueSharp.Common.Orbwalking.InAutoAttackRange(minion) && GetRealPowPowRange(minion) < GetRealDistance(minion) && bonusRange() < GetRealDistance(minion)))
+                minion => !EloBuddy.Player.Instance.IsInAutoAttackRange(minion) && GetRealPowPowRange(minion) < GetRealDistance(minion) && bonusRange() < GetRealDistance(minion)))
                 {
                     var hpPred = LeagueSharp.Common.HealthPrediction.GetHealthPrediction(minion, 400, 70);
                     if (hpPred < Player.GetAutoAttackDamage(minion) * 1.1 && hpPred > 5)
@@ -197,12 +197,12 @@ namespace OneKeyToWin_AIO_Sebby
             var t = TargetSelector.GetTarget(bonusRange() + 60, TargetSelector.DamageType.Physical);
             if (t.IsValidTargetLS())
             {
-                if (!FishBoneActive && (!LeagueSharp.Common.Orbwalking.InAutoAttackRange(t) || t.CountEnemiesInRange(250) > 2) && Orbwalker.GetTarget() == null)
+                if (!FishBoneActive && (!EloBuddy.Player.Instance.IsInAutoAttackRange(t) || t.CountEnemiesInRange(250) > 2) && Orbwalker.GetTarget() == null)
                 {
                     var distance = GetRealDistance(t);
                     if (Program.Combo && (Player.Mana > RMANA + WMANA + 10 || Player.GetAutoAttackDamage(t) * 3 > t.Health))
                         Q.Cast();
-                    else if (Program.Farm && !Player.Spellbook.IsAutoAttacking && LeagueSharp.Common.Orbwalking.CanAttack && Config.Item("Qharras", true).GetValue<bool>() && !ObjectManager.Player.UnderTurret(true) && Player.Mana > RMANA + WMANA + EMANA + 20 && distance < bonusRange() + t.BoundingRadius + Player.BoundingRadius)
+                    else if (Program.Farm && !Player.Spellbook.IsAutoAttacking && EloBuddy.SDK.Orbwalker.CanAutoAttack /*Orbwalking.CanAttack*/ && Config.Item("Qharras", true).GetValue<bool>() && !ObjectManager.Player.UnderTurret(true) && Player.Mana > RMANA + WMANA + EMANA + 20 && distance < bonusRange() + t.BoundingRadius + Player.BoundingRadius)
                         Q.Cast();
                 }
             }

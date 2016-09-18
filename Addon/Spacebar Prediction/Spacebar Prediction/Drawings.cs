@@ -130,7 +130,7 @@ namespace SPrediction
         private static void AIHeroClient_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             LastSpells.RemoveAll(p => Environment.TickCount - p.Item2 > 2000);
-            if (sender.IsMe && !args.SData.IsAutoAttack() && ConfigMenu.CountHitChance)
+            if (sender.IsMe && !args.SData.IsAutoAttackLS() && ConfigMenu.CountHitChance)
             {
                 if (args.Slot == SpellSlot.Q && !LastSpells.Exists(p => p.Item1 == args.SData.Name))
                 {

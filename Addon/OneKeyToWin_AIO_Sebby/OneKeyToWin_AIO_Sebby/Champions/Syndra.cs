@@ -321,7 +321,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                 if (Config.Item("farmQout", true).GetValue<bool>())
                 {
-                    foreach (var minion in allMinions.Where(minion => minion.IsValidTargetLS(Q.Range) && (!Orbwalker.InAutoAttackRange(minion) || (!minion.UnderTurret(true) && minion.UnderTurret()))))
+                    foreach (var minion in allMinions.Where(minion => minion.IsValidTargetLS(Q.Range) && (!EloBuddy.Player.Instance.IsInAutoAttackRange(minion) || (!minion.UnderTurret(true) && minion.UnderTurret()))))
                     {
                         var hpPred = LeagueSharp.Common.HealthPrediction.GetHealthPrediction(minion, 600);
                         if (hpPred < Q.GetDamage(minion)  && hpPred > minion.Health - hpPred * 2)

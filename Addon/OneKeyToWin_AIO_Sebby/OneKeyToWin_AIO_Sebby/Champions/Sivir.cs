@@ -119,7 +119,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!E.IsReady() || args.SData.IsAutoAttack() || Player.HealthPercent > Config.Item("Edmg", true).GetValue<Slider>().Value || !Config.Item("autoE", true).GetValue<bool>()
+            if (!E.IsReady() || args.SData.IsAutoAttackLS() || Player.HealthPercent > Config.Item("Edmg", true).GetValue<Slider>().Value || !Config.Item("autoE", true).GetValue<bool>()
                 || !sender.IsEnemy || sender.IsMinion || !sender.IsValid<AIHeroClient>() || args.SData.Name.ToLower() == "tormentedsoil")
                 return;
 
@@ -175,7 +175,7 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 missileManager.Target = t;
                 var qDmg = OktwCommon.GetKsDamage(t,Q) * 1.9;
-                if (LeagueSharp.Common.Orbwalking.InAutoAttackRange(t))
+                if (EloBuddy.Player.Instance.IsInAutoAttackRange(t))
                     qDmg = qDmg + Player.GetAutoAttackDamage(t) * 3;
                 if (qDmg > t.Health)
                     Q.Cast(t, true);

@@ -78,7 +78,7 @@ namespace KurisuNidalee
             var missile = sender as MissileClient;
             if (missile != null && missile.SpellCaster.IsMe)
             {
-                if (missile.SData.IsAutoAttack())
+                if (missile.SData.IsAutoAttackLS())
                     MissileCount += 1;
             }
         }
@@ -405,7 +405,7 @@ namespace KurisuNidalee
                     //Orbwalking.ResetAutoAttackTimer();
                 }
 
-                if (sender.IsMe && args.SData.IsAutoAttack() && Player.HasBuff("Takedown"))
+                if (sender.IsMe && args.SData.IsAutoAttackLS() && Player.HasBuff("Takedown"))
                 {
                     LastBite = Utils.GameTimeTickCount;
                 //    TimeStamp["Takedown"] = Game.Time + (5 + (5 * Player.PercentCooldownMod));

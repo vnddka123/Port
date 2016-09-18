@@ -12,6 +12,7 @@ using Environment = UnderratedAIO.Helpers.Environment;
 using Spell = LeagueSharp.Common.Spell;
 using Damage = LeagueSharp.Common.Damage;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Events;
 
 namespace UnderratedAIO.Champions
 {

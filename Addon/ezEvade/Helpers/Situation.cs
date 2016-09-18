@@ -141,7 +141,7 @@ namespace ezEvade
                 || myHero.IsTargetable == false
                 || HasSpellShield(myHero)
                 || ChampionSpecificChecks()
-                || myHero.IsDashing()
+                || myHero.IsDashingLS()
                 || Evade.hasGameEnded == true;
         }
 

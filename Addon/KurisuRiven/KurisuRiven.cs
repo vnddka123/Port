@@ -51,7 +51,8 @@ namespace KurisuRiven
         private static int cc;
         private static int pc;  
         private static bool uo;
-        private static SpellSlot flash;
+//        private static SpellSlot flash;
+        public static EloBuddy.SDK.Spell.Skillshot Flash;
 
         private static float truerange;
         private static Vector3 movepos;
@@ -160,7 +161,11 @@ namespace KurisuRiven
             r = new Spell(SpellSlot.R, 900f);  
             r.SetSkillshot(0.25f, 90f, 1600f, false, SkillshotType.SkillshotCircle);
 
-            flash = player.GetSpellSlot("summonerflash");
+//            flash = player.GetSpellSlot("summonerflash");
+            if (EloBuddy.Player.Spells.FirstOrDefault(o => o.SData.Name.Contains("SummonerFlash")) != null)
+            {
+                Flash = EloBuddy.SDK.Spells.SummonerSpells.Flash;
+            }
             OnDoCast();
 
             OnPlayAnimation();
@@ -217,8 +222,7 @@ namespace KurisuRiven
         {
             Obj_AI_Base.OnSpellCast += (sender, args) =>
             {
-                
-                if (sender.IsMe && args.SData.IsAutoAttack())
+                if (sender.IsMe && args.SData.IsAutoAttackLS())
                 {
                     if (menu.Item("shycombo").GetValue<KeyBind>().Active)
                     {
@@ -320,7 +324,7 @@ namespace KurisuRiven
                     }
                 }
 
-                if (sender.IsMe && args.SData.IsAutoAttack())
+                if (sender.IsMe && args.SData.IsAutoAttackLS())
                 {
                     didaa = false;
                     canmv = true;
@@ -627,7 +631,7 @@ namespace KurisuRiven
         {
             if (riventarget() != null && (canburst() || shy()))
             {
-                if (!flash.IsReady() || !menubool("flashb"))
+                if (!Flash.IsReady() || !menubool("flashb"))
                     return;
 
                 if (menu.Item("shycombo").GetValue<KeyBind>().Active)
@@ -647,13 +651,14 @@ namespace KurisuRiven
                             var pos = riventarget().ServerPosition +
                                       (riventarget().ServerPosition - second.ServerPosition).Normalized() * 75;
 
-                            player.Spellbook.CastSpell(flash, pos);
+                       //     player.Spellbook.CastSpell(flash, pos);
+                            Flash.Cast(pos);
                         }
 
                         else
                         {
-                            player.Spellbook.CastSpell(flash,
-                                riventarget().ServerPosition.Extend(player.ServerPosition, 115).To3DWorld());
+                        //    player.Spellbook.CastSpell(flash, riventarget().ServerPosition.Extend(player.ServerPosition, 115).To3DWorld());
+                            Flash.Cast(riventarget().ServerPosition.Extend(player.ServerPosition, 115).To3DWorld());
                         }
                     }
                 }
@@ -669,7 +674,7 @@ namespace KurisuRiven
             if (riventarget() == null || !r.IsReady())
                 return;
 
-            if (flash.IsReady() &&  w.IsReady() && (canburst() || shy()) && menulist("multib") != 2)
+            if (Flash.IsReady() &&  w.IsReady() && (canburst() || shy()) && menulist("multib") != 2)
             {
                 if (e.IsReady() && target.Distance(player.ServerPosition) <= e.Range + w.Range + 275)
                 {
@@ -800,7 +805,9 @@ namespace KurisuRiven
             }
             if (cc == 3 || cc == 2 || cc == 1)
             {
-                Orbwalking.ResetAutoAttackTimer();
+                //Orbwalking.ResetAutoAttackTimer();
+                //EloBuddy.SDK.Orbwalker.ResetAutoAttack();
+                //    OrbTo(target);
             }
 
             var catchRange = e.IsReady() ? e.Range + truerange + 200 : truerange + 200;
@@ -1084,6 +1091,7 @@ namespace KurisuRiven
 
             foreach (var unit in minions.Where(m => !m.Name.Contains("Mini")))
             {
+
                 OrbTo(unit);
 
                 if (Utils.GameTimeTickCount - lastw < 500 && Utils.GameTimeTickCount - lasthd < 1000)
@@ -1107,8 +1115,7 @@ namespace KurisuRiven
 
                 if (e.IsReady() && cane && menubool("usejunglee"))
                 {
-                    if (player.Health / player.MaxHealth * 100 <= 70 ||
-                        unit.Distance(player.ServerPosition) > truerange + 30)
+                    if (player.Health / player.MaxHealth * 100 <= 70 || unit.Distance(player.ServerPosition) > truerange + 30)
                     {
                         e.Cast(unit.ServerPosition);
                     }
@@ -1387,15 +1394,21 @@ namespace KurisuRiven
                 if (!sender.IsMe)
                 {
                     return;
+                }              
+
+                if (args.Slot == SpellSlot.W)
+                {
+                 //   Orbwalking.ResetAutoAttackTimer();
+                    EloBuddy.SDK.Orbwalker.ResetAutoAttack();
                 }
 
-                if (args.SData.IsAutoAttack())
+                if (args.SData.IsAutoAttackLS())
                 {
                     qtarg = (Obj_AI_Base) args.Target;
                     lastaa = Utils.GameTimeTickCount;
                 }
 
-                if (!didq && args.SData.IsAutoAttack())
+                if (!didq && args.SData.IsAutoAttackLS())
                 {
                     var targ = (AttackableUnit) args.Target;
                     if (targ != null && player.Distance(targ.Position) <= q.Range + 120)
@@ -1707,7 +1720,9 @@ namespace KurisuRiven
                 {
                     if (target.IsValidTargetLS(truerange + 200 + rangeoverride))
                     {
-                        Orbwalking.LastAATick = 0;
+                    //    Orbwalking.LastAATick = 0;
+                    //    Orbwalking.ResetAutoAttackTimer();
+                        EloBuddy.SDK.Orbwalker.ResetAutoAttack();
                     }
                 }
             }
@@ -1791,23 +1806,23 @@ namespace KurisuRiven
                 : 0);
 
             var tmt = Items.HasItem(3077) && Items.CanUseItem(3077)
-                ? player.GetItemDamage(target, LeagueSharp.Common.Damage.DamageItems.Tiamat)
+                ? player.GetItemDamageLS(target, LeagueSharp.Common.Damage.DamageItems.Tiamat)
                 : 0;
 
             var hyd = Items.HasItem(3074) && Items.CanUseItem(3074)
-                ? player.GetItemDamage(target, LeagueSharp.Common.Damage.DamageItems.Hydra)
+                ? player.GetItemDamageLS(target, LeagueSharp.Common.Damage.DamageItems.Hydra)
                 : 0;
 
             var tdh = Items.HasItem(3748) && Items.CanUseItem(3748)
-                ? player.GetItemDamage(target, LeagueSharp.Common.Damage.DamageItems.Hydra)
+                ? player.GetItemDamageLS(target, LeagueSharp.Common.Damage.DamageItems.Hydra)
                 : 0;
 
             var bwc = Items.HasItem(3144) && Items.CanUseItem(3144)
-                ? player.GetItemDamage(target, LeagueSharp.Common.Damage.DamageItems.Bilgewater)
+                ? player.GetItemDamageLS(target, LeagueSharp.Common.Damage.DamageItems.Bilgewater)
                 : 0;
 
             var brk = Items.HasItem(3153) && Items.CanUseItem(3153)
-                ? player.GetItemDamage(target, LeagueSharp.Common.Damage.DamageItems.Botrk)
+                ? player.GetItemDamageLS(target, LeagueSharp.Common.Damage.DamageItems.Botrk)
                 : 0;
 
             var items = tmt + hyd + tdh + bwc + brk;
@@ -1909,7 +1924,7 @@ namespace KurisuRiven
 
                     if (menu.Item("drawburst").GetValue<Circle>().Active && (canburst() || shy()) && riventarget().IsValidTargetLS())
                     {
-                        var xrange = menubool("flashb") && flash.IsReady() ? 255 : 0;
+                        var xrange = menubool("flashb") && Flash.IsReady() ? 255 : 0;
                         Render.Circle.DrawCircle(riventarget().Position, e.Range + w.Range - 25 + xrange,
                             menu.Item("drawburst").GetValue<Circle>().Color, menu.Item("linewidth").GetValue<Slider>().Value);
                     }

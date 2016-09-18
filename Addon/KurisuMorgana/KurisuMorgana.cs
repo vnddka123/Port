@@ -382,7 +382,7 @@ namespace KurisuMorgana
             _mi = (float)(iready ? Me.GetSummonerSpellDamage(target, LeagueSharp.Common.Damage.SummonerSpell.Ignite) : 0);
 
             _guise = (float)(Items.HasItem(3151)
-                ? Me.GetItemDamage(target, LeagueSharp.Common.Damage.DamageItems.LiandrysTorment)
+                ? Me.GetItemDamageLS(target, LeagueSharp.Common.Damage.DamageItems.LiandrysTorment)
                 : 0);
         }
 

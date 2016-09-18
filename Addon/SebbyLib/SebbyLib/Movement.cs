@@ -5,6 +5,7 @@ using SharpDX;
 using EloBuddy;
 using LeagueSharp.Common;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Events;
 
 namespace SebbyLib.Movement
 {
@@ -431,7 +432,7 @@ namespace SebbyLib.Movement
 
         internal static PredictionOutput GetDashingPrediction(PredictionInput input)
         {
-            var dashData = input.Unit.GetDashInfo();
+            var dashData = input.Unit.GetDashInfoLS();
             var result = new PredictionOutput { Input = input };
             //Normal dashes.
             if (!dashData.IsBlink)
@@ -1167,7 +1168,7 @@ namespace SebbyLib.Movement
         {
             if (!(sender is AIHeroClient)) return;
 
-            if (args.SData.IsAutoAttack())
+            if (args.SData.IsAutoAttackLS())
                 UnitTrackerInfoList.Find(x => x.NetworkId == sender.NetworkId).AaTick = Utils.TickCount;
             else
             {

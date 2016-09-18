@@ -288,17 +288,17 @@ namespace OneKeyToWin_AIO_Sebby
             if (Orbwalker.GetTarget() != null)
                 orbTarget = Orbwalker.GetTarget().NetworkId;
 
-            foreach (var minion in minions.Where(minion => orbTarget != minion.NetworkId && !Orbwalker.InAutoAttackRange(minion) && minion.Health < Q.GetDamage(minion)))
+            foreach (var minion in minions.Where(minion => orbTarget != minion.NetworkId && !EloBuddy.Player.Instance.IsInAutoAttackRange(minion) && minion.Health < Q.GetDamage(minion)))
             {
                 if (Q.Cast(minion) == Spell.CastStates.SuccessfullyCasted)
                     return;
             }
 
-            if (Config.Item("LC", true).GetValue<bool>() && Program.LaneClear && !LeagueSharp.Common.Orbwalking.CanAttack && Player.ManaPercent > Config.Item("Mana", true).GetValue<Slider>().Value)
+            if (Config.Item("LC", true).GetValue<bool>() && Program.LaneClear && !EloBuddy.SDK.Orbwalker.CanAutoAttack /*Orbwalking.CanAttack*/ && Player.ManaPercent > Config.Item("Mana", true).GetValue<Slider>().Value)
             {
                 var LCP = Config.Item("LCP", true).GetValue<bool>();
 
-                foreach (var minion in minions.Where(minion => Orbwalker.InAutoAttackRange(minion) && orbTarget != minion.NetworkId))
+                foreach (var minion in minions.Where(minion => EloBuddy.Player.Instance.IsInAutoAttackRange(minion) && orbTarget != minion.NetworkId))
                 {
                     var hpPred = LeagueSharp.Common.HealthPrediction.GetHealthPrediction(minion, 300);
                     var dmgMinion = minion.GetAutoAttackDamage(minion);

@@ -118,12 +118,24 @@ namespace OneKeyToWin_AIO_Sebby
                     return;
                 }
             }
+
+            var tq = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
+            if (Program.LaneClear && Config.Item("harras" + tq.ChampionName).GetValue<bool>() && Player.ManaPercent > Config.Item("Mana", true).GetValue<Slider>().Value)
+            {
+                CastExtendedQ();
+            }
+
             if (Program.LagFree(0))
             {
                 SetMana();
             }
             if (Program.LagFree(1) && Q.IsReady() && !passRdy && !SpellLock)
+            {
                 LogicQ();
+                var tq1 = TargetSelector.GetTarget(Q1.Range, TargetSelector.DamageType.Physical);
+                if (tq1.IsValidTargetLS(Q1.Range))
+                    CastExtendedQ();
+            }
             if (Program.LagFree(2) && W.IsReady() && !passRdy && !SpellLock && Config.Item("autoW", true).GetValue<bool>())
                 LogicW();
             if (Program.LagFree(3) && E.IsReady())
@@ -188,12 +200,61 @@ namespace OneKeyToWin_AIO_Sebby
             }
         }
 
+        public void CastExtendedQ()
+        {
+            var target = TargetSelector.SelectedTarget != null &&
+                         TargetSelector.SelectedTarget.Distance(Player) < 2000
+                ? TargetSelector.SelectedTarget
+                : TargetSelector.GetTarget(Q1.Range, TargetSelector.DamageType.Physical);
+
+            if (!target.IsValidTargetLS(Q1.Range))
+                return;
+
+            var predPos = Q1.GetPrediction(target);
+            var minions =
+                EntityManager.MinionsAndMonsters.EnemyMinions.Where(m => m.Distance(Player) <= Q.Range);
+            var champs = EntityManager.Heroes.Enemies.Where(m => m.Distance(Player) <= Q.Range);
+            var monsters =
+                EntityManager.MinionsAndMonsters.Monsters.Where(m => m.Distance(Player) <= Q.Range);
+            {
+                foreach (var minion in from minion in minions
+                                       let polygon = new EloBuddy.SDK.Geometry.Polygon.Rectangle(
+                                           (Vector2)Player.ServerPosition,
+                                           Player.ServerPosition.Extend(minion.ServerPosition, Q1.Range), 65f)
+                                       where polygon.IsInside(predPos.CastPosition)
+                                       select minion)
+                {
+                    Q.Cast(minion);
+                }
+
+                foreach (var champ in from champ in champs
+                                      let polygon = new EloBuddy.SDK.Geometry.Polygon.Rectangle(
+                                          (Vector2)Player.ServerPosition,
+                                          Player.ServerPosition.Extend(champ.ServerPosition, Q1.Range), 65f)
+                                      where polygon.IsInside(predPos.CastPosition)
+                                      select champ)
+                {
+                    Q.Cast(champ);
+                }
+
+                foreach (var monster in from monster in monsters
+                                        let polygon = new EloBuddy.SDK.Geometry.Polygon.Rectangle(
+                                            (Vector2)Player.ServerPosition,
+                                            Player.ServerPosition.Extend(monster.ServerPosition, Q1.Range), 65f)
+                                        where polygon.IsInside(predPos.CastPosition)
+                                        select monster)
+                {
+                    Q.Cast(monster);
+                }
+            }
+        }
+
         private void LogicW()
         {
             var t = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Physical);
             if (t.IsValidTargetLS())
             {
-                if (Config.Item("ignoreCol", true).GetValue<bool>() && LeagueSharp.Common.Orbwalking.InAutoAttackRange(t))
+                if (Config.Item("ignoreCol", true).GetValue<bool>() && EloBuddy.Player.Instance.IsInAutoAttackRange(t))
                     W.Collision = false;
                 else
                     W.Collision = true;
@@ -201,7 +262,7 @@ namespace OneKeyToWin_AIO_Sebby
                 var qDmg = Q.GetDamage(t);
                 var wDmg = OktwCommon.GetKsDamage(t, W);
 
-                if (LeagueSharp.Common.Orbwalking.InAutoAttackRange(t))
+                if (EloBuddy.Player.Instance.IsInAutoAttackRange(t))
                 {
                     qDmg += (float)AaDamage(t);
                     wDmg += (float)AaDamage(t);
@@ -242,7 +303,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
 
-            if (t.IsValidTargetLS(R.Range) && t.CountAlliesInRange(500) == 0 && OktwCommon.ValidUlt(t) && !LeagueSharp.Common.Orbwalking.InAutoAttackRange(t))
+            if (t.IsValidTargetLS(R.Range) && t.CountAlliesInRange(500) == 0 && OktwCommon.ValidUlt(t) && !EloBuddy.Player.Instance.IsInAutoAttackRange(t))
             {
                 var rDmg = R.GetDamage(t, 1) * (10 + 5 * R.Level);
 

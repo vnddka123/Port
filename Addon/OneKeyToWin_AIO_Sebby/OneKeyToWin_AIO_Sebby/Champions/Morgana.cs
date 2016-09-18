@@ -100,7 +100,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!E.IsReady() || !sender.IsEnemy || sender.IsMinion || args.SData.IsAutoAttack() || !sender.IsValid<AIHeroClient>() || Player.Distance(sender.ServerPosition) > 2000)
+            if (!E.IsReady() || !sender.IsEnemy || sender.IsMinion || args.SData.IsAutoAttackLS() || !sender.IsValid<AIHeroClient>() || Player.Distance(sender.ServerPosition) > 2000)
                 return;
 
             if (Config.Item("spell" + args.SData.Name, true) != null && !Config.Item("spell" + args.SData.Name, true).GetValue<bool>())

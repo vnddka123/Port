@@ -26,7 +26,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                     SharpDX.Vector2 castVec2 = Player.ServerPosition.To2D() +
                                                SharpDX.Vector2.Normalize(pred.UnitPosition.To2D() - Player.Position.To2D()) * (spell.Range);
 
-                    if (target.IsValidTarget(spell.Range))
+                    if (target.IsValidTargetLS(spell.Range))
                     {
                         if (target.MoveSpeed * (Game.Ping / 2000 + spell.Delay + Player.ServerPosition.Distance(target.ServerPosition) / spell.Speed) <= spell.Width * 1 / 2)
                             spell.Cast(target.ServerPosition); //Game.Ping/2000  추가함.
@@ -44,7 +44,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                                 spell.Cast(pred.CastPosition); // <- 별로 좋은 선택은 아니지만.. 
                         }
                     }
-                    else if (target.IsValidTarget(spell.Range + spell.Width / 2)) //사거리 밖 대상에 대해서
+                    else if (target.IsValidTargetLS(spell.Range + spell.Width / 2)) //사거리 밖 대상에 대해서
                     {
                         if (pred.Hitchance >= SelectedHitchance && Player.ServerPosition.Distance(pred.UnitPosition) <= spell.Range + spell.Width * 1 / 2 && pred.UnitPosition.Distance(target.ServerPosition) < Math.Max(spell.Width, 400f))
                         {
@@ -84,15 +84,15 @@ namespace OneKeyToWin_AIO_Sebby.Core
                     var minioncol3 = collision3.Count(x => (HeroOnly == false ? x.IsMinion : (x is AIHeroClient)));
                     if (pred.Hitchance >= SelectedHitchance)
                     {
-                        if (target.IsValidTarget(spell.Range - target.MoveSpeed * (spell.Delay + Player.Distance(target.ServerPosition) / spell.Speed) + alpha) && minioncol2 <= colmini && pred.UnitPosition.Distance(target.ServerPosition) > spell.Width)
+                        if (target.IsValidTargetLS(spell.Range - target.MoveSpeed * (spell.Delay + Player.Distance(target.ServerPosition) / spell.Speed) + alpha) && minioncol2 <= colmini && pred.UnitPosition.Distance(target.ServerPosition) > spell.Width)
                         {
                             spell.Cast(EditedVec);
                         }
-                        else if (target.IsValidTarget(spell.Range - target.MoveSpeed * (spell.Delay + Player.Distance(target.ServerPosition) / spell.Speed) + alpha) && minioncol3 <= colmini && pred.UnitPosition.Distance(target.ServerPosition) > spell.Width / 2)
+                        else if (target.IsValidTargetLS(spell.Range - target.MoveSpeed * (spell.Delay + Player.Distance(target.ServerPosition) / spell.Speed) + alpha) && minioncol3 <= colmini && pred.UnitPosition.Distance(target.ServerPosition) > spell.Width / 2)
                         {
                             spell.Cast(EditedVec2);
                         }
-                        else if (target.IsValidTarget(spell.Range - target.MoveSpeed * (spell.Delay + Player.Distance(target.ServerPosition) / spell.Speed) + alpha) && minioncol <= colmini)
+                        else if (target.IsValidTargetLS(spell.Range - target.MoveSpeed * (spell.Delay + Player.Distance(target.ServerPosition) / spell.Speed) + alpha) && minioncol <= colmini)
                         {
                             spell.Cast(pred.CastPosition);
                         }
@@ -116,7 +116,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                     var pred = LeagueSharp.Common.Prediction.GetPrediction(target, spell.Delay, spell.Width / 2, spell.Speed); //spell.Width/2
                     var collision = spell.GetCollision(Player.ServerPosition.To2D(), new List<SharpDX.Vector2> { pred.CastPosition.To2D() });
                     var minioncol = collision.Count(x => (HeroOnly == false ? x.IsMinion : (x is AIHeroClient)));
-                    if (target.IsValidTarget(spell.Range - target.MoveSpeed * (spell.Delay + Player.Distance(target.ServerPosition) / spell.Speed) + alpha) && minioncol <= colmini && pred.Hitchance >= SelectedHitchance)
+                    if (target.IsValidTargetLS(spell.Range - target.MoveSpeed * (spell.Delay + Player.Distance(target.ServerPosition) / spell.Speed) + alpha) && minioncol <= colmini && pred.Hitchance >= SelectedHitchance)
                     {
                         spell.Cast(pred.CastPosition);
                     }

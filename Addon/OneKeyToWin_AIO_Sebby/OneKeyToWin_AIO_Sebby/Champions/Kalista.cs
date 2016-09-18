@@ -8,6 +8,7 @@ using Utility = LeagueSharp.Common.Utility;
 using Spell = LeagueSharp.Common.Spell;
 using TargetSelector = LeagueSharp.Common.TargetSelector;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Events;
 
 namespace OneKeyToWin_AIO_Sebby
 {
@@ -195,16 +196,16 @@ namespace OneKeyToWin_AIO_Sebby
 
                 if (qDmg > t.Health && eDmg < t.Health && Player.Mana > QMANA + EMANA)
                     castQ(cast, t);
-                else if ((qDmg * 1.1) + eDmg > t.Health && eDmg < t.Health && Player.Mana > QMANA + EMANA && LeagueSharp.Common.Orbwalking.InAutoAttackRange(t))
+                else if ((qDmg * 1.1) + eDmg > t.Health && eDmg < t.Health && Player.Mana > QMANA + EMANA && EloBuddy.Player.Instance.IsInAutoAttackRange(t))
                     castQ(cast, t);
                 else if (Program.Combo && Player.Mana > RMANA +  QMANA + EMANA )
                 {
                     if(Config.Item("qMode", true).GetValue<StringList>().SelectedIndex == 0)
                         castQ(cast, t);
-                    else if (!LeagueSharp.Common.Orbwalking.InAutoAttackRange(t) || CountMeleeInRange(400) > 0)
+                    else if (!EloBuddy.Player.Instance.IsInAutoAttackRange(t) || CountMeleeInRange(400) > 0)
                         castQ(cast, t);
                 }
-                else if (Program.Farm && !LeagueSharp.Common.Orbwalking.InAutoAttackRange(t) && Config.Item("haras" + t.ChampionName).GetValue<bool>() && !Player.UnderTurret(true) && Player.ManaPercent > Config.Item("qMana", true).GetValue<Slider>().Value)
+                else if (Program.Farm && !EloBuddy.Player.Instance.IsInAutoAttackRange(t) && Config.Item("haras" + t.ChampionName).GetValue<bool>() && !Player.UnderTurret(true) && Player.ManaPercent > Config.Item("qMana", true).GetValue<Slider>().Value)
                     castQ(cast, t);
                 if ((Program.Combo || Program.Farm) && Player.Mana > RMANA + QMANA + EMANA)
                 {
@@ -268,7 +269,7 @@ namespace OneKeyToWin_AIO_Sebby
                     if (GetPassiveTime(minion) > 0.5 && LeagueSharp.Common.HealthPrediction.GetHealthPrediction(minion, 300) > minion.GetAutoAttackDamage(minion) && !minion.HasBuff("kindredrnodeathbuff"))
                     {
                         count++;
-                        if (!LeagueSharp.Common.Orbwalking.InAutoAttackRange(minion))
+                        if (!EloBuddy.Player.Instance.IsInAutoAttackRange(minion))
                         {
                             outRange++;
                         }

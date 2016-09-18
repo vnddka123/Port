@@ -157,7 +157,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
         private void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             return;
-            if (sender.IsMe && !args.SData.IsAutoAttack())
+            if (sender.IsMe && !args.SData.IsAutoAttackLS())
             {
                 castTime = Game.Time;
                 //Program.debug("speed: " +args.SData.MissileSpeed);

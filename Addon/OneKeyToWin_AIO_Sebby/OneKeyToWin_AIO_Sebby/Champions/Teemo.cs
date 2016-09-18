@@ -88,7 +88,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
 
 
-            if (Q.IsReady() && Orbwalking.CanMove(50) && Config.Item("autoW", true).GetValue<bool>())
+            if (Q.IsReady() && EloBuddy.SDK.Orbwalker.CanMove /*Orbwalking.CanMove(50)*/ && Config.Item("autoW", true).GetValue<bool>())
                 LogicQ();
 
             if (Program.LagFree(3) && W.IsReady() && Config.Item("autoW", true).GetValue<bool>())
@@ -110,7 +110,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
 
                 var t = TargetSelector.GetTarget(800, TargetSelector.DamageType.Magical);
-                if (t.IsValidTarget() && !Orbwalker.InAutoAttackRange(t))
+                if (t.IsValidTargetLS() && !EloBuddy.Player.Instance.IsInAutoAttackRange(t))
                     W.Cast();
             }
         }
@@ -121,7 +121,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 if (Program.LagFree(1))
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(R.Range + 100)))
+                    foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(R.Range + 100)))
                     {
                         if (Config.Item("autoRcc", true).GetValue<bool>() && !OktwCommon.CanMove(enemy))
                             R.Cast(enemy);
@@ -174,7 +174,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
 
-            if (t.IsValidTarget())
+            if (t.IsValidTargetLS())
             {
                 if (OktwCommon.GetKsDamage(t, Q) > t.Health)
                     Q.Cast(t);

@@ -12,6 +12,7 @@ using Environment = UnderratedAIO.Helpers.Environment;
 using Spell = LeagueSharp.Common.Spell;
 using Damage = LeagueSharp.Common.Damage;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Events;
 using Prediction = LeagueSharp.Common.Prediction;
 
 namespace UnderratedAIO.Champions
@@ -58,7 +59,7 @@ namespace UnderratedAIO.Champions
             }
         }
 
-        private void Unit_OnDash(Obj_AI_Base sender, Dash.DashItem args)
+        private void Unit_OnDash(Obj_AI_Base sender, LeagueSharp.Common.Dash.DashItem args)
         {
             if (sender.IsEnemy && config.Item("useegc", true).GetValue<bool>() && sender is AIHeroClient &&
                 args.EndPos.Distance(player.Position) < E.Range && E.CanCast(sender))

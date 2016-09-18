@@ -657,7 +657,7 @@ namespace ezEvade
             {
                 var castTime = (hero.Spellbook.CastTime - Game.Time) * 1000;
 
-                if (castTime > 0 && !Orbwalking.IsAutoAttack(args.SData.Name)
+                if (castTime > 0 && !Orbwalking.IsAutoAttackLS(args.SData.Name)
                     && Math.Abs(castTime - myHero.AttackCastDelay * 1000) > 1)
                 {
                     Evade.lastWindupTime = EvadeUtils.TickCount + castTime - Game.Ping / 2;

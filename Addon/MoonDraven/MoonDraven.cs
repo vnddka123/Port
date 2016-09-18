@@ -303,7 +303,7 @@ namespace MoonDraven
             var useR = this.Menu.Item("UseRCombo").IsActive();
 
             if (useQ && this.QCount < this.Menu.Item("MaxAxes").GetValue<Slider>().Value - 1 && this.Q.IsReady()
-                && this.Orbwalker.InAutoAttackRange(target) && !this.Player.Spellbook.IsAutoAttacking)
+                && EloBuddy.Player.Instance.IsInAutoAttackRange(target) && !this.Player.Spellbook.IsAutoAttacking)
             {
                 this.Q.Cast();
             }
@@ -340,7 +340,7 @@ namespace MoonDraven
                     .FirstOrDefault(
                         x =>
                         this.Player.GetSpellDamage(x, SpellSlot.R) * 2 > x.Health
-                        && (!this.Orbwalker.InAutoAttackRange(x) || this.Player.CountEnemiesInRange(this.E.Range) > 2));
+                        && (!EloBuddy.Player.Instance.IsInAutoAttackRange(x) || this.Player.CountEnemiesInRange(this.E.Range) > 2));
 
             if (killableTarget != null)
             {

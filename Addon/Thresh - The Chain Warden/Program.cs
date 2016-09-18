@@ -145,6 +145,7 @@ namespace Thresh___The_Chain_Warden
         }
 
       }
+/*
       var enemy = TargetSelector.GetTarget(1500, TargetSelector.DamageType.Magical);
       List<Vector2> waypoints = enemy.GetWaypointsLS();
       for (int i = 0; i < waypoints.Count - 1; i++)
@@ -193,7 +194,7 @@ namespace Thresh___The_Chain_Warden
             Render.Circle.DrawCircle(target2.Position, 100, Color.Red, 1);
           }
         }
-      }
+      }//*/
     }
 
 

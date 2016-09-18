@@ -207,7 +207,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void LogicE()
         {
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(E.Range) && !LeagueSharp.Common.Orbwalking.InAutoAttackRange(enemy) && E.GetDamage(enemy) > enemy.Health))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTargetLS(E.Range) && !EloBuddy.Player.Instance.IsInAutoAttackRange(enemy) && E.GetDamage(enemy) > enemy.Health))
             {
                 Program.CastSpell(E, enemy);
                 return;
@@ -220,7 +220,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 {
                     if (Player.Mana > RMANA + EMANA)
                     {
-                        if (!LeagueSharp.Common.Orbwalking.InAutoAttackRange(t))
+                        if (!EloBuddy.Player.Instance.IsInAutoAttackRange(t))
                             Program.CastSpell(E, t);
                         if (Player.Health < Player.MaxHealth * 0.5)
                             Program.CastSpell(E, t);
@@ -267,12 +267,12 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                     var qDmg = Q.GetDamage(target);
                     var eDmg = E.GetDamage(target);
-                    if (Rdmg > predictedHealth && !LeagueSharp.Common.Orbwalking.InAutoAttackRange(target))
+                    if (Rdmg > predictedHealth && !EloBuddy.Player.Instance.IsInAutoAttackRange(target))
                     {
                         castR(target);
                         Program.debug("R normal");
                     }
-                    else if (Program.Combo && Config.Item("comboR", true).GetValue<bool>() && LeagueSharp.Common.Orbwalking.InAutoAttackRange(target) && Rdmg * 2 + Player.GetAutoAttackDamage(target) > predictedHealth)
+                    else if (Program.Combo && Config.Item("comboR", true).GetValue<bool>() && EloBuddy.Player.Instance.IsInAutoAttackRange(target) && Rdmg * 2 + Player.GetAutoAttackDamage(target) > predictedHealth)
                     {
                         castR(target);
                         Program.debug("R normal");

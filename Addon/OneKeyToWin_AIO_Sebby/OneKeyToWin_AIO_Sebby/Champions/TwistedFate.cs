@@ -345,7 +345,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
             if (t.IsValidTargetLS())
             {
-                if (OktwCommon.GetKsDamage(t, Q) > t.Health && !Orbwalking.InAutoAttackRange(t))
+                if (OktwCommon.GetKsDamage(t, Q) > t.Health && !EloBuddy.Player.Instance.IsInAutoAttackRange(t))
                     Program.CastSpell(Q, t);
 
                 if (W.Instance.CooldownExpires - Game.Time < W.Instance.Cooldown - 1.3 && !Player.HasBuff("pickacard_tracker") && (W.Instance.CooldownExpires - Game.Time > 3 || Player.CountEnemiesInRange(950) == 0))
