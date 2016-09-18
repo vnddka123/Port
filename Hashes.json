@@ -1,7 +1,7 @@
 {
-  "LeagueSharp.Common": "47372d475b287cf219f1442646665e74",
-  "LeagueSharp.SDKEx": "c2f5172f652a6fda514f748ae3dedabd",
+  "LeagueSharp_Common": "47372d475b287cf219f1442646665e74",
+  "LeagueSharp_SDKEx": "c2f5172f652a6fda514f748ae3dedabd",
   "PortAIO": "b03e62e3b61bf36954de44d2908c017e",
-  "PortAIO.Common": "b03e62e3b61bf36954de44d2908c017e",
+  "PortAIO_Common": "b03e62e3b61bf36954de44d2908c017e",
   "Program": "32c2a2e692d17611d93550e62d9ecaa0"
 }
