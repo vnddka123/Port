@@ -5,8 +5,8 @@ Hướng dẫn sử dụng Port của CTTBOT
 
 Trước tiên bạn cần phải cài L# Data tại đây 
 https://github.com/cttbot/Port/tree/master/LeagueSharp.Data
-sau đó bạn tải autoupdate Lib, rồi chạy file UpdateLibVB.exe trong thư mục bạn mới tải về để nó tự update những Lib cơ bản cho Port
-link tải : https://github.com/cttbot/Port/tree/master/AutoUpdate 
+sau đó bạn tải autoupdate Lib, rồi chạy file UpdateLib.exe trong thư mục bạn mới tải về để nó tự update những Lib cơ bản cho Port
+link tải : https://github.com/cttbot/Port/blob/master/UpdateLib.exe 
 
 Sau đó bạn cần phải cài một số Lib cơ bản như SebbyLib và Spacebar Prediction trong https://github.com/cttbot/Port/tree/master/Addon
 
