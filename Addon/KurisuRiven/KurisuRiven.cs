@@ -1721,8 +1721,8 @@ namespace KurisuRiven
                     if (target.IsValidTargetLS(truerange + 200 + rangeoverride))
                     {
                     //    Orbwalking.LastAATick = 0;
-                    //    Orbwalking.ResetAutoAttackTimer();
-                        EloBuddy.SDK.Orbwalker.ResetAutoAttack();
+                        Orbwalking.ResetAutoAttackTimer();
+                    //    EloBuddy.SDK.Orbwalker.ResetAutoAttack();
                     }
                 }
             }
