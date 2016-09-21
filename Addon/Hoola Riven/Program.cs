@@ -674,8 +674,8 @@ namespace HoolaRiven
         private static void Reset()
         {
             Chat.Say("/d");
-        //    Orbwalking.ResetAutoAttackTimer();
-            EloBuddy.SDK.Orbwalker.ResetAutoAttack();
+            Orbwalking.ResetAutoAttackTimer();
+        //    EloBuddy.SDK.Orbwalker.ResetAutoAttack();
             EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.Extend(Game.CursorPos, Player.Distance(Game.CursorPos) + 10).To3DWorld());
         }
 
