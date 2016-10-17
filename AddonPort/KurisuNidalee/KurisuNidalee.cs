@@ -9,6 +9,7 @@ using SharpDX;
 using CM = KurisuNidalee.CastManager;
 using Color = System.Drawing.Color;
 using KL = KurisuNidalee.KurisuLib;
+using Utility = LeagueSharp.Common.Utility;
 
 namespace KurisuNidalee
 {
@@ -20,7 +21,7 @@ namespace KurisuNidalee
         internal static AIHeroClient Player => ObjectManager.Player;
 
         internal KurisuNidalee()
-        {                                                             
+        {
             EloBuddy.SDK.Events.Loading.OnLoadingComplete += Game_OnGameLoad;
         }
 
@@ -59,7 +60,7 @@ namespace KurisuNidalee
             ndhw.AddItem(new MenuItem("ndhwjg", "Enable in Jungle")).SetValue(true);
             ndhw.AddItem(new MenuItem("ndhwwc", "Enable in WaveClear")).SetValue(false);
             ndhw.AddItem(new MenuItem("ndhwforce", "Location"))
-                .SetValue(new StringList(new[] {"Prediction", "Behind Target"}));
+                .SetValue(new StringList(new[] { "Prediction", "Behind Target" }));
             humenu.AddSubMenu(ndhw);
 
             var ndhe = new Menu("(E)  Primal Surge", "ndhe");
@@ -77,7 +78,7 @@ namespace KurisuNidalee
             }
 
 
-            ndhe.AddItem(new MenuItem("ndheord", "Ally Priority:")).SetValue(new StringList(new[] { "Low HP", "Most AD/AP", "Max HP" }, 1));            
+            ndhe.AddItem(new MenuItem("ndheord", "Ally Priority:")).SetValue(new StringList(new[] { "Low HP", "Most AD/AP", "Max HP" }, 1));
             humenu.AddSubMenu(ndhe);
 
             var ndhr = new Menu("(R) Aspect of the Cougar", "ndhr");
@@ -101,7 +102,7 @@ namespace KurisuNidalee
             var ndcw = new Menu("(W) Pounce", "ndcw");
             ndcw.AddItem(new MenuItem("ndcwcheck", "Check Hitchance")).SetValue(false);
             ndcw.AddItem(new MenuItem("ndcwch", "-> Min Hitchance"))
-                .SetValue(new StringList(new[] {"Low", "Medium", "High", "Very High"}, 2));
+                .SetValue(new StringList(new[] { "Low", "Medium", "High", "Very High" }, 2));
             ndcw.AddItem(new MenuItem("ndcwco", "Enable in Combo")).SetValue(true);
             ndcw.AddItem(new MenuItem("ndcwhunt", "-> Ignore Checks if Hunted")).SetValue(false);
             ndcw.AddItem(new MenuItem("ndcwdistco", "-> Pounce Only if > AARange")).SetValue(true);
@@ -116,12 +117,12 @@ namespace KurisuNidalee
 
             ndce.AddItem(new MenuItem("ndcecheck", "Check Hitchance")).SetValue(false);
             ndce.AddItem(new MenuItem("ndcech", "-> Min Hitchance"))
-                .SetValue(new StringList(new[] {"Low", "Medium", "High", "Very High"}, 2));
+                .SetValue(new StringList(new[] { "Low", "Medium", "High", "Very High" }, 2));
             ndce.AddItem(new MenuItem("ndceco", "Enable in Combo")).SetValue(true);
             ndce.AddItem(new MenuItem("ndceha", "Enable in Harass")).SetValue(true);
             ndce.AddItem(new MenuItem("ndcejg", "Enable in Jungle")).SetValue(true);
             ndce.AddItem(new MenuItem("ndcewc", "Enable in WaveClear")).SetValue(true);
-            ndce.AddItem(new MenuItem("ndcenum", "-> Minimum Minions Hit")).SetValue(new Slider(3, 1, 5));           
+            ndce.AddItem(new MenuItem("ndcenum", "-> Minimum Minions Hit")).SetValue(new Slider(3, 1, 5));
             comenu.AddSubMenu(ndce);
 
             var ndcr = new Menu("(R) Aspect of the Cougar", "ndcr");
@@ -161,7 +162,7 @@ namespace KurisuNidalee
             aamenu.AddItem(new MenuItem("ndcqgap", ":: Auto (Q) Takedown Gapclosers")).SetValue(true);
 
             ccmenu.AddItem(new MenuItem("pstyle", ":: Play Style"))
-                .SetValue(new StringList(new[] {"Single Target", "Multi-Target"}, 1));
+                .SetValue(new StringList(new[] { "Single Target", "Multi-Target" }, 1));
 
 
             ccmenu.AddSubMenu(comenu);
@@ -192,9 +193,9 @@ namespace KurisuNidalee
 
             var zzz = new MenuItem("ppred", ":: Prediction");
 
-            Root.AddItem(zzz).SetValue(new StringList(new[] {"Common", "OKTW", "SPrediction"}));
+            Root.AddItem(zzz).SetValue(new StringList(new[] { "Common", "OKTW", "SPrediction" }));
             Root.AddItem(new MenuItem("ndhqch", "-> Min Hitchance"))
-                .SetValue(new StringList(new[] {"Low", "Medium", "High", "Very High"}, 3));
+                .SetValue(new StringList(new[] { "Low", "Medium", "High", "Very High" }, 3));
 
             Root.AddItem(new MenuItem("bbb", ":: SPrediction not Loaded Please F5!"))
                 .Show(false).SetFontStyle(FontStyle.Bold, SharpDX.Color.DeepPink);
@@ -219,7 +220,7 @@ namespace KurisuNidalee
 
             Root.AddToMainMenu();
 
-            LeagueSharp.Common.Utility.DelayAction.Add(100, () =>
+            Utility.DelayAction.Add(100, () =>
             {
                 if (Root.Item("ppred").GetValue<StringList>().SelectedValue == "SPrediction")
                 {
@@ -316,7 +317,7 @@ namespace KurisuNidalee
                                 KL.Spells["Javelin"].Cast(targ.ServerPosition);
 
                             if (targ.Path.Length > 0)
-                                KL.Spells["Javelin"].Cast(targ);                           
+                                KL.Spells["Javelin"].Cast(targ);
                         }
                     }
                 }
@@ -364,7 +365,7 @@ namespace KurisuNidalee
         }
 
         #endregion
-        
+
         #region OnDraw
         static void Drawing_OnDraw(EventArgs args)
         {
@@ -390,7 +391,7 @@ namespace KurisuNidalee
                 var pos = Drawing.WorldToScreen(Player.Position);
 
                 Drawing.DrawText(pos[0] + 100, pos[1] - 135, Color.White,
-                    "Q: " + KL.SpellTimer["Javelin"].ToString("F"));             
+                    "Q: " + KL.SpellTimer["Javelin"].ToString("F"));
             }
 
             if (Root.Item("dt").GetValue<bool>() && Target != null)
@@ -500,8 +501,8 @@ namespace KurisuNidalee
                                 KL.Spells["Aspect"].IsReady())
                                 KL.Spells["Aspect"].Cast();
                         }
-                    }             
-                }            
+                    }
+                }
             }
 
             #endregion
@@ -534,7 +535,7 @@ namespace KurisuNidalee
 
         internal static void Combo2()
         {
-            var target = ObjectManager.Get<Obj_AI_Minion>().Where(x => x.Distance(Player.ServerPosition) <= 600 
+            var target = ObjectManager.Get<Obj_AI_Minion>().Where(x => x.Distance(Player.ServerPosition) <= 600
                         && x.IsEnemy && x.IsHPBarRendered
                         && !MinionManager.IsWard(x)).OrderByDescending(x => x.MaxHealth).FirstOrDefault();
 
@@ -602,7 +603,7 @@ namespace KurisuNidalee
         internal static bool m;
         internal static void Clear()
         {
-            var minions = MinionManager.GetMinions(Player.ServerPosition, 
+            var minions = MinionManager.GetMinions(Player.ServerPosition,
                 750f, MinionTypes.All, MinionTeam.All, MinionOrderTypes.MaxHealth);
 
             m = minions.Any(KL.IsJungleMinion);
@@ -651,12 +652,12 @@ namespace KurisuNidalee
             var wallCheck = KL.GetFirstWallPoint(KL.Player.Position, Game.CursorPos);
 
             if (wallCheck != null)
-                wallCheck = KL.GetFirstWallPoint((Vector3) wallCheck, Game.CursorPos, 5);
+                wallCheck = KL.GetFirstWallPoint((Vector3)wallCheck, Game.CursorPos, 5);
 
-            var movePosition = wallCheck != null ? (Vector3) wallCheck : Game.CursorPos;
+            var movePosition = wallCheck != null ? (Vector3)wallCheck : Game.CursorPos;
 
             var tempGrid = NavMesh.WorldToGrid(movePosition.X, movePosition.Y);
-            var fleeTargetPosition = NavMesh.GridToWorld((short) tempGrid.X, (short)tempGrid.Y);
+            var fleeTargetPosition = NavMesh.GridToWorld((short)tempGrid.X, (short)tempGrid.Y);
 
             Obj_AI_Base target = null;
 
@@ -698,15 +699,15 @@ namespace KurisuNidalee
                     else
                         checkPoint = wallPosition + KL.Spells["Pounce"].Range * direction.Rotated(currentAngle).To3D();
 
-                    if (checkPoint.IsWall()) 
+                    if (checkPoint.IsWall())
                         continue;
 
                     wallCheck = KL.GetFirstWallPoint(checkPoint, wallPosition);
 
-                    if (wallCheck == null) 
+                    if (wallCheck == null)
                         continue;
 
-                    var wallPositionOpposite =  (Vector3) KL.GetFirstWallPoint((Vector3)wallCheck, wallPosition, 5);
+                    var wallPositionOpposite = (Vector3)KL.GetFirstWallPoint((Vector3)wallCheck, wallPosition, 5);
 
                     if (KL.Player.GetPath(wallPositionOpposite).ToList().To2D().PathLength() -
                         KL.Player.Distance(wallPositionOpposite) > 200)

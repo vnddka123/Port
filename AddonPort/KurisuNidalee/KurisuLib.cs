@@ -6,6 +6,7 @@ using System.Linq;
 using SharpDX;
 using CM = KurisuNidalee.CastManager;
 using KN = KurisuNidalee.KurisuNidalee;
+using Utility = LeagueSharp.Common.Utility;
 
 namespace KurisuNidalee
 {
@@ -20,6 +21,8 @@ namespace KurisuNidalee
         internal static bool SmiteInGame;
         internal static AIHeroClient Player = ObjectManager.Player;
 
+        public static float PercentCooldownMod;
+
         static KurisuLib()
         {
             SetSpells();
@@ -28,6 +31,7 @@ namespace KurisuNidalee
             // Core
             Game.OnUpdate += SpellsOnUpdate;
             Game.OnUpdate += SmiteOnUpdate;
+            Game.OnTick += Game_OnTick;
 
             // Orbwalk shit
             Orbwalking.AfterAttack += Orbwalking_AfterAttack;
@@ -40,7 +44,13 @@ namespace KurisuNidalee
             Obj_AI_Base.OnProcessSpellCast += HeroOnCast;
 
             // Anti-Gapclosing
-            AntiGapcloser.OnEnemyGapcloser += AntiGapcloser_OnEnemyGapcloser;
+            AntiGapcloser.OnEnemyGapcloser += AntiGapcloser_OnEnemyGapcloser;           
+        }    
+
+        internal static void Game_OnTick(EventArgs args)
+        {
+            var spellR = EloBuddy.Player.Instance.Spellbook.GetSpell(SpellSlot.R);
+            PercentCooldownMod = -(3 - spellR.Cooldown) / 3;
         }
 
         /// <summary>
@@ -117,7 +127,7 @@ namespace KurisuNidalee
         /// <returns></returns>
         internal static HitChance MyHitChance(string myid)
         {
-            return (HitChance) (KN.Root.Item("nd" + myid + "ch").GetValue<StringList>().SelectedIndex + 3);
+            return (HitChance)(KN.Root.Item("nd" + myid + "ch").GetValue<StringList>().SelectedIndex + 3);
         }
 
         /// <summary>
@@ -178,7 +188,7 @@ namespace KurisuNidalee
                             ? "Takedown"
                             : (!human && spell.Slot == SpellSlot.W
                                 ? "Pounce"
-                                : (!human && spell.Slot == SpellSlot.E 
+                                : (!human && spell.Slot == SpellSlot.E
                                     ? "Swipe" : "Aspect"))));
 
             return enabled && learned && SpellTimer[n].IsReady();
@@ -190,9 +200,7 @@ namespace KurisuNidalee
         /// <returns></returns>
         internal static bool CatForm()
         {
-            return (Player.Spellbook.GetSpell(SpellSlot.Q).Name == "Takedown" ||
-                Player.Spellbook.GetSpell(SpellSlot.W).Name == "Pounce" ||
-                Player.Spellbook.GetSpell(SpellSlot.E).Name == "Swipe");
+            return Player.CharData.BaseSkinName != "Nidalee";
         }
 
         /// <summary>
@@ -211,7 +219,7 @@ namespace KurisuNidalee
             if (SpellTimer["Swipe"].IsReady())
                 damage += Player.GetSpellDamage(target, SpellSlot.E, 1);
 
-            return (float) (damage + Player.GetAutoAttackDamage(target) * 2);
+            return (float)(damage + Player.GetAutoAttackDamage(target) * 2);
         }
 
         /// <summary>
@@ -309,6 +317,32 @@ namespace KurisuNidalee
         /// <param name="args"></param>
         internal static void SpellsOnUpdate(EventArgs args)
         {
+            
+            SpellTimer["Takedown"] = ((TimeStamp["Takedown"] - Game.Time) > 0)
+                ? (TimeStamp["Takedown"] - Game.Time)
+                : 0;
+
+            SpellTimer["Pounce"] = ((TimeStamp["Pounce"] - Game.Time) > 0)
+                ? (TimeStamp["Pounce"] - Game.Time)
+                : 0;
+
+            SpellTimer["Swipe"] = ((TimeStamp["Swipe"] - Game.Time) > 0)
+                ? (TimeStamp["Swipe"] - Game.Time)
+                : 0;
+
+            SpellTimer["Javelin"] = ((TimeStamp["Javelin"] - Game.Time) > 0)
+                ? (TimeStamp["Javelin"] - Game.Time)
+                : 0;
+
+            SpellTimer["Bushwhack"] = ((TimeStamp["Bushwhack"] - Game.Time) > 0)
+                ? (TimeStamp["Bushwhack"] - Game.Time)
+                : 0;
+
+            SpellTimer["Primalsurge"] = ((TimeStamp["Primalsurge"] - Game.Time) > 0)
+                ? (TimeStamp["Primalsurge"] - Game.Time)
+                : 0;
+            //*/
+            /*
             var spellQ = Player.Spellbook.GetSpell(SpellSlot.Q);
             var cooldownQ = Math.Max(0, spellQ.CooldownExpires - Game.Time);
 
@@ -329,6 +363,7 @@ namespace KurisuNidalee
             SpellTimer["Bushwhack"] = cooldownW;
 
             SpellTimer["Primalsurge"] = cooldownE;
+            //*/
         }
 
         /// <summary>
@@ -363,25 +398,25 @@ namespace KurisuNidalee
                     if (unit.IsValid<Obj_AI_Base>() && unit.IsHunted())
                         TimeStamp["Pounce"] = Game.Time + 3;
                     else
-                        TimeStamp["Pounce"] = Game.Time + (5 + (5 * Player.PercentCooldownMod));
+                        TimeStamp["Pounce"] = Game.Time + (5 + (5 * PercentCooldownMod));
                 }
 
                 if (sender.IsMe && args.SData.Name.ToLower() == "swipe")
-                    TimeStamp["Swipe"] = Game.Time + (5 + (5 * Player.PercentCooldownMod));
+                    TimeStamp["Swipe"] = Game.Time + (5 + (5 * PercentCooldownMod));
 
                 if (sender.IsMe && args.SData.Name.ToLower() == "primalsurge")
-                    TimeStamp["Primalsurge"] = Game.Time + (12 + (12 * Player.PercentCooldownMod));
+                    TimeStamp["Primalsurge"] = Game.Time + (12 + (12 * PercentCooldownMod));
 
                 if (sender.IsMe && args.SData.Name.ToLower() == "bushwhack")
                 {
                     var wperlevel = new[] { 13, 12, 11, 10, 9 }[Spells["Bushwhack"].Level - 1];
-                    TimeStamp["Bushwhack"] = Game.Time + (wperlevel + (wperlevel * Player.PercentCooldownMod));
+                    TimeStamp["Bushwhack"] = Game.Time + (wperlevel + (wperlevel * PercentCooldownMod));
                 }
 
                 if (sender.IsMe && args.SData.Name.ToLower() == "javelintoss")
                 {
                     Counter = 0;
-                    TimeStamp["Javelin"] = Game.Time + (6 + (6 * Player.PercentCooldownMod));
+                    TimeStamp["Javelin"] = Game.Time + (6 + (6 * PercentCooldownMod));
                 }
 
                 if (sender.IsMe && args.SData.Name.ToLower() == "aspectofthecougar")
@@ -390,7 +425,7 @@ namespace KurisuNidalee
                 }
 
                 if (sender.IsMe && args.SData.Name.ToLower() == "aspectofthecougar" && CatForm())
-                {                    
+                {
                     Counter = 0;
                     //Orbwalking.ResetAutoAttackTimer();
                 }
@@ -403,7 +438,7 @@ namespace KurisuNidalee
                 if (sender.IsMe && args.SData.IsAutoAttack() && Player.HasBuff("takedown"))
                 {
                     LastBite = Utils.GameTimeTickCount;
-                    TimeStamp["Takedown"] = Game.Time + (5 + (5 * Player.PercentCooldownMod));
+                    TimeStamp["Takedown"] = Game.Time + (5 + (5 * PercentCooldownMod));
                 }
             }
 
@@ -432,6 +467,7 @@ namespace KurisuNidalee
         /// <summary>
         /// Stores when the last spell was used.
         /// </summary>
+
         internal static Dictionary<string, float> TimeStamp = new Dictionary<string, float>
         {
             { "Takedown", 0f },
@@ -441,7 +477,7 @@ namespace KurisuNidalee
             { "Bushwhack", 0f },
             { "Primalsurge", 0f },
         };
-
+        //*/
         /// <summary>
         /// Stores the current tickcount of the spell.
         /// </summary>
@@ -508,7 +544,7 @@ namespace KurisuNidalee
             {
                 SmiteInGame = true;
                 Smite = SpellSlot.Summoner2;
-            }   
+            }
         }
 
         internal static Vector2? GetFirstWallPoint(Vector3 from, Vector3 to, float step = 25)
@@ -541,7 +577,7 @@ namespace KurisuNidalee
             foreach (var minion in MinionManager.GetMinions(900f, MinionTypes.All, MinionTeam.Neutral))
             {
                 var damage = Player.Spellbook.GetSpell(Smite).State == SpellState.Ready
-                    ? (float) Player.GetSummonerSpellDamage(minion, Damage.SummonerSpell.Smite)
+                    ? (float)Player.GetSummonerSpellDamage(minion, Damage.SummonerSpell.Smite)
                     : 0;
 
                 if (minion.Distance(Player.ServerPosition) > 500 + minion.BoundingRadius + Player.BoundingRadius)
@@ -556,7 +592,7 @@ namespace KurisuNidalee
                             if (Player.GetSpellDamage(minion, SpellSlot.Q, 1) + damage >= minion.Health)
                                 CM.CastTakedown(minion, "jg");
                         }
-                            
+
                         if (damage >= minion.Health)
                         {
                             Player.Spellbook.CastSpell(Smite, minion);
@@ -567,7 +603,7 @@ namespace KurisuNidalee
                 if (SmallList.Any(name => minion.Name.StartsWith(name) && !minion.Name.Contains("Mini")))
                 {
                     if (KN.Root.Item("jgsmitesm").GetValue<bool>())
-                    {                       
+                    {
                         if (KN.Root.Item("jgsmitetd").GetValue<bool>())
                         {
                             if (Player.GetSpellDamage(minion, SpellSlot.Q, 1) + damage >= minion.Health)

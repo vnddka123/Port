@@ -5,6 +5,7 @@ using EloBuddy;
 using LeagueSharp.Common;
 using KL = KurisuNidalee.KurisuLib;
 using KN = KurisuNidalee.KurisuNidalee;
+using Utility = LeagueSharp.Common.Utility;
 
 namespace KurisuNidalee
 {
@@ -17,7 +18,7 @@ namespace KurisuNidalee
             if (!KL.CatForm() && KL.CanUse(KL.Spells["Javelin"], true, mode))
             {
                 if (mode != "ha" || KL.Player.ManaPercent > 65)
-                { 
+                {
                     if (target.IsValidTarget(KL.Spells["Javelin"].Range))
                     {
                         // try prediction on champion
@@ -44,16 +45,16 @@ namespace KurisuNidalee
                                         pi.Type = SebbyLib.Prediction.SkillshotType.SkillshotLine;
 
                                         var po = SebbyLib.Prediction.Prediction.GetPrediction(pi);
-                                        if (po.Hitchance >= (SebbyLib.Prediction.HitChance) (KN.Root.Item("ndhqch").GetValue<StringList>().SelectedIndex + 3))
+                                        if (po.Hitchance >= (SebbyLib.Prediction.HitChance)(KN.Root.Item("ndhqch").GetValue<StringList>().SelectedIndex + 3))
                                         {
                                             KL.Spells["Javelin"].Cast(po.CastPosition);
                                         }
 
                                         break;
-                                    
+
                                     case "SPrediction":
-                                        var so = KL.Spells["Javelin"].GetSPrediction((AIHeroClient) target);
-                                        if (so.HitChance >= (HitChance) (KN.Root.Item("ndhqch").GetValue<StringList>().SelectedIndex + 3))
+                                        var so = KL.Spells["Javelin"].GetSPrediction((AIHeroClient)target);
+                                        if (so.HitChance >= (HitChance)(KN.Root.Item("ndhqch").GetValue<StringList>().SelectedIndex + 3))
                                         {
                                             KL.Spells["Javelin"].Cast(so.CastPosition);
                                         }
@@ -61,7 +62,7 @@ namespace KurisuNidalee
 
                                     case "Common":
                                         var co = KL.Spells["Javelin"].GetPrediction(target);
-                                        if (co.Hitchance >= (HitChance) (KN.Root.Item("ndhqch").GetValue<StringList>().SelectedIndex + 3))
+                                        if (co.Hitchance >= (HitChance)(KN.Root.Item("ndhqch").GetValue<StringList>().SelectedIndex + 3))
                                         {
                                             KL.Spells["Javelin"].Cast(co.CastPosition);
                                         }
@@ -106,7 +107,7 @@ namespace KurisuNidalee
 
         // Human W Logic
         internal static void CastBushwhack(Obj_AI_Base target, string mode)
-        {           
+        {
             // if not harass mode ignore mana check
             if (!KL.CatForm() && KL.CanUse(KL.Spells["Bushwhack"], true, mode))
             {
@@ -175,7 +176,7 @@ namespace KurisuNidalee
         internal static void CastPounce(Obj_AI_Base target, string mode)
         {
             // check the actual spell timer and if we have it enabled in our menu
-            if (!KL.CatForm() || !KL.CanUse(KL.Spells["Pounce"], false, mode)) 
+            if (!KL.CatForm() || !KL.CanUse(KL.Spells["Pounce"], false, mode))
                 return;
 
             // check if target is hunted in 750 range
@@ -221,10 +222,10 @@ namespace KurisuNidalee
                 var radius = KL.Player.AttackRange + KL.Player.Distance(KL.Player.BBox.Minimum) + 1;
 
                 // check minimum distance before pouncing
-                if (target.Distance(KL.Player.ServerPosition) > radius || 
+                if (target.Distance(KL.Player.ServerPosition) > radius ||
 
                     // or is jungling or waveclearing (without distance checking)
-                    mode == "jg" ||  mode == "wc" && !KN.Root.Item("ndcwdistwc").GetValue<bool>() ||
+                    mode == "jg" || mode == "wc" && !KN.Root.Item("ndcwdistwc").GetValue<bool>() ||
 
                     // or combo mode with no distance checking
                     mode == "co" && !KN.Root.Item("ndcwdistco").GetValue<bool>())
@@ -234,7 +235,7 @@ namespace KurisuNidalee
                         if (KN.Root.Item("ndcwcheck").GetValue<bool>())
                         {
                             var voutout = KL.Spells["Pounce"].GetPrediction(target);
-                            if (voutout.Hitchance >= (HitChance) KN.Root.Item("ndcwch").GetValue<StringList>().SelectedIndex + 3)
+                            if (voutout.Hitchance >= (HitChance)KN.Root.Item("ndcwch").GetValue<StringList>().SelectedIndex + 3)
                             {
                                 KL.Spells["Pounce"].Cast(voutout.CastPosition);
                             }
@@ -242,7 +243,7 @@ namespace KurisuNidalee
                         else
                             KL.Spells["Pounce"].Cast(target.ServerPosition);
                     }
-                    else 
+                    else
                     {
                         // check pouncing near enemies
                         if (mode == "wc" && KN.Root.Item("ndcwene").GetValue<bool>() &&
@@ -273,7 +274,7 @@ namespace KurisuNidalee
                         if (KN.Root.Item("ndcecheck").GetValue<bool>())
                         {
                             var voutout = KL.Spells["Swipe"].GetPrediction(target);
-                            if (voutout.Hitchance >= (HitChance) KN.Root.Item("ndcech").GetValue<StringList>().SelectedIndex + 3)
+                            if (voutout.Hitchance >= (HitChance)KN.Root.Item("ndcech").GetValue<StringList>().SelectedIndex + 3)
                             {
                                 KL.Spells["Swipe"].Cast(voutout.CastPosition);
                             }
@@ -419,7 +420,7 @@ namespace KurisuNidalee
                         // dont change form if swipe or takedown isn't ready
                         if ((KL.SpellTimer["Takedown"].IsReady() || KL.SpellTimer["Swipe"].IsReady()) &&
                              KL.SpellTimer["Pounce"].IsReady(1))
-                             KL.Spells["Aspect"].Cast();
+                            KL.Spells["Aspect"].Cast();
                     }
                 }
                 else
@@ -446,8 +447,8 @@ namespace KurisuNidalee
                             if (!KL.CanUse(KL.Spells["Javelin"], true, mode) ||
 
                                 // delay the cast .5 seconds
-                                Utils.GameTimeTickCount - (int) (KL.TimeStamp["Javelin"] * 1000) +
-                                ((6 + (6 * KL.Player.PercentCooldownMod)) * 1000) >= 500 &&
+                                Utils.GameTimeTickCount - (int)(KL.TimeStamp["Javelin"] * 1000) +
+                                ((6 + (6 * KL.PercentCooldownMod)) * 1000) >= 500 &&
 
                                 // if Q is not ready in 2 seconds
                                 !KL.SpellTimer["Javelin"].IsReady(2))
@@ -472,7 +473,7 @@ namespace KurisuNidalee
                             }
                         }
                     }
-                    
+
 
                     if (KN.Target.IsValidTarget(KL.Spells["Javelin"].Range) && target.IsChampion())
                     {
@@ -483,7 +484,7 @@ namespace KurisuNidalee
                             {
                                 // if we dont meet hitchance on Q target pounce nearest target
                                 var poutput = KL.Spells["Javelin"].GetPrediction(KN.Target);
-                                if (poutput.Hitchance < (HitChance) (KN.Root.Item("ndhqch").GetValue<StringList>().SelectedIndex + 3))
+                                if (poutput.Hitchance < (HitChance)(KN.Root.Item("ndhqch").GetValue<StringList>().SelectedIndex + 3))
                                 {
                                     if (KL.Spells["Aspect"].IsReady())
                                         KL.Spells["Aspect"].Cast();
