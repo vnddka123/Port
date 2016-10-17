@@ -114,7 +114,7 @@ namespace UnderratedAIO.Champions
             }
             if (config.Item("KenAutoQ", true).GetValue<KeyBind>().Active && Q.IsReady() &&
                 config.Item("KenminmanaaQ", true).GetValue<Slider>().Value < player.ManaPercent &&
-                orbwalker.ActiveMode != Orbwalking.OrbwalkingMode.Combo && Orbwalking.CanMove(100) &&
+                orbwalker.ActiveMode != Orbwalking.OrbwalkingMode.Combo &&
                 !player.UnderTurret(true))
             {
                 if (target != null && Q.CanCast(target) && target.IsValidTarget())
@@ -204,8 +204,7 @@ namespace UnderratedAIO.Champions
                             (m.NetworkId == LastAttackedminiMinion.NetworkId &&
                              Utils.GameTimeTickCount - LastAttackedminiMinionTime > 700)))
                 {
-                    if (target.Distance(player) < Orbwalking.GetRealAutoAttackRange(target) && !Orbwalking.CanAttack() &&
-                        Orbwalking.CanMove(100))
+                    if (target.Distance(player) < Orbwalking.GetRealAutoAttackRange(target) && !Orbwalking.CanAttack())
                     {
                         if (Q.Cast(target).IsCasted())
                         {
@@ -234,7 +233,7 @@ namespace UnderratedAIO.Champions
             {
                 return;
             }
-            if (config.Item("useqLC", true).GetValue<bool>() && Q.CanCast(target) && Orbwalking.CanMove(100) &&
+            if (config.Item("useqLC", true).GetValue<bool>() && Q.CanCast(target)  &&
                 !target.IsDashing())
             {
                 Q.Cast(target);
@@ -272,7 +271,7 @@ namespace UnderratedAIO.Champions
                 player.Spellbook.CastSpell(player.GetSpellSlot("SummonerDot"), target);
             }
 
-            if (config.Item("useq", true).GetValue<bool>() && Q.CanCast(target) && Orbwalking.CanMove(100) &&
+            if (config.Item("useq", true).GetValue<bool>() && Q.CanCast(target) &&
                 !target.IsDashing())
             {
                 if (Program.IsSPrediction)

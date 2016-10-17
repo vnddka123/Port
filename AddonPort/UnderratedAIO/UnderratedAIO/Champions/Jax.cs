@@ -178,7 +178,7 @@ namespace UnderratedAIO.Champions
             {
                 return;
             }
-            if (config.Item("useqH", true).GetValue<bool>() && Orbwalking.CanMove(100) && !player.Spellbook.IsAutoAttacking &&
+            if (config.Item("useqH", true).GetValue<bool>()  && !player.Spellbook.IsAutoAttacking &&
                 Q.CanCast(target))
             {
                 Q.CastOnUnit(target);
@@ -214,7 +214,7 @@ namespace UnderratedAIO.Champions
                         Q.CastOnUnit(mini);
                         return;
                     }
-                    if (Orbwalking.CanMove(100) && !player.Spellbook.IsAutoAttacking &&
+                    if (!player.Spellbook.IsAutoAttacking &&
                         mini.Distance(player) > Orbwalking.GetRealAutoAttackRange(mini))
                     {
                         Q.CastOnUnit(mini);

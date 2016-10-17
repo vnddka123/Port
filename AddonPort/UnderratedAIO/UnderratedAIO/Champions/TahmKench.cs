@@ -220,7 +220,7 @@ namespace UnderratedAIO.Champions
                 !justQ && !Program.IncDamages.GetEnemyData(target.NetworkId).IncSkillShot)
             {
                 orbwalker.SetMovement(false);
-                if (Orbwalking.CanMove(100) && Game.CursorPos.Distance(target.Position) < 300)
+                if (Game.CursorPos.Distance(target.Position) < 300)
                 {
                     Player.IssueOrder(GameObjectOrder.MoveTo, target.Position.Extend(player.Position, 100));
                 }
@@ -353,8 +353,8 @@ namespace UnderratedAIO.Champions
 
         private void handeQ(AIHeroClient target, HitChance hitChance)
         {
-            if (player.Distance(target) <= Orbwalking.GetRealAutoAttackRange(target) && !Orbwalking.CanAttack() &&
-                Orbwalking.CanMove(100) && target.GetBuffCount("TahmKenchPDebuffCounter") != 2)
+            if (player.Distance(target) <= Orbwalking.GetRealAutoAttackRange(target) && !Orbwalking.CanAttack()
+                && target.GetBuffCount("TahmKenchPDebuffCounter") != 2)
             {
                 if (Program.IsSPrediction)
                 {

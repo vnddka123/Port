@@ -168,7 +168,7 @@ namespace UnderratedAIO.Champions
         {
             AIHeroClient target = DrawHelper.GetBetterTarget(Q.Range, TargetSelector.DamageType.Physical, true);
             if (config.Item("useeH", true).GetValue<bool>() && target != null && E.CanCast(target) &&
-                !player.Spellbook.IsAutoAttacking && Orbwalking.CanMove(100))
+                !player.Spellbook.IsAutoAttacking )
             {
                 E.Cast(target);
             }
@@ -177,7 +177,7 @@ namespace UnderratedAIO.Champions
                 GotoAxe(target.Position);
             }
             float perc = config.Item("minmanaH", true).GetValue<Slider>().Value / 100f;
-            if (player.Mana < player.MaxMana * perc || player.Spellbook.IsAutoAttacking || target == null || !Orbwalking.CanMove(100))
+            if (player.Mana < player.MaxMana * perc || player.Spellbook.IsAutoAttacking || target == null)
             {
                 return;
             }
@@ -190,7 +190,7 @@ namespace UnderratedAIO.Champions
         private void Combo()
         {
             AIHeroClient target = DrawHelper.GetBetterTarget(Q.Range, TargetSelector.DamageType.Physical, true);
-            if (player.Spellbook.IsAutoAttacking || target == null || !Orbwalking.CanMove(100))
+            if (player.Spellbook.IsAutoAttacking || target == null)
             {
                 return;
             }
@@ -247,7 +247,7 @@ namespace UnderratedAIO.Champions
             var orig = player.Distance(target);
             var ext = player.Distance(lastQpos) + lastQpos.Distance(target);
             if (player.Distance(lastQpos) < maxDist && !lastQpos.UnderTurret(true))
-                //ext - orig < maxDist && Orbwalking.CanMove(100)
+                //ext - orig < maxDist 
             {
                 orbwalker.SetOrbwalkingPoint(lastQpos);
                 //Player.IssueOrder(GameObjectOrder.MoveTo, lastQpos);

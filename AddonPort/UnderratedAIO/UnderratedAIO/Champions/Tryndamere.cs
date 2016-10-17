@@ -81,8 +81,8 @@ namespace UnderratedAIO.Champions
         private void Harass()
         {
             AIHeroClient target = DrawHelper.GetBetterTarget(1000, TargetSelector.DamageType.Physical, true);
-            if (config.Item("useeH", true).GetValue<bool>() && E.CanCast(target) && E.IsReady() && !player.Spellbook.IsAutoAttacking &&
-                Orbwalking.CanMove(100))
+            if (config.Item("useeH", true).GetValue<bool>() && E.CanCast(target) && E.IsReady() && !player.Spellbook.IsAutoAttacking
+               )
             {
                 CastEtarget(target);
             }
@@ -142,9 +142,9 @@ namespace UnderratedAIO.Champions
             {
                 Q.Cast();
             }
-
-            if (E.IsReady() && config.Item("usee", true).GetValue<bool>() && !player.Spellbook.IsAutoAttacking &&
-                Orbwalking.CanMove(100))
+        
+            if (E.IsReady() && config.Item("usee", true).GetValue<bool>() && !player.Spellbook.IsAutoAttacking
+                )
             {
                 if (!config.Item("useeLimited", true).GetValue<bool>() ||
                     Orbwalking.GetRealAutoAttackRange(target) + 25 < player.Distance(target))
@@ -152,8 +152,7 @@ namespace UnderratedAIO.Champions
                     CastEtarget(target);
                 }
             }
-            if (config.Item("usew", true).GetValue<bool>() && W.IsReady() && !Orbwalking.CanAttack() &&
-                Orbwalking.CanMove(100))
+            if (config.Item("usew", true).GetValue<bool>() && W.IsReady() && !Orbwalking.CanAttack())
             {
                 W.Cast();
             }

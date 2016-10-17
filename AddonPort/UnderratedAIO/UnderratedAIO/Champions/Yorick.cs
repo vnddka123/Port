@@ -188,7 +188,7 @@ namespace UnderratedAIO.Champions
             }
             if (config.Item("user", true).GetValue<bool>() && R.IsReady() && R.CanCast(target) &&
                 target.HealthPercent < config.Item("userHp", true).GetValue<Slider>().Value &&
-                ((!Orbwalking.CanAttack() && Orbwalking.CanMove(100)) ||
+                ((!Orbwalking.CanAttack() ) ||
                  !config.Item("useronlyMelee", true).GetValue<bool>()))
             {
                 R.CastOnUnit(target);

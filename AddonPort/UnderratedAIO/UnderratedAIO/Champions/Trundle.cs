@@ -220,7 +220,7 @@ namespace UnderratedAIO.Champions
         private void Combo()
         {
             AIHeroClient target = DrawHelper.GetBetterTarget(E.Range, TargetSelector.DamageType.Physical, true);
-            if (player.Spellbook.IsAutoAttacking || target == null || !Orbwalking.CanMove(100))
+            if (player.Spellbook.IsAutoAttacking || target == null)
             {
                 return;
             }

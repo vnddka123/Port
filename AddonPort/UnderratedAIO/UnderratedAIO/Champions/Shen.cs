@@ -283,8 +283,8 @@ namespace UnderratedAIO.Champions
         private static void Harass()
         {
             AIHeroClient target = DrawHelper.GetBetterTarget(Q.Range, TargetSelector.DamageType.Magical);
-            if (target != null && Q.IsReady() && config.Item("harassq", true).GetValue<bool>() &&
-                Orbwalking.CanMove(100))
+            if (target != null && Q.IsReady() && config.Item("harassq", true).GetValue<bool>()
+                )
             {
                 HandleQ(target);
             }
@@ -324,7 +324,7 @@ namespace UnderratedAIO.Champions
             {
                 player.Spellbook.CastSpell(player.GetSpellSlot("SummonerDot"), target);
             }
-            if (Q.IsReady() && config.Item("useq", true).GetValue<bool>() && Orbwalking.CanMove(100))
+            if (Q.IsReady() && config.Item("useq", true).GetValue<bool>() )
             {
                 HandleQ(target);
             }

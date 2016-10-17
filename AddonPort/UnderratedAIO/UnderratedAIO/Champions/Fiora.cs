@@ -233,8 +233,7 @@ namespace UnderratedAIO.Champions
                 W.Cast(target.Position);
             }
             var closestPassive = GetClosestPassivePosition(target);
-            if (closestPassive.IsValid() && config.Item("MoveToVitals", true).GetValue<bool>() &&
-                Orbwalking.CanMove(300) && !Orbwalking.CanAttack() && !player.Spellbook.IsAutoAttacking &&
+            if (closestPassive.IsValid() && config.Item("MoveToVitals", true).GetValue<bool>() && !Orbwalking.CanAttack() && !player.Spellbook.IsAutoAttacking &&
                 Game.CursorPos.Distance(target.Position) < 350)
             {
                 orbwalker.SetMovement(false);
@@ -247,7 +246,7 @@ namespace UnderratedAIO.Champions
                 ItemHandler.UseItems(target, config, ComboDamage(target));
             }
             bool hasIgnite = player.Spellbook.CanUseSpell(player.GetSpellSlot("SummonerDot")) == SpellState.Ready;
-            if (config.Item("useq", true).GetValue<bool>() && Q.IsReady() && Orbwalking.CanMove(100) &&
+            if (config.Item("useq", true).GetValue<bool>() && Q.IsReady()  &&
                 config.Item("useqMin", true).GetValue<Slider>().Value <= player.Distance(target) &&
                 (closestPassive.IsValid() || (target.HealthPercent < 30)) && !player.Spellbook.IsAutoAttacking)
             {

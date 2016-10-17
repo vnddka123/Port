@@ -278,7 +278,7 @@ namespace UnderratedAIO.Champions
             {
                 ItemHandler.UseItems(target, config);
             }
-            if (config.Item("usee", true).GetValue<bool>() && E.CanCast(target) && Orbwalking.CanMove(100) &&
+            if (config.Item("usee", true).GetValue<bool>() && E.CanCast(target)  &&
                 (config.Item("eMinRange", true).GetValue<Slider>().Value < player.Distance(target) ||
                  player.HealthPercent < 20 || (player.CountEnemiesInRange(800) == 1 && target.HealthPercent < 20)))
             {

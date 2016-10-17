@@ -406,7 +406,7 @@ namespace UnderratedAIO.Champions
                 CastE(target);
             }
             if (W.IsReady() && (!SimpleQ || !Q.IsReady()) && config.Item("usew", true).GetValue<bool>() &&
-                player.Distance(target) < 300 && Orbwalking.CanMove(100) &&
+                player.Distance(target) < 300  &&
                 target.Health > combodmg - getWdamage(target))
             {
                 W.Cast();

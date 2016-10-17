@@ -673,8 +673,7 @@ namespace UnderratedAIO.Champions
 
 
             if (config.Item("useeAlways", true).GetValue<bool>() && E.IsReady() && player.Distance(target) < E.Range &&
-                !justE && target.Health > Q.GetDamage(target) + player.GetAutoAttackDamage(target) &&
-                Orbwalking.CanMove(100) && config.Item("eStacksC", true).GetValue<Slider>().Value < GetAmmo())
+                !justE && target.Health > Q.GetDamage(target) + player.GetAutoAttackDamage(target) && config.Item("eStacksC", true).GetValue<Slider>().Value < GetAmmo())
             {
                 CastE(target, barrels);
             }
@@ -688,7 +687,7 @@ namespace UnderratedAIO.Champions
             {
                 dontQ = true;
             }
-            if (config.Item("useq", true).GetValue<bool>() && Q.CanCast(target) && Orbwalking.CanMove(100) && !justE &&
+            if (config.Item("useq", true).GetValue<bool>() && Q.CanCast(target)  && !justE &&
                 (!config.Item("useqBlock", true).GetValue<bool>() || !dontQ))
             {
                 CastQonHero(target, barrels);

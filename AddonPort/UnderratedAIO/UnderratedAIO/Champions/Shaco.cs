@@ -134,8 +134,8 @@ namespace UnderratedAIO.Champions
             }
             var cmbDmg = ComboDamage(target);
             float dist = (float) (Q.Range + player.MoveSpeed * 2.5);
-            if ((config.Item("WaitForStealth", true).GetValue<bool>() && ShacoStealth && cmbDmg < target.Health) ||
-                !Orbwalking.CanMove(100))
+            if ((config.Item("WaitForStealth", true).GetValue<bool>() && ShacoStealth && cmbDmg < target.Health)
+               )
             {
                 return;
             }

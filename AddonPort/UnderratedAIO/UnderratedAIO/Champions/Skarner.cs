@@ -146,7 +146,7 @@ namespace UnderratedAIO.Champions
                 E.Cast(bestPositionE.Position);
             }
             if (config.Item("useqLC").GetValue<bool>() && Q.IsReady() &&
-                qMinions >= config.Item("qhitLC").GetValue<Slider>().Value && Orbwalking.CanMove(100))
+                qMinions >= config.Item("qhitLC").GetValue<Slider>().Value )
             {
                 Q.Cast();
             }

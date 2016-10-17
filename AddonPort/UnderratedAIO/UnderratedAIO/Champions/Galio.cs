@@ -144,7 +144,7 @@ namespace UnderratedAIO.Champions
                     return;
                 }
             }
-            if (!rActive && Orbwalking.CanMove(100))
+            if (!rActive )
             {
                 if (!justR)
                 {

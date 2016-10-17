@@ -173,7 +173,7 @@ namespace UnderratedAIO.Champions
                                 o.Distance(player) < Orbwalking.GetRealAutoAttackRange(player))
                         .OrderBy(o => o.Distance(player))
                         .FirstOrDefault();
-                if (blob != null && Orbwalking.CanMove(300) && !Orbwalking.CanAttack() && !player.Spellbook.IsAutoAttacking)
+                if (blob != null && !Orbwalking.CanAttack() && !player.Spellbook.IsAutoAttacking)
                 {
                     orbwalker.SetMovement(false);
                     Orbwalking.Move = false;
@@ -281,7 +281,7 @@ namespace UnderratedAIO.Champions
                                 o.Distance(player) < Orbwalking.GetRealAutoAttackRange(player))
                         .OrderBy(o => o.Distance(player))
                         .FirstOrDefault();
-                if (blob != null && Orbwalking.CanMove(300) && !Orbwalking.CanAttack() && !player.Spellbook.IsAutoAttacking)
+                if (blob != null && !Orbwalking.CanAttack() && !player.Spellbook.IsAutoAttacking)
                 {
                     orbwalker.SetMovement(false);
                     Orbwalking.Move = false;

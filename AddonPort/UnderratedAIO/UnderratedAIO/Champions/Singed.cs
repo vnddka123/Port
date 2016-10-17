@@ -298,8 +298,8 @@ namespace UnderratedAIO.Champions
             {
                 CastQ();
             }
-            if (config.Item("moveLC", true).GetValue<bool>() && player.CountEnemiesInRange(1000) < 1 &&
-                Orbwalking.CanMove(100) && player.Mana > 30 && !player.Spellbook.IsAutoAttacking)
+            if (config.Item("moveLC", true).GetValue<bool>() && player.CountEnemiesInRange(1000) < 1
+                && player.Mana > 30 && !player.Spellbook.IsAutoAttacking)
             {
                 var mini =
                     MinionManager.GetMinions(600, MinionTypes.All, MinionTeam.NotAlly)

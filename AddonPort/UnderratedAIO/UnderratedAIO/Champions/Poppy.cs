@@ -120,6 +120,16 @@ namespace UnderratedAIO.Champions
 
         private static void Combo()
         {
+
+            if (Orbwalking.CanMove(config.Item("canmove", true).GetValue<Slider>().Value))
+            {
+                Chat.Print("CanMove");
+            }
+            if (Orbwalking.CanMove(300))
+            {
+                Chat.Print("300");
+            }
+
             AIHeroClient target = DrawHelper.GetBetterTarget(1000, TargetSelector.DamageType.Magical);
             if (target == null)
             {
@@ -172,8 +182,7 @@ namespace UnderratedAIO.Champions
                     }
                 }
             }
-            if (config.Item("useq", true).GetValue<bool>() && Q.IsReady() && Q.CanCast(target) &&
-                LeagueSharp.Common.Orbwalking.CanMove(100) && target.Distance(player) < Q.Range &&
+            if (config.Item("useq", true).GetValue<bool>() && Q.IsReady() && Q.CanCast(target) && target.Distance(player) < Q.Range &&
                 (player.Distance(target) > LeagueSharp.Common.Orbwalking.GetRealAutoAttackRange(target) || !LeagueSharp.Common.Orbwalking.CanAttack()))
             {
                 Q.CastIfHitchanceEquals(target, HitChance.High);
@@ -280,8 +289,7 @@ namespace UnderratedAIO.Champions
             {
                 return;
             }
-            if (config.Item("useqH", true).GetValue<bool>() && Q.IsReady() && Q.CanCast(target) &&
-                LeagueSharp.Common.Orbwalking.CanMove(100) && target.Distance(player) < Q.Range &&
+            if (config.Item("useqH", true).GetValue<bool>() && Q.IsReady() && Q.CanCast(target) && target.Distance(player) < Q.Range &&
                 (player.Distance(target) > LeagueSharp.Common.Orbwalking.GetRealAutoAttackRange(target) || !LeagueSharp.Common.Orbwalking.CanAttack()))
             {
                 Q.CastIfHitchanceEquals(target, HitChance.High);
@@ -413,6 +421,8 @@ namespace UnderratedAIO.Champions
             menuLC.AddItem(new MenuItem("qMinHit", "   Q min hit", true)).SetValue(new Slider(3, 1, 6));
             menuLC.AddItem(new MenuItem("useeLC", "Use E", true)).SetValue(true);
             menuLC.AddItem(new MenuItem("minmana", "Keep X% mana", true)).SetValue(new Slider(50, 1, 100));
+
+            menuLC.AddItem(new MenuItem("canmove", "canmove range", true)).SetValue(new Slider(0, 0, 100));
             config.AddSubMenu(menuLC);
             // Misc Settings
             Menu menuM = new Menu("Misc", "Msettings");

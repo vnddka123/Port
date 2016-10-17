@@ -118,7 +118,7 @@ namespace UnderratedAIO.Champions
             }
             if (config.Item("EzAutoQ", true).GetValue<KeyBind>().Active && Q.IsReady() &&
                 config.Item("EzminmanaaQ", true).GetValue<Slider>().Value < player.ManaPercent &&
-                orbwalker.ActiveMode != Orbwalking.OrbwalkingMode.Combo && Orbwalking.CanMove(100))
+                orbwalker.ActiveMode != Orbwalking.OrbwalkingMode.Combo )
             {
                 AIHeroClient target = DrawHelper.GetBetterTarget(Q.Range, TargetSelector.DamageType.Physical);
                 if (target != null && Q.CanCast(target) && target.IsValidTarget())
@@ -227,7 +227,7 @@ namespace UnderratedAIO.Champions
             {
                 ItemHandler.UseItems(target, config, cmbDmg);
             }
-            if (config.Item("useq", true).GetValue<bool>() && Q.IsReady() && Orbwalking.CanMove(100) &&
+            if (config.Item("useq", true).GetValue<bool>() && Q.IsReady()  &&
                 target.IsValidTarget() && !justJumped)
             {
                 if (Program.IsSPrediction)
@@ -246,7 +246,7 @@ namespace UnderratedAIO.Champions
                     }
                 }
             }
-            if (config.Item("usew", true).GetValue<bool>() && W.IsReady() && Orbwalking.CanMove(100) && !justJumped &&
+            if (config.Item("usew", true).GetValue<bool>() && W.IsReady()  && !justJumped &&
                 (cmbDmg + player.GetAutoAttackDamage(target) > target.Health || player.Mana > Q.Instance.SData.Mana * 2))
             {
                 if (Program.IsSPrediction)
@@ -375,8 +375,7 @@ namespace UnderratedAIO.Champions
                             continue;
                         }
 
-                        if (minion.Distance(player) <= player.AttackRange && !Orbwalking.CanAttack() &&
-                            Orbwalking.CanMove(100))
+                        if (minion.Distance(player) <= player.AttackRange && !Orbwalking.CanAttack())
                         {
                             if (Q.Cast(minion).IsCasted())
                             {
