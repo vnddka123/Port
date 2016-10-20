@@ -76,7 +76,7 @@ namespace HoolaRiven
 
             OnMenuLoad();
 
-            Game.OnTick += OnTick;
+            Game.OnUpdate += new GameUpdate(OnTick);
             Drawing.OnDraw += new DrawingDraw(Drawing_OnDraw);
             Drawing.OnEndScene += new DrawingEndScene(Drawing_OnEndScene);
             Obj_AI_Base.OnProcessSpellCast += new Obj_AI_ProcessSpellCast(OnCast);
@@ -84,13 +84,26 @@ namespace HoolaRiven
             Obj_AI_Base.OnSpellCast += new Obj_AI_BaseDoCastSpell(OnDoCastLC);
             Obj_AI_Base.OnPlayAnimation += new Obj_AI_BasePlayAnimation(OnPlay);
             Obj_AI_Base.OnProcessSpellCast += new Obj_AI_ProcessSpellCast(OnCasting);
-            Spellbook.OnCastSpell += new SpellbookCastSpell(Spellbook_OnCastSpell);
+            //Spellbook.OnCastSpell += new SpellbookCastSpell(Spellbook_OnCastSpell);
+            EloBuddy.Obj_AI_Base.OnSpellCast += new Obj_AI_BaseDoCastSpell(WERCasting);
             Interrupter2.OnInterruptableTarget += new Interrupter2.InterruptableTargetHandler(Interrupt);
         }
 
         private static void Spellbook_OnCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
         {
             if (args.Slot == SpellSlot.W || args.Slot == SpellSlot.E)
+            {
+                Orbwalking.LastAATick = 0;
+            }
+        }
+
+        private static void WERCasting(EloBuddy.Obj_AI_Base Sender, EloBuddy.GameObjectProcessSpellCastEventArgs args)
+        {
+            if (args.Slot == EloBuddy.SpellSlot.W && !EloBuddy.ObjectManager.Player.Spellbook.IsAutoAttacking)
+            {
+                Orbwalking.LastAATick = 0;
+            }
+            if (args.Slot == EloBuddy.SpellSlot.R && !EloBuddy.ObjectManager.Player.Spellbook.IsAutoAttacking)
             {
                 Orbwalking.LastAATick = 0;
             }
@@ -314,8 +327,8 @@ namespace HoolaRiven
             Misc.AddItem(new MenuItem("AutoShield", "Auto Cast E").SetValue(true));
             Misc.AddItem(new MenuItem("Shield", "Auto Cast E While LastHit").SetValue(true));
             Misc.AddItem(new MenuItem("KeepQ", "Keep Q Alive").SetValue(true));
-            Misc.AddItem(new MenuItem("QD", "First,Second Q Delay").SetValue(new Slider(29, 23, 43)));
-            Misc.AddItem(new MenuItem("QLD", "Third Q Delay").SetValue(new Slider(39, 36, 53)));
+            Misc.AddItem(new MenuItem("QD", "First,Second Q Delay").SetValue(new Slider(29, 10, 43)));
+            Misc.AddItem(new MenuItem("QLD", "Third Q Delay").SetValue(new Slider(39, 10, 53)));
 
 
             Menu.AddSubMenu(Misc);
@@ -576,7 +589,7 @@ namespace HoolaRiven
                     Utility.DelayAction.Add(1, ForceW);
                 }
             }
-            if (Q.IsReady() && E.IsReady() && QStack == 3 && !Orbwalking.CanAttack())// && Orbwalking.CanMove(5))
+            if (Q.IsReady() && E.IsReady() && QStack == 3 && !Orbwalking.CanAttack() && Orbwalking.CanMove(5))
             {
                 var epos = Player.ServerPosition +
                           (Player.ServerPosition - target.ServerPosition).Normalized() * 300;
